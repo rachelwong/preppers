@@ -2,15 +2,15 @@
 
 ## Fields
 
-| Field | Type | Key | Rules |
-| --- | --- | --- | --- |
-| id | uuid | PK |  |
-| invoiceId | uuid | FK → [PrepperInvoice](prepper-invoice.md) |  |
-| productId | uuid | FK → [Product](product.md) |  |
-| nameSnapshot | text |  | copied at checkout |
-| unitPriceCentsSnapshot | int |  | copied at checkout |
-| quantity | int |  | 1–20 |
-| lineTotalCents | int |  | unit price × quantity |
+| Field                  | Type | Key                                         | Rules                 |
+| ---------------------- | ---- | ------------------------------------------- | --------------------- |
+| id                     | uuid | PK                                          |                       |
+| invoiceId              | uuid | FK → [PrepperInvoice](prepper-invoice.md) |                       |
+| productId              | uuid | FK → [Product](product.md)                  |                       |
+| nameSnapshot           | text |                                             | copied at checkout    |
+| unitPriceCentsSnapshot | int  |                                             | copied at checkout    |
+| quantity               | int  |                                             | 1–20                  |
+| lineTotalCents         | int  |                                             | unit price × quantity |
 
 ## Links
 

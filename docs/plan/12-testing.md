@@ -4,13 +4,13 @@ Every critical path is written as a plain-English scenario, run in a real browse
 
 ## Test layers
 
-| Layer | Where | Tools | Runs |
-| --- | --- | --- | --- |
-| API | `api` | Vitest + Fastify `inject`, local Supabase | every PR touching `api` |
-| Web | `web` | Vitest + Testing Library + MSW | every PR touching `web` |
-| Contract | both | regenerate `openapi.json` and web types; fail if changed | every PR |
-| Critical paths | `e2e` | Playwright + playwright-bdd, video on | every PR |
-| Release paths | `e2e` | same, tagged `@release` | nightly and before a release |
+| Layer          | Where | Tools                                                    | Runs                         |
+| -------------- | ----- | -------------------------------------------------------- | ---------------------------- |
+| API            | `api` | Vitest + Fastify `inject`, local Supabase                | every PR touching `api`      |
+| Web            | `web` | Vitest + Testing Library + MSW                           | every PR touching `web`      |
+| Contract       | both  | regenerate `openapi.json` and web types; fail if changed | every PR                     |
+| Critical paths | `e2e` | Playwright + playwright-bdd, video on                    | every PR                     |
+| Release paths  | `e2e` | same, tagged `@release`                                  | nightly and before a release |
 
 All free: open-source tools plus GitHub Actions minutes.
 
@@ -45,41 +45,41 @@ flowchart LR
 
 ```gherkin
 @critical
-Feature: Check out a cart from two preppers
+Feature: Check out a cart from two Preppers
 
   Scenario: Buyer pays once and gets one receipt
     Given I am signed in as a buyer
     And my cart has "Beef rendang" from "Siti's Kitchen"
     And my cart has "Veggie lasagne" from "Nonna Rosa"
     When I check out and pay with the test card "4242 4242 4242 4242"
-    Then I see a receipt with 2 preppers
+    Then I see a receipt with 2 Preppers
     And the order status is "paid"
 ```
 
 ## Critical paths (every PR, with video)
 
-| # | Path | Scenario file | Added in stage |
-| --- | --- | --- | --- |
-| C1 | Sign in with an email code, see your name, sign out, can't reach account pages | `sign-in-out.feature` | 1.7 |
-| C2 | Guest adds meals, signs in, cart is still there | `guest-cart-merge.feature` | 4.3 |
-| C3 | Buyer checks out meals from two preppers with a test card, sees one receipt grouped by prepper | `checkout-two-preppers.feature` | 5.6 |
-| C4 | Prepper marks their invoice handed over; the buyer's order shows completed | `hand-over-order.feature` | 5.7 |
-| C5 | New prepper signs up with the food safety step; admin approves; prepper appears in browse | `prepper-approved.feature` | 7.5 |
+| #   | Path                                                                                            | Scenario file                   | Added in stage |
+| --- | ----------------------------------------------------------------------------------------------- | ------------------------------- | -------------- |
+| C1  | Sign in with an email code, see your name, sign out, can't reach account pages                  | `sign-in-out.feature`           | 1.7            |
+| C2  | Guest adds meals, signs in, cart is still there                                                 | `guest-cart-merge.feature`      | 4.3            |
+| C3  | Buyer checks out meals from two Preppers with a test card, sees one receipt grouped by Prepper | `checkout-two-preppers.feature` | 5.6            |
+| C4  | Prepper marks their invoice handed over; the buyer's order shows completed                     | `hand-over-order.feature`       | 5.7            |
+| C5  | New Prepper signs up with the food safety step; admin approves; Prepper appears in browse     | `prepper-approved.feature`     | 7.5            |
 
 ## Release paths (nightly, video on failure)
 
-| # | Path | Added in stage |
-| --- | --- | --- |
-| R1 | Guest browses and filters by cuisine and dietary needs | 3.2 |
-| R2 | Search near a suburb or postcode; "delivers to me" filter | 3.3 |
-| R3 | Prepper adds a meal with a photo, hides it, archives it; it leaves browse | 2.8 |
-| R4 | Checkout with a 3DS test card | 5.4 |
-| R5 | Declined card, then a retry that succeeds | 5.5 |
-| R6 | Editing the cart mid-checkout cancels the pending order | 5.5 |
-| R7 | Stripe promo code applied; totals and receipt correct | 5.9 |
-| R8 | Buyer reviews a meal they bought; can't review one they didn't | 6.2 |
-| R9 | Admin flags a meal; it disappears from browse | 7.4 |
-| R10 | Admin suspends an account; that person can't sign in | 7.2 |
+| #   | Path                                                                       | Added in stage |
+| --- | -------------------------------------------------------------------------- | -------------- |
+| R1  | Guest browses and filters by cuisine and dietary needs                     | 3.2            |
+| R2  | Search near a suburb or postcode; "delivers to me" filter                  | 3.3            |
+| R3  | Prepper adds a meal with a photo, hides it, archives it; it leaves browse | 2.8            |
+| R4  | Checkout with a 3DS test card                                              | 5.4            |
+| R5  | Declined card, then a retry that succeeds                                  | 5.5            |
+| R6  | Editing the cart mid-checkout cancels the pending order                    | 5.5            |
+| R7  | Stripe promo code applied; totals and receipt correct                      | 5.9            |
+| R8  | Buyer reviews a meal they bought; can't review one they didn't             | 6.2            |
+| R9  | Admin flags a meal; it disappears from browse                              | 7.4            |
+| R10 | Admin suspends an account; that person can't sign in                       | 7.2            |
 
 Prepper payout onboarding (5.2) happens on Stripe's own hosted pages, which change often. It's tested at the API level, plus one recorded manual run per release.
 

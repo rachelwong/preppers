@@ -51,17 +51,17 @@ stateDiagram-v2
   [*] --> pending_payment: checkout
   pending_payment --> paid: with order
   pending_payment --> cancelled: with order
-  paid --> handed_over: prepper marks
+  paid --> handed_over: Prepper marks
   note right of paid: PrepperInvoice
 ```
 
 ### Step by step
 
 1. The buyer fills a cart. The cart is `active`.
-2. The buyer checks out. The cart becomes `checking_out`. An order and one invoice per prepper are created as `pending_payment`, and a Stripe payment starts.
+2. The buyer checks out. The cart becomes `checking_out`. An order and one invoice per Prepper are created as `pending_payment`, and a Stripe payment starts.
 3. The buyer pays. 3DS checks and failed attempts move the payment between `requires_action`, `processing` and `requires_payment_method`; the order stays `pending_payment`.
-4. Stripe's webhook confirms payment. In one transaction: payment becomes `succeeded`, the order and invoices become `paid`, the cart becomes `ordered`, and each prepper's pay is queued.
-5. Each prepper marks their invoice `handed_over` once the buyer has the meals.
+4. Stripe's webhook confirms payment. In one transaction: payment becomes `succeeded`, the order and invoices become `paid`, the cart becomes `ordered`, and each Prepper's pay is queued.
+5. Each Prepper marks their invoice `handed_over` once the buyer has the meals.
 6. When the last invoice is handed over, the order becomes `completed`.
 
 ### If it goes wrong
@@ -69,11 +69,11 @@ stateDiagram-v2
 - The buyer edits the cart during checkout: the order and invoices are `cancelled`, and the cart goes back to `active`.
 - The payment is cancelled: the same as above.
 - The order is still unpaid after 24 hours: a scheduled job cancels it.
-- Paying a prepper fails: `prepperPayStatus` becomes `failed`; a scheduled job retries it.
+- Paying a Prepper fails: `PrepperPayStatus` becomes `failed`; a scheduled job retries it.
 
-## Accounts and prepper checks
+## Accounts and Prepper checks
 
-A prepper sells only while verified.
+A Prepper sells only while verified.
 
 ```mermaid
 stateDiagram-v2
@@ -81,8 +81,8 @@ stateDiagram-v2
   [*] --> active: first sign-in
   active --> suspended: admin
   suspended --> active: admin
-  active --> deleted: owner or admin
-  suspended --> deleted: owner or admin
+  active --> deactivated: owner
+  deactivated --> active: owner signs in again
   note right of active: Account
 ```
 
@@ -104,17 +104,18 @@ stateDiagram-v2
 ### Account, step by step
 
 1. Created as `active` the first time someone signs in.
-2. An admin can suspend it and later reinstate it. Suspended accounts can't sign in.
-3. The owner or an admin can delete it. Personal details are wiped. This can't be undone.
+2. An admin can suspend it and later reinstate it. Suspended accounts can't sign in. This is also how an admin is removed. An admin can't suspend themselves or the last active admin.
+3. The owner can deactivate it. Details and orders are kept. Signing in again reactivates it.
+4. Nothing is deleted. Accounts can stay deactivated for as long as they like.
 
 ### Prepper check, step by step
 
-1. A new prepper starts in `draft`.
+1. A new Prepper starts in `draft`.
 2. Submitting the food safety step moves them to `pending_review`.
 3. An admin approves (`verified`) or rejects with a reason (`rejected`).
-4. A rejected prepper can fix and resubmit.
-5. Only `verified` preppers show in browse and can be bought from.
-6. An admin can suspend a verified prepper. Later, licences that run out will move to `expired`.
+4. A rejected Prepper can fix and resubmit.
+5. Only `verified` Preppers show in browse and can be bought from.
+6. An admin can suspend a verified Prepper. Later, licences that run out will move to `expired`.
 
 ## Products
 
@@ -122,44 +123,44 @@ stateDiagram-v2
 stateDiagram-v2
   direction LR
   [*] --> active
-  active --> hidden: prepper
-  hidden --> active: prepper
+  active --> hidden: Prepper
+  hidden --> active: Prepper
   active --> flagged: admin
   hidden --> flagged: admin
   flagged --> active: admin unflags
-  active --> archived: prepper or admin
-  hidden --> archived: prepper or admin
+  active --> archived: Prepper or admin
+  hidden --> archived: Prepper or admin
   flagged --> archived: admin
 ```
 
-- `archived` is permanent; ordered products are never truly deleted.
+- `archived` is permanent. Products are never deleted, and old receipts still show them.
 
 ## Guest carts
 
 - Guest cart → `merged` when the guest signs in.
-- Guest cart → `abandoned` after 30 days untouched.
+- Guest cart → `abandoned` after 1 hour untouched. Every cart edit restarts the hour.
 
 ## Allowed-move map
 
-| Entity | From → To | Actor |
-| --- | --- | --- |
-| Account | active ↔ suspended | admin |
-| Account | active, suspended → deleted | owner, admin |
-| PrepperProfile | draft, rejected, expired → pending_review | prepper |
-| PrepperProfile | pending_review → verified, rejected | admin |
-| PrepperProfile | verified ↔ suspended | admin |
-| PrepperProfile | verified → expired | system |
-| Product | active ↔ hidden | prepper |
-| Product | active, hidden → flagged; flagged → active | admin |
-| Product | any → archived | prepper (not from flagged), admin |
-| Cart | active → checking_out | buyer |
-| Cart | checking_out → active | system |
-| Cart | checking_out → ordered | stripe |
-| Cart | active → merged, abandoned | system |
-| Order | pending_payment → paid | stripe |
-| Order | pending_payment → cancelled | buyer, stripe, system |
-| Order | paid → completed | system |
-| PrepperInvoice | pending_payment → paid | stripe |
-| PrepperInvoice | pending_payment → cancelled | system |
-| PrepperInvoice | paid → handed_over | prepper |
-| Payment | any Stripe status → its new Stripe status | stripe |
+| Entity          | From → To                                  | Actor                              |
+| --------------- | ------------------------------------------ | ---------------------------------- |
+| Account         | active ↔ suspended                         | admin                              |
+| Account         | active ↔ deactivated                       | owner                              |
+| PrepperProfile | draft, rejected, expired → pending_review  | Prepper                            |
+| PrepperProfile | pending_review → verified, rejected        | admin                              |
+| PrepperProfile | verified ↔ suspended                       | admin                              |
+| PrepperProfile | verified → expired                         | system                             |
+| Product         | active ↔ hidden                            | Prepper                            |
+| Product         | active, hidden → flagged; flagged → active | admin                              |
+| Product         | any → archived                             | Prepper (not from flagged), admin |
+| Cart            | active → checking_out                      | buyer                              |
+| Cart            | checking_out → active                      | system                             |
+| Cart            | checking_out → ordered                     | stripe                             |
+| Cart            | active → merged, abandoned                 | system                             |
+| Order           | pending_payment → paid                     | stripe                             |
+| Order           | pending_payment → cancelled                | buyer, stripe, system              |
+| Order           | paid → completed                           | system                             |
+| PrepperInvoice | pending_payment → paid                     | stripe                             |
+| PrepperInvoice | pending_payment → cancelled                | system                             |
+| PrepperInvoice | paid → handed_over                         | Prepper                            |
+| Payment         | any Stripe status → its new Stripe status  | stripe                             |

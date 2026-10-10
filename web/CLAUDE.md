@@ -21,7 +21,8 @@ Read the root `CLAUDE.md` first. This file adds rules for the web app only.
 11. Only `VITE_` public keys here. Flag any secret.
 12. No imports from `api` or any other app folder. This app has its own dependencies.
 13. Add `data-testid` only where a role or label can't identify an element; end-to-end tests find things by role and label first.
-14. Accessibility: labels on every input, keyboard reachable actions, visible focus.
+14. UI is built from shadcn/ui components in `src/components/ui/`, styled with Tailwind and the theme variables. Add components with the shadcn CLI; don't hand-roll an equivalent.
+15. Accessibility: labels on every input, keyboard reachable actions, visible focus.
 
 ## Tests to expect
 

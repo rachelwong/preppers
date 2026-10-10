@@ -17,7 +17,7 @@ Preppers is a marketplace for home cooks ("Preppers") to sell meal prep to busy 
 - Browse local Preppers by cuisine, dietary needs and distance.
 - See which Preppers deliver to you.
 - Fill one cart with meals from several Preppers and pay once.
-- Get one receipt, grouped by Preppers.
+- Get one receipt, grouped by Prepper.
 - Review meals you've bought and save favourite Preppers and meals.
 
 **For Preppers**
@@ -29,7 +29,7 @@ Preppers is a marketplace for home cooks ("Preppers") to sell meal prep to busy 
 
 **For admins**
 
-- Manage accounts, review Preppers licences and flag products.
+- Manage accounts, review Preppers licences and flag products. Admins are a separate account type: they can't buy or sell.
 - See all purchases and how often each promo code is used. Promo codes themselves are set up in Stripe.
 
 ## How it's built
@@ -49,7 +49,7 @@ flowchart LR
 
 | Part                     | Tools                                                     |
 | ------------------------ | --------------------------------------------------------- |
-| Web app (`web`)          | React, Vite, TypeScript, TanStack Router, Query and Table |
+| Web app (`web`)          | React, Vite, TypeScript, TanStack Router, Query and Table, Tailwind CSS + shadcn/ui |
 | API (`api`)              | Node, Fastify, TypeScript, Drizzle                        |
 | End-to-end tests (`e2e`) | Playwright with plain-English scenarios and video         |
 | Database and sign-in     | Supabase (Postgres, Auth, Storage)                        |
@@ -81,7 +81,7 @@ Each app's own README has the details.
 ## Project layout
 
 ```text
-Preppers/
+preppers/
 ├── web/              the React app (see web/README.md)
 ├── api/              the API server (see api/README.md)
 ├── e2e/              end-to-end tests with video

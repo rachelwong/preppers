@@ -1,6 +1,6 @@
 # Data model
 
-Every order splits into one invoice per prepper.
+Every order splits into one invoice per Prepper.
 
 ```mermaid
 flowchart TB
@@ -36,9 +36,9 @@ flowchart TB
 
 ## Reading it, top to bottom
 
-1. An account may have one prepper profile. A prepper has many products, and products have reviews.
-2. An account has carts, and a cart holds items. Favourites link accounts to preppers and products.
-3. Checking out a cart creates one order. The order splits into one invoice per prepper, each with its own lines.
+1. An account may have one Prepper profile. A Prepper has many products, and products have reviews.
+2. An account has carts, and a cart holds items. Favourites link accounts to Preppers and products.
+3. Checking out a cart creates one order. The order splits into one invoice per Prepper, each with its own lines.
 4. An order has one or more payment attempts.
 5. The log tables at the bottom are shared by every flow.
 
@@ -55,7 +55,6 @@ flowchart TB
 
 Defined in the API's zod schemas and passed to the web app through the OpenAPI contract.
 
-
 - `DietaryTag` — vegetarian, vegan, gluten_free, dairy_free, nut_free, halal, kosher, low_carb
 - `CuisineType` — fixed list, e.g. australian, chinese, indian, italian, japanese, korean, mexican, middle_eastern, thai, vietnamese, other
 - `AustralianState` — QLD, NSW, VIC, TAS, SA, WA, NT, ACT
@@ -70,13 +69,13 @@ Each name opens its entity doc: fields, types, keys, links and checks.
   - [PrepperProfile](../data-model/entities/prepper-profile.md) — selling details, location, food safety, Stripe account
   - [Product](../data-model/entities/product.md) — a meal for sale
   - [Review](../data-model/entities/review.md) — a buyer's rating of a product they paid for
-  - [Favourites](../data-model/entities/favourites.md) — saved preppers and products
+  - [Favourites](../data-model/entities/favourites.md) — saved Preppers and products
 - **Shopping**
   - [Cart](../data-model/entities/cart.md) — for an account or a guest
   - [CartItem](../data-model/entities/cart-item.md) — a product and quantity in a cart
 - **Orders**
   - [Order](../data-model/entities/order.md) — the buyer's receipt
-  - [PrepperInvoice](../data-model/entities/prepper-invoice.md) — one prepper's share of an order
+  - [PrepperInvoice](../data-model/entities/prepper-invoice.md) — one Prepper's share of an order
   - [OrderLine](../data-model/entities/order-line.md) — name and price frozen at purchase
   - [PromoRedemption](../data-model/entities/promo-redemption.md) — one use of a Stripe promo code
 - **Payments and logs**

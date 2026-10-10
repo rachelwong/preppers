@@ -31,13 +31,13 @@ flowchart LR
 
 ## The docs
 
-| Doc | Where | Holds |
-| --- | --- | --- |
-| Notion Prepper page | Notion | Ideas, features, data, scope. **The source of truth.** |
-| Build plan | Claude doc + `docs/plan/` | Stages, rules, data model, status changes |
-| `CLAUDE.md` | repo root, `web`, `api`, `e2e` | Instructions for Claude: rules, commands, review checklist per app |
-| `README.md` | repo root, `web`, `api`, `e2e` | For people: what it is, how to run it, how it's laid out |
-| ADRs | `docs/adr/` | One file per big decision: problem, options, choice, consequences |
-| Feature docs | `docs/features/` | One file per stage, written when the stage starts: how to build it |
-| Entity docs | `docs/data-model/entities/` | One file per table: fields, keys, links, checks |
-| Scenario files | `e2e/features/` | Critical paths in plain English; they are tests and docs at once |
+| Doc                  | Where                          | Holds                                                              |
+| -------------------- | ------------------------------ | ------------------------------------------------------------------ |
+| Notion Prepper page | Notion                         | Ideas, features, data, scope. **The source of truth.**             |
+| Build plan           | Claude doc + `docs/plan/`      | Stages, rules, data model, status changes                          |
+| `CLAUDE.md`          | repo root, `web`, `api`, `e2e` | Instructions for Claude: rules, commands, review checklist per app |
+| `README.md`          | repo root, `web`, `api`, `e2e` | For people: what it is, how to run it, how it's laid out           |
+| ADRs                 | `docs/adr/`                    | One file per big decision: problem, options, choice, consequences  |
+| Feature docs         | `docs/features/`               | One file per stage, written when the stage starts: how to build it |
+| Entity docs          | `docs/data-model/entities/`    | One file per table: fields, keys, links, checks                    |
+| Scenario files       | `e2e/features/`                | Critical paths in plain English; they are tests and docs at once   |

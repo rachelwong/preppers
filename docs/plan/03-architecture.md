@@ -33,21 +33,21 @@ flowchart LR
 
 ## Tools
 
-| Area | Choice |
-| --- | --- |
-| Repo | One repo, docs at the root. `web`, `api` and `e2e` are self-contained, each with its own dependencies |
-| Web | React, Vite, TypeScript, TanStack Router, Query and Table, React Hook Form + zod |
-| Server | Node, Fastify, TypeScript |
-| Database | Supabase Postgres with Drizzle (migrations in git), PostGIS for distance |
-| Sign-in | Supabase Auth — email code and Google, called only by the server |
-| Files | Supabase Storage — public bucket for product photos, private bucket for licences |
-| Payments | Stripe test mode — Payment Element, Connect with Stripe-hosted onboarding |
-| Email | Resend, sent from an outbox table |
-| Maps | Google Maps JavaScript API (browser), Geocoding (server) |
-| Errors and logs | Sentry and pino |
-| Tests | Vitest, Testing Library, MSW, Fastify `inject`; Playwright + playwright-bdd with video in `e2e` (see [Testing](12-testing.md)) |
-| Hosting | Vercel — two projects from this repo (`web`, `api`); Supabase cloud |
-| Wireframes | Claude design or Miro, just before each screen stage |
+| Area            | Choice                                                                                                                         |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Repo            | One repo, docs at the root. `web`, `api` and `e2e` are self-contained, each with its own dependencies                          |
+| Web             | React, Vite, TypeScript, TanStack Router, Query and Table, React Hook Form + zod, Tailwind CSS + shadcn/ui                                             |
+| Server          | Node, Fastify, TypeScript                                                                                                      |
+| Database        | Supabase Postgres with Drizzle (migrations in git), PostGIS for distance                                                       |
+| Sign-in         | Supabase Auth — email code and Google, called only by the server                                                               |
+| Files           | Supabase Storage — public bucket for product photos, private bucket for licences                                               |
+| Payments        | Stripe test mode — Payment Element, Connect with Stripe-hosted onboarding                                                      |
+| Email           | Resend, sent from an outbox table                                                                                              |
+| Maps            | Google Maps JavaScript API (browser), Geocoding (server)                                                                       |
+| Errors and logs | Sentry and pino                                                                                                                |
+| Tests           | Vitest, Testing Library, MSW, Fastify `inject`; Playwright + playwright-bdd with video in `e2e` (see [Testing](12-testing.md)) |
+| Hosting         | Vercel — two projects from this repo (`web`, `api`); Supabase cloud                                                            |
+| Wireframes      | Claude design or Miro, just before each screen stage                                                                           |
 
 ## Repo layout
 
@@ -60,8 +60,8 @@ preppers/
 │   ├── features/        one file per phase: how each stage is built
 │   ├── data-model/      one file per table
 │   └── adr/             decision records
-├── web/                 React SPA → Vercel project "prepper-web"
-├── api/                 Fastify BFF → Vercel project "prepper-api"
+├── web/                 React SPA → Vercel project "preppers-web"
+├── api/                 Fastify BFF → Vercel project "preppers-api"
 └── e2e/                 Playwright critical-path tests with video
 ```
 
@@ -89,6 +89,7 @@ flowchart LR
 3. `pnpm gen:api` in `web` reads that file and writes `src/api/schema.d.ts`.
 4. CI regenerates both and fails if either is out of date, so a route change can't silently break the web app.
 5. Enums the web app shows (dietary tags, statuses) come through the generated types. Display labels live in the web app.
+
 - Root docs sit outside both apps, so they never deploy. Still never put secrets in them.
 
 ## Free tiers

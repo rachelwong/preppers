@@ -19,6 +19,6 @@ Option 2. Allowed moves live in `api/src/services/status.ts`. `transition()` che
 ## Consequences
 
 - Every status change has who, when and why.
-- No `deletedAt` columns; deleted or archived are statuses.
+- No `deletedAt` columns; nothing is deleted; `deactivated` and `archived` are statuses.
 - Reviews reject any direct status write.
 - Stages: 0.6 and every stage that changes a status.

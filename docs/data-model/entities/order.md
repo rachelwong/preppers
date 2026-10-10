@@ -2,18 +2,18 @@
 
 ## Fields
 
-| Field | Type | Key | Rules |
-| --- | --- | --- | --- |
-| id | uuid | PK |  |
-| buyerId | uuid | FK → [Account](account.md) |  |
-| cartId | uuid | FK → [Cart](cart.md), UK | one order per cart |
-| status | OrderStatus |  | pending_payment, paid, completed, cancelled |
-| subtotalCents | int |  |  |
-| discountCents | int |  |  |
-| totalCents | int |  | subtotal minus discount |
-| paidAt | timestamptz |  | set by the webhook |
-| createdAt | timestamptz |  |  |
-| updatedAt | timestamptz |  |  |
+| Field         | Type        | Key                        | Rules                                       |
+| ------------- | ----------- | -------------------------- | ------------------------------------------- |
+| id            | uuid        | PK                         |                                             |
+| buyerId       | uuid        | FK → [Account](account.md) |                                             |
+| cartId        | uuid        | FK → [Cart](cart.md), UK   | one order per cart                          |
+| status        | OrderStatus |                            | pending_payment, paid, completed, cancelled |
+| subtotalCents | int         |                            |                                             |
+| discountCents | int         |                            |                                             |
+| totalCents    | int         |                            | subtotal minus discount                     |
+| paidAt        | timestamptz |                            | set by the webhook                          |
+| createdAt     | timestamptz |                            |                                             |
+| updatedAt     | timestamptz |                            |                                             |
 
 ## Links
 

@@ -10,7 +10,7 @@ The server behind the web app. It handles sign-in, applies the business rules, a
 - Session cookies: the browser never sees Supabase tokens.
 - Every database query, through Drizzle.
 - Stripe payments, payouts and the webhook.
-- Google Geocoding, Resend email, file upload links.
+- Google Geocoding, Resend email, Supabase Storage upload links (photos and licence files).
 - `/api/jobs/*` routes that Supabase `pg_cron` calls on a schedule.
 
 ## Tools
@@ -30,8 +30,9 @@ This app has its own dependencies. Run everything from `api`.
 1. `pnpm install`
 2. Copy `.env.example` to `.env` and fill in the values.
 3. `pnpm db:reset` to start local Supabase and seed it.
-4. `pnpm dev`
-5. After changing a route, run `pnpm openapi` and commit `openapi.json`. The web app builds its types from it.
+4. `pnpm db:seed-admin` to make your own email an admin (see [Admin set-up](../docs/plan/13-admin-setup.md)).
+5. `pnpm dev`
+6. After changing a route, run `pnpm openapi` and commit `openapi.json`. The web app builds its types from it.
 
 ## Environment variables
 
@@ -47,6 +48,7 @@ This app has its own dependencies. Run everything from `api`.
 | `RESEND_API_KEY`            | Email sending                               |
 | `SENTRY_DSN`                | Sentry project for the API                  |
 | `JOBS_SECRET`               | Shared with `pg_cron` to call `/api/jobs/*` |
+| `SEED_ADMIN_EMAIL`          | Email that `pnpm db:seed-admin` makes admin (local use only) |
 
 All of these are secrets. They live in `.env` locally and in Vercel settings when deployed. Never commit them.
 
@@ -65,4 +67,4 @@ api/src/
 
 ## Deploying
 
-Vercel project `Preppers-api`, Root Directory `api`. Vercel runs the Fastify app as one function.
+Vercel project `preppers-api`, Root Directory `api`. Vercel runs the Fastify app as one function.

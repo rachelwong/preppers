@@ -5,17 +5,17 @@
 
 ## Problem
 
-One checkout can contain meals from several preppers. Each prepper must be paid their share.
+One checkout can contain meals from several Preppers. Each Prepper must be paid their share.
 
 ## Options
 
 1. One platform account and an internal payout ledger — simpler, but money tracking is ours to build.
-2. Stripe Connect destination charges — one prepper per payment only.
+2. Stripe Connect destination charges — one Prepper per payment only.
 3. Stripe Connect separate charges and transfers — one payment, many transfers.
 
 ## Decision
 
-Option 3, in test mode, with Stripe-hosted onboarding for preppers. Start from Stripe's Connect integration guide (the older Express account setup is legacy for new platforms).
+Option 3, in test mode, with Stripe-hosted onboarding for Preppers. Start from Stripe's Connect integration guide (the older Express account setup is legacy for new platforms).
 
 ## Consequences
 

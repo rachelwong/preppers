@@ -12,9 +12,14 @@ Preppers add a food safety step at sign-up. An admin approves it before they app
 - State and council
 - Licence or registration number
 - Licence expiry date (must be in the future)
-- Food Safety Supervisor name and certificate
-- Licence file (PDF, JPEG or PNG; stored in a private bucket)
+- Food Safety Supervisor name and certificate number (typed in; the certificate itself isn't uploaded)
+- Licence file (PDF, JPEG or PNG, up to 5 MB; the only upload in this step)
 - A tick-box declaring the details are true
+
+## Where files are kept
+
+- Supabase Storage. Product photos go in a public bucket; licence files go in a private one.
+- The browser uploads straight to Storage with a signed upload link from the API. It never sees the storage secret key.
 
 ## How it works, step by step
 
@@ -27,13 +32,13 @@ flowchart LR
   E -->|fix and resubmit| B
 ```
 
-1. The prepper fills in the step and moves to `pending_review` (stage 2.9).
+1. The Prepper fills in the step and moves to `pending_review` (stage 2.9).
 2. They can keep adding products while they wait.
-3. An admin checks the licence file in the queue (stage 7.5). This is manual; there's no national licence lookup.
-4. The admin approves or rejects with a reason. The prepper gets an email either way.
-5. Approved preppers show in browse and can be bought from (once Stripe payouts are on too).
+3. An admin checks the licence file in the queue (stage 7.5). They open it through a short-lived signed link; the private bucket is never public. This is manual; there's no national licence lookup.
+4. The admin approves or rejects with a reason. The Prepper gets an email either way.
+5. Approved Preppers show in browse and can be bought from (once Stripe payouts are on too).
 6. Later: an automatic reminder before the licence runs out, and an `expired` status after it does.
 
 ## For development
 
-- Seed preppers as `verified`, so phases 3–6 don't wait for stage 7.5.
+- Seed Prepper as `verified`, so phases 3–6 don't wait for stage 7.5.

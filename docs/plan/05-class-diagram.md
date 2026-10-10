@@ -6,13 +6,14 @@ classDiagram
     +uuid id
     +string email
     +string name
-    +boolean isAdmin
+    +AccountType accountType
     +AccountStatus status
     +DietaryTag[] dietaryTags
     +editProfile(details)
     +suspendAccount(reason)
     +reinstateAccount()
-    +deleteAccount()
+    +deactivateAccount()
+    +inviteAdmin(email, name)
   }
   class PrepperProfile {
     +uuid accountId
@@ -23,8 +24,8 @@ classDiagram
     +FoodSafetyStatus foodSafetyStatus
     +string stripeAccountId
     +submitForApproval(foodSafetyDetails)
-    +approvePrepper()
-    +rejectPrepper(reason)
+    +approveApplication()
+    +rejectApplication(reason)
     +setUpPayouts()
   }
   class Product {
@@ -95,8 +96,8 @@ classDiagram
     +uuid prepperId
     +InvoiceStatus status
     +int totalCents
-    +PrepperPayStatus prepperPayStatus
-    +markAsHandedOver()
+    +PrepperPayStatus PrepperPayStatus
+    +confirmHandover()
     +payPrepper()
   }
   class OrderLine {
@@ -141,33 +142,34 @@ classDiagram
 
 ## What each action does
 
-| Class | Action | Who does it | What happens |
-| --- | --- | --- | --- |
-| Account | `editProfile` | the person | Changes their name, suburb or dietary needs. |
-| Account | `suspendAccount` | admin | Blocks sign-in. Their meals leave browse. |
-| Account | `reinstateAccount` | admin | Lifts a suspension. |
-| Account | `deleteAccount` | the person or admin | Wipes personal details. Past orders stay for records. |
-| PrepperProfile | `submitForApproval` | prepper | Sends their food safety details and licence for an admin to check. |
-| PrepperProfile | `approvePrepper` | admin | The prepper can now sell, and appears in browse. |
-| PrepperProfile | `rejectPrepper` | admin | Sends them back with a reason, so they can fix and resubmit. |
-| PrepperProfile | `setUpPayouts` | prepper | Opens Stripe's hosted sign-up so they can be paid. |
-| Product | `addProduct` / `editProduct` | prepper | Creates or changes a meal. |
-| Product | `hideFromShop` / `showInShop` | prepper | Takes a meal off browse for a while, or puts it back. |
-| Product | `archiveProduct` | prepper | Retires a meal for good. Old receipts still show it. |
-| Product | `flagProduct` / `unflagProduct` | admin | Pulls a meal from browse with a reason, or clears the flag. |
-| Review | `leaveReview` | buyer | Rates a meal they paid for, once. |
-| Cart | `addItem` / `changeQuantity` / `removeItem` | buyer or guest | Edits what's in the cart. |
-| Cart | `enterPromoCode` | buyer | Checks the code with Stripe and shows the discount. See below. |
-| Cart | `removePromoCode` | buyer | Takes the code off. |
-| Cart | `startCheckout` | buyer | Locks the cart, creates the order and its invoices, then calls `startPayment`. |
-| Cart | `addGuestCartItems` | the server, on sign-in | Moves items from the guest cart into the account's cart (same meal → quantities add up). The guest cart becomes `merged`. |
-| Order | `markAsPaid` | the server, when Stripe confirms | The order and its invoices become `paid`. |
-| Order | `cancelOrder` | the server | Cancels an unpaid order: cart edited, payment failed for good, or 24 hours passed. |
-| Order | `markAsCompleted` | the server | Runs when the last invoice is handed over. |
-| PrepperInvoice | `markAsHandedOver` | prepper | Confirms the buyer has their meals (picked up or delivered). |
-| PrepperInvoice | `payPrepper` | the server | Sends the prepper's share from our Stripe balance to their Stripe account (a Stripe "transfer"). Retried if it fails. |
-| Payment | `startPayment` | the server, from `startCheckout` or a retry | Creates the Stripe PaymentIntent and gives the browser its client secret, so the Payment Element can take the card. |
-| Payment | `updateFromStripe` | the webhook | Stripe tells us the result (succeeded, declined, needs 3DS). We copy the status and, on success, call `markAsPaid`. |
+| Class           | Action                                      | Who does it                                 | What happens                                                                                                              |
+| --------------- | ------------------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Account         | `editProfile`                               | the person                                  | Changes their name, suburb or dietary needs.                                                                              |
+| Account         | `suspendAccount`                            | admin                                       | Blocks sign-in. Their meals leave browse. This is also how an admin is removed. Not allowed on yourself or the last active admin. |
+| Account         | `reinstateAccount`                          | admin                                       | Lifts a suspension.                                                                                                       |
+| Account         | `deactivateAccount`                         | the person                                  | Takes the account out of use and their meals off browse. Details and orders are kept. Signing in again reactivates it. |
+| Account         | `inviteAdmin`                               | admin                                       | Creates an admin account for an email that has no account yet. They then sign in with the email code. |
+| PrepperProfile | `submitForApproval`                         | Prepper                                     | Sends their food safety details and licence for an admin to check.                                                        |
+| PrepperProfile | `approveApplication`                           | admin                                       | The Prepper can now sell, and appears in browse.                                                                         |
+| PrepperProfile  | `rejectApplication`                         | admin                                       | Turns down an application with a reason (`rejected`) and emails the Prepper, who can fix the details and send it again. |
+| PrepperProfile | `setUpPayouts`                              | Prepper                                     | Opens Stripe's hosted sign-up so they can be paid.                                                                        |
+| Product         | `addProduct` / `editProduct`                | Prepper                                     | Creates or changes a meal.                                                                                                |
+| Product         | `hideFromShop` / `showInShop`               | Prepper                                     | Takes a meal off browse for a while, or puts it back.                                                                     |
+| Product         | `archiveProduct`                            | Prepper                                     | Retires a meal for good. Old receipts still show it.                                                                      |
+| Product         | `flagProduct` / `unflagProduct`             | admin                                       | Pulls a meal from browse with a reason, or clears the flag.                                                               |
+| Review          | `leaveReview`                               | buyer                                       | Rates a meal from an order line whose invoice is `paid` or `handed_over`. One review per order line.                                                                                         |
+| Cart            | `addItem` / `changeQuantity` / `removeItem` | buyer or guest                              | Edits what's in the cart.                                                                                                 |
+| Cart            | `enterPromoCode`                            | buyer                                       | Checks the code with Stripe and shows the discount. See below.                                                            |
+| Cart            | `removePromoCode`                           | buyer                                       | Takes the code off.                                                                                                       |
+| Cart            | `startCheckout`                             | buyer                                       | Locks the cart, creates the order and its invoices, then calls `startPayment`.                                            |
+| Cart            | `addGuestCartItems`                         | the server, on sign-in                      | Moves items from the guest cart into the account's cart (same meal → quantities add up). The guest cart becomes `merged`. |
+| Order           | `markAsPaid`                                | the server, when Stripe confirms            | The order and its invoices become `paid`.                                                                                 |
+| Order           | `cancelOrder`                               | the server                                  | Cancels an unpaid order: cart edited, payment failed for good, or 24 hours passed.                                        |
+| Order           | `markAsCompleted`                           | the server                                  | Runs when the last invoice is handed over.                                                                                |
+| PrepperInvoice  | `confirmHandover`                           | Prepper                                     | The Prepper confirms the buyer has received their meals (picked up or delivered). Only possible once the invoice is `paid`. No money moves here; the payout is `payPrepper`. |
+| PrepperInvoice | `payPrepper`                               | the server                                  | Sends the Prepper's share from our Stripe balance to their Stripe account (a Stripe "transfer"). Retried if it fails.    |
+| Payment         | `startPayment`                              | the server, from `startCheckout` or a retry | Creates the Stripe PaymentIntent and gives the browser its client secret, so the Payment Element can take the card.       |
+| Payment         | `updateFromStripe`                          | the webhook                                 | Stripe tells us the result (succeeded, declined, needs 3DS). We copy the status and, on success, call `markAsPaid`.       |
 
 ## Promo codes live in Stripe
 
@@ -200,47 +202,49 @@ sequenceDiagram
 
 Values are stored in the database as written.
 
-| Enum | Value | Means |
-| --- | --- | --- |
-| AccountStatus | `active` | Can sign in and use the site. |
-|  | `suspended` | Blocked by an admin. Can be reinstated. |
-|  | `deleted` | Personal details wiped. Can't come back. |
-| FoodSafetyStatus | `draft` | Prepper is still filling in their details. |
-|  | `pending_review` | Sent for approval; waiting on an admin. |
-|  | `verified` | Approved. Can sell. |
-|  | `rejected` | Sent back with a reason. Can resubmit. |
-|  | `suspended` | Selling paused by an admin. |
-|  | `expired` | Their licence date has passed. Must resubmit. |
-| ProductStatus | `active` | Shows in browse and can be bought. |
-|  | `hidden` | Taken off browse by the prepper. |
-|  | `flagged` | Taken off browse by an admin. |
-|  | `archived` | Retired for good. |
-| CartStatus | `active` | Being filled. |
-|  | `checking_out` | Locked while the buyer pays. |
-|  | `ordered` | Paid; it became an order. |
-|  | `merged` | A guest cart moved into an account cart on sign-in. |
-|  | `abandoned` | A guest cart untouched for 30 days; cleared by a job. |
-| OrderStatus | `pending_payment` | Created; waiting for Stripe to confirm payment. |
-|  | `paid` | Stripe confirmed payment. |
-|  | `completed` | Every prepper has handed over their meals. |
-|  | `cancelled` | Never paid. |
-| InvoiceStatus | `pending_payment` | Part of an order that isn't paid yet. |
-|  | `paid` | Paid; the prepper should prepare the meals. |
-|  | `handed_over` | The prepper confirmed the buyer has the meals. |
-|  | `cancelled` | The order was cancelled. |
-| PrepperPayStatus | `pending` | The prepper's share hasn't been sent yet. |
-|  | `sent` | Sent to the prepper's Stripe account. |
-|  | `failed` | Sending failed. A job retries it. |
-| PaymentStatus | `requires_payment_method` | Waiting for card details, or the card was declined. |
-| (Stripe's own names) | `requires_action` | The bank wants an extra check (3DS). |
-|  | `processing` | Stripe is working on it. |
-|  | `succeeded` | Money taken. |
-|  | `canceled` | Payment stopped. Stripe spells it with one "l". |
-| DiscountType | `percent_off` | e.g. 10% off the subtotal. |
-| (read from Stripe, not stored) | `amount_off` | e.g. $5.00 off the subtotal. |
-| ActorType | `account` | A person made the change. |
-|  | `system` | A scheduled job made the change. |
-|  | `stripe` | A Stripe webhook made the change. |
+| Enum                           | Value                     | Means                                                 |
+| ------------------------------ | ------------------------- | ----------------------------------------------------- |
+| AccountType                    | `buyer`                   | Can buy. Can also sell once they have a Prepper profile. |
+|                                | `admin`                   | Runs the site. Can't buy, sell or review.             |
+| AccountStatus                  | `active`                  | Can sign in and use the site.                         |
+|                                | `suspended`               | Blocked by an admin. Can be reinstated.               |
+|                                | `deactivated`             | Taken out of use. Details kept; sign in to reactivate.|
+| FoodSafetyStatus               | `draft`                   | Prepper is still filling in their details.           |
+|                                | `pending_review`          | Sent for approval; waiting on an admin.               |
+|                                | `verified`                | Approved. Can sell.                                   |
+|                                | `rejected`                | Sent back with a reason. Can resubmit.                |
+|                                | `suspended`               | Selling paused by an admin.                           |
+|                                | `expired`                 | Their licence date has passed. Must resubmit.         |
+| ProductStatus                  | `active`                  | Shows in browse and can be bought.                    |
+|                                | `hidden`                  | Taken off browse by the Prepper.                     |
+|                                | `flagged`                 | Taken off browse by an admin.                         |
+|                                | `archived`                | Retired for good.                                     |
+| CartStatus                     | `active`                  | Being filled.                                         |
+|                                | `checking_out`            | Locked while the buyer pays.                          |
+|                                | `ordered`                 | Paid; it became an order.                             |
+|                                | `merged`                  | A guest cart moved into an account cart on sign-in.   |
+|                                | `abandoned`               | A guest cart untouched for 1 hour; cleared by a job. |
+| OrderStatus                    | `pending_payment`         | Created; waiting for Stripe to confirm payment.       |
+|                                | `paid`                    | Stripe confirmed payment.                             |
+|                                | `completed`               | Every Prepper has handed over their meals.           |
+|                                | `cancelled`               | Never paid.                                           |
+| InvoiceStatus                  | `pending_payment`         | Part of an order that isn't paid yet.                 |
+|                                | `paid`                    | Paid; the Prepper should prepare the meals.          |
+|                                | `handed_over`             | The Prepper confirmed the buyer has the meals.       |
+|                                | `cancelled`               | The order was cancelled.                              |
+| PrepperPayStatus              | `pending`                 | The Prepper's share hasn't been sent yet.            |
+|                                | `sent`                    | Sent to the Prepper's Stripe account.                |
+|                                | `failed`                  | Sending failed. A job retries it.                     |
+| PaymentStatus                  | `requires_payment_method` | Waiting for card details, or the card was declined.   |
+| (Stripe's own names)           | `requires_action`         | The bank wants an extra check (3DS).                  |
+|                                | `processing`              | Stripe is working on it.                              |
+|                                | `succeeded`               | Money taken.                                          |
+|                                | `canceled`                | Payment stopped. Stripe spells it with one "l".       |
+| DiscountType                   | `percent_off`             | e.g. 10% off the subtotal.                            |
+| (read from Stripe, not stored) | `amount_off`              | e.g. $5.00 off the subtotal.                          |
+| ActorType                      | `account`                 | A person made the change.                             |
+|                                | `system`                  | A scheduled job made the change.                      |
+|                                | `stripe`                  | A Stripe webhook made the change.                     |
 
 Status moves are drawn in [Status changes](07-status-changes.md).
 

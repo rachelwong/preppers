@@ -5,7 +5,7 @@
 
 ## Problem
 
-Prepper needs auth, payments and secret keys handled on a server. The trial's goals include backend practice and a clear BFF boundary.
+Preppers needs auth, payments and secret keys handled on a server. The trial's goals include backend practice and a clear BFF boundary.
 
 ## Options
 

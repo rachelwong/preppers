@@ -11,7 +11,7 @@
 | promoCode | text |  | optional; the code the buyer typed |
 | stripePromotionCodeId | text |  | optional; Stripe's ID for that code |
 | createdAt | timestamptz |  |  |
-| updatedAt | timestamptz |  |  |
+| updatedAt | timestamptz |  | changes on every cart edit; guest carts untouched for 1 hour are abandoned from this |
 
 ## Links
 
