@@ -1,20 +1,26 @@
-# Prepper
+# Preppers
 
 Home-cooked meal prep, made by people near you.
 
-Prepper is a marketplace for home cooks ("preppers") to sell meal prep to busy people nearby. Think Airtasker, but just for meal prep. It's a hobby project, built in small stages to learn full-stack development.
+Preppers is a marketplace for home cooks ("Prepperss") to sell meal prep to busy people nearby. Think Airtasker, but just for meal prep. It's a hobby project, built in small stages to learn full-stack development.
+
+> "Prepping in Australia is distinctive: less about guns and militias, more about food, water and community. This difference matters, because the threats most Australians imagine are not urban shootouts or civil war. Increasingly, they imagine frequent floods, bushfires, heatwaves and supply-chain breakdowns."
+
+> — Tom Doig and Jordan McKenzie, [What is prepping – and how does it work in Australia?](https://theconversation.com/what-is-prepping-and-how-does-it-work-in-australia-264481), The Conversation
+
+[![Watch the Preppers video on YouTube](https://img.youtube.com/vi/2-2KPErgzWs/maxresdefault.jpg)](https://www.youtube.com/watch?v=2-2KPErgzWs)
 
 ## What it does
 
 **For buyers**
 
-- Browse local preppers by cuisine, dietary needs and distance.
-- See which preppers deliver to you.
-- Fill one cart with meals from several preppers and pay once.
-- Get one receipt, grouped by prepper.
-- Review meals you've bought and save favourite preppers and meals.
+- Browse local Prepperss by cuisine, dietary needs and distance.
+- See which Prepperss deliver to you.
+- Fill one cart with meals from several Prepperss and pay once.
+- Get one receipt, grouped by Preppers.
+- Review meals you've bought and save favourite Prepperss and meals.
 
-**For preppers**
+**For Prepperss**
 
 - Sign up, add your kitchen location and cuisines, and choose whether you deliver.
 - Pass a food safety check before you can sell.
@@ -23,7 +29,7 @@ Prepper is a marketplace for home cooks ("preppers") to sell meal prep to busy p
 
 **For admins**
 
-- Manage accounts, review prepper licences and flag products.
+- Manage accounts, review Preppers licences and flag products.
 - See all purchases and how often each promo code is used. Promo codes themselves are set up in Stripe.
 
 ## How it's built
@@ -41,17 +47,17 @@ flowchart LR
 2. The API checks who you are, applies the business rules and talks to the database and outside services.
 3. Secret keys never reach the browser.
 
-| Part | Tools |
-| --- | --- |
-| Web app (`web`) | React, Vite, TypeScript, TanStack Router, Query and Table |
-| API (`api`) | Node, Fastify, TypeScript, Drizzle |
-| End-to-end tests (`e2e`) | Playwright with plain-English scenarios and video |
-| Database and sign-in | Supabase (Postgres, Auth, Storage) |
-| Payments | Stripe (test mode) with Connect payouts |
-| Maps | Google Maps and Geocoding |
-| Email | Resend |
-| Errors | Sentry |
-| Hosting | Vercel |
+| Part                     | Tools                                                     |
+| ------------------------ | --------------------------------------------------------- |
+| Web app (`web`)          | React, Vite, TypeScript, TanStack Router, Query and Table |
+| API (`api`)              | Node, Fastify, TypeScript, Drizzle                        |
+| End-to-end tests (`e2e`) | Playwright with plain-English scenarios and video         |
+| Database and sign-in     | Supabase (Postgres, Auth, Storage)                        |
+| Payments                 | Stripe (test mode) with Connect payouts                   |
+| Maps                     | Google Maps and Geocoding                                 |
+| Email                    | Resend                                                    |
+| Errors                   | Sentry                                                    |
+| Hosting                  | Vercel                                                    |
 
 ## Getting started
 
@@ -75,7 +81,7 @@ Each app's own README has the details.
 ## Project layout
 
 ```text
-preppers/
+Prepperss/
 ├── web/              the React app (see web/README.md)
 ├── api/              the API server (see api/README.md)
 ├── e2e/              end-to-end tests with video

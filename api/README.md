@@ -1,4 +1,4 @@
-# Prepper API
+# Preppers API
 
 The server behind the web app. It handles sign-in, applies the business rules, and talks to the database and outside services.
 
@@ -35,18 +35,18 @@ This app has its own dependencies. Run everything from `api`.
 
 ## Environment variables
 
-| Name | What it is |
-| --- | --- |
-| `DATABASE_URL` | Supabase Postgres connection (pooler) |
-| `SUPABASE_URL` | Supabase project URL |
-| `SUPABASE_SERVICE_ROLE_KEY` | Server-only key |
-| `SESSION_SECRET` | Signs the session cookie |
-| `STRIPE_SECRET_KEY` | Stripe test secret key |
-| `STRIPE_WEBHOOK_SECRET` | Checks webhook signatures |
-| `GOOGLE_GEOCODING_KEY` | Maps key locked to Geocoding |
-| `RESEND_API_KEY` | Email sending |
-| `SENTRY_DSN` | Sentry project for the API |
-| `JOBS_SECRET` | Shared with `pg_cron` to call `/api/jobs/*` |
+| Name                        | What it is                                  |
+| --------------------------- | ------------------------------------------- |
+| `DATABASE_URL`              | Supabase Postgres connection (pooler)       |
+| `SUPABASE_URL`              | Supabase project URL                        |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-only key                             |
+| `SESSION_SECRET`            | Signs the session cookie                    |
+| `STRIPE_SECRET_KEY`         | Stripe test secret key                      |
+| `STRIPE_WEBHOOK_SECRET`     | Checks webhook signatures                   |
+| `GOOGLE_GEOCODING_KEY`      | Maps key locked to Geocoding                |
+| `RESEND_API_KEY`            | Email sending                               |
+| `SENTRY_DSN`                | Sentry project for the API                  |
+| `JOBS_SECRET`               | Shared with `pg_cron` to call `/api/jobs/*` |
 
 All of these are secrets. They live in `.env` locally and in Vercel settings when deployed. Never commit them.
 
@@ -65,4 +65,4 @@ api/src/
 
 ## Deploying
 
-Vercel project `prepper-api`, Root Directory `api`. Vercel runs the Fastify app as one function.
+Vercel project `Preppers-api`, Root Directory `api`. Vercel runs the Fastify app as one function.

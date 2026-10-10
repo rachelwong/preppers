@@ -1,4 +1,4 @@
-# Prepper end-to-end tests
+# Preppers end-to-end tests
 
 Tests that click through the real app in a browser, written as plain-English scenarios and recorded as video.
 
