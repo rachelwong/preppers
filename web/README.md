@@ -1,6 +1,6 @@
 # Preppers web app
 
-The React app that buyers, Prepperss and admins use in the browser.
+The React app that buyers, Preppers and admins use in the browser.
 
 > Commands and setup are filled in at stage 0.4.
 

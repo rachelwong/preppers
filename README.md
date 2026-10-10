@@ -2,7 +2,7 @@
 
 Home-cooked meal prep, made by people near you.
 
-Preppers is a marketplace for home cooks ("Prepperss") to sell meal prep to busy people nearby. Think Airtasker, but just for meal prep. It's a hobby project, built in small stages to learn full-stack development.
+Preppers is a marketplace for home cooks ("Preppers") to sell meal prep to busy people nearby. Think Airtasker, but just for meal prep. It's a hobby project, built in small stages to learn full-stack development.
 
 > "Prepping in Australia is distinctive: less about guns and militias, more about food, water and community. This difference matters, because the threats most Australians imagine are not urban shootouts or civil war. Increasingly, they imagine frequent floods, bushfires, heatwaves and supply-chain breakdowns."
 
@@ -14,13 +14,13 @@ Preppers is a marketplace for home cooks ("Prepperss") to sell meal prep to busy
 
 **For buyers**
 
-- Browse local Prepperss by cuisine, dietary needs and distance.
-- See which Prepperss deliver to you.
-- Fill one cart with meals from several Prepperss and pay once.
+- Browse local Preppers by cuisine, dietary needs and distance.
+- See which Preppers deliver to you.
+- Fill one cart with meals from several Preppers and pay once.
 - Get one receipt, grouped by Preppers.
-- Review meals you've bought and save favourite Prepperss and meals.
+- Review meals you've bought and save favourite Preppers and meals.
 
-**For Prepperss**
+**For Preppers**
 
 - Sign up, add your kitchen location and cuisines, and choose whether you deliver.
 - Pass a food safety check before you can sell.
@@ -81,7 +81,7 @@ Each app's own README has the details.
 ## Project layout
 
 ```text
-Prepperss/
+Preppers/
 ├── web/              the React app (see web/README.md)
 ├── api/              the API server (see api/README.md)
 ├── e2e/              end-to-end tests with video
