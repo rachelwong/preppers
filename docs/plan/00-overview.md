@@ -4,7 +4,7 @@
 - **Who builds:** Rachel writes the code. Claude plans, writes each stage's feature doc, reviews, and keeps the docs up to date.
 - **Who the docs are for:** Rachel, to write code from. They are instructions for a person, not prompts for Claude to generate code.
 - **Source of truth:** the [Notion Preppers page](https://app.notion.com/p/rachelwong/Preppers-3e3375d34b348008ac5dc6f1bc3dc7c0).
-- **Size:** 9 phases, 51 small stages, one pull request each.
+- **Size:** 9 phases, 54 small stages, one pull request each.
 
 ## Phases, in order
 
@@ -13,11 +13,11 @@
 | 0   | Foundations  | repo, API basics, database, web shell, error tracking, status changes, docs setup          |
 | 1   | Sign-in      | email code, sessions, sign-in screens, guards, Google, staging site, critical path harness |
 | 2   | Prepper      | profile, sign-up form, geocoding, products, images, food safety step                       |
-| 3   | Browsing     | Preppers list, filters, distance search, Prepper page with map                            |
+| 3   | Browsing     | Preppers list, filters, distance search, Prepper page with map, meals list, Home and Meals pages |
 | 4   | Cart         | guest cart, cart UI, merge on sign-in                                                      |
 | 5   | Checkout     | orders, Stripe payments and payouts, webhook, receipts, invoices, promo codes              |
 | 6   | Buyer extras | profile, reviews, favourites                                                               |
-| 7   | Admin        | accounts, purchases, flagging, verification queue, promo code report                       |
+| 7   | Admin        | buyers and Preppers lists, purchases, meals and flagging, verification queue, promo code report, detail views |
 | 8   | Hardening    | scheduled jobs, nightly release suite, rate limits and alerts                              |
 
 Scope for every stage is in [Stages](08-stages.md). The full instructions for a stage are written when you reach it, in [`../features/`](../features/).
@@ -36,4 +36,5 @@ Scope for every stage is in [Stages](08-stages.md). The full instructions for a 
 10. [Not in the first version](10-out-of-scope.md)
 11. [Decision log](11-decision-log.md)
 12. [Testing](12-testing.md) — critical paths with video
-13. [Admin set-up](13-admin-setup.md) — first admin, adding and removing admins
+13. [Admin set-up](13-admin-setup.md) — first admin, adding admins
+14. [Screens](14-screens.md) — wireframes for every screen

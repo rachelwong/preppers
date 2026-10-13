@@ -79,10 +79,8 @@ A Prepper sells only while verified.
 stateDiagram-v2
   direction LR
   [*] --> active: first sign-in
-  active --> suspended: admin
-  suspended --> active: admin
-  active --> deactivated: owner
-  deactivated --> active: owner signs in again
+  active --> deactivated: admin (buyer and Prepper accounts only)
+  deactivated --> active: admin
   note right of active: Account
 ```
 
@@ -94,8 +92,6 @@ stateDiagram-v2
   pending_review --> verified: admin approves
   pending_review --> rejected: admin rejects (reason)
   rejected --> pending_review: resubmit
-  verified --> suspended: admin
-  suspended --> verified: admin
   verified --> expired: licence lapses (later)
   expired --> pending_review: new licence submitted
   note right of verified: PrepperProfile.foodSafetyStatus
@@ -104,9 +100,9 @@ stateDiagram-v2
 ### Account, step by step
 
 1. Created as `active` the first time someone signs in.
-2. An admin can suspend it and later reinstate it. Suspended accounts can't sign in. This is also how an admin is removed. An admin can't suspend themselves or the last active admin.
-3. The owner can deactivate it. Details and orders are kept. Signing in again reactivates it.
-4. Nothing is deleted. Accounts can stay deactivated for as long as they like.
+2. An admin can deactivate a buyer or Prepper account and later reactivate it. Deactivated accounts can't sign in. Details and orders are kept.
+3. Owners can't deactivate their own account. Admin accounts can't be deactivated.
+4. Nothing is deleted. Accounts can stay deactivated for as long as needed.
 
 ### Prepper check, step by step
 
@@ -115,7 +111,7 @@ stateDiagram-v2
 3. An admin approves (`verified`) or rejects with a reason (`rejected`).
 4. A rejected Prepper can fix and resubmit.
 5. Only `verified` Preppers show in browse and can be bought from.
-6. An admin can suspend a verified Prepper. Later, licences that run out will move to `expired`.
+6. To stop a verified Prepper selling, an admin deactivates their account. Later, licences that run out will move to `expired`.
 
 ## Products
 
@@ -144,11 +140,9 @@ stateDiagram-v2
 
 | Entity          | From → To                                  | Actor                              |
 | --------------- | ------------------------------------------ | ---------------------------------- |
-| Account         | active ↔ suspended                         | admin                              |
-| Account         | active ↔ deactivated                       | owner                              |
+| Account         | active ↔ deactivated (not admin accounts)  | admin                              |
 | PrepperProfile | draft, rejected, expired → pending_review  | Prepper                            |
 | PrepperProfile | pending_review → verified, rejected        | admin                              |
-| PrepperProfile | verified ↔ suspended                       | admin                              |
 | PrepperProfile | verified → expired                         | system                             |
 | Product         | active ↔ hidden                            | Prepper                            |
 | Product         | active, hidden → flagged; flagged → active | admin                              |

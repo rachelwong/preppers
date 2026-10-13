@@ -17,7 +17,7 @@ Questions raised during planning and how they were answered. Each answer is alre
 | App structure        | `web`, `api` and `e2e` are self-contained with their own dependencies. No shared package. The API's OpenAPI spec is the contract. Root holds docs only.      | [0009](../adr/0009-self-contained-apps.md)               |
 | Testing              | Critical paths as Playwright + playwright-bdd scenarios with video, in `e2e`.                                                                                | [0010](../adr/0010-playwright-bdd-critical-paths.md)     |
 | Delivery             | A yes/no plus a radius. No delivery fees.                                                                                                                    | —                                                        |
-| Promo codes          | In the first version. Made and turned off in the Stripe Dashboard; the API checks the typed code with Stripe, works out the discount and counts uses itself. | [0011](../adr/0011-promo-codes-in-stripe.md)             |
+| Promo codes          | In the first version. Made and turned off in the Stripe Dashboard; the API checks the typed code with Stripe, works out the discount and counts uses itself. The platform pays for the discount; Preppers are paid their full invoice subtotal. | [0011](../adr/0011-promo-codes-in-stripe.md)             |
 | Product images       | In the first version.                                                                                                                                        | —                                                        |
 | Food safety          | Extra sign-up step plus admin approval before a Prepper can sell.                                                                                           | —                                                        |
 | Nothing deleted      | Accounts are deactivated; products are hidden or archived. Nothing is hard-deleted.                                                                          | [0006](../adr/0006-status-transitions-and-event-log.md) |
@@ -26,5 +26,4 @@ Questions raised during planning and how they were answered. Each answer is alre
 
 ## Still open
 
-- [ ] **Who pays for promo discounts?** Suggested: the platform, so Preppers always get their full invoice amount. Needed before stage 5.9.
 - [ ] **Map line in Notion:** "google map visualisation of …" is cut off. Suggested: "of the Prepper's suburb on the Prepper page".

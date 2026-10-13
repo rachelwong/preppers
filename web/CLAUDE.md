@@ -32,4 +32,4 @@ Read the root `CLAUDE.md` first. This file adds rules for the web app only.
 
 ## Before a UI stage
 
-- Ask whether a wireframe exists (Claude design or Miro). If not, suggest making one before the feature doc.
+- Start from the screen's wireframe in `docs/plan/14-screens.md`. If the screen isn't there, suggest adding one (Claude design or Miro) before the feature doc.

@@ -1,4 +1,4 @@
-# CLAUDE.md — Prepper
+# CLAUDE.md — Preppers
 
 Read this first in every session on this repo.
 
@@ -16,8 +16,8 @@ Read this first in every session on this repo.
 
 ## Source of truth
 
-1. [Notion Prepper page](https://app.notion.com/p/rachelwong/Prepper-3e3375d34b348008ac5dc6f1bc3dc7c0) — ideas, features, scope.
-2. `docs/plan/` — build plan (mirrors the Claude doc "Prepper — Staged Build Plan").
+1. [Notion Preppers page](https://app.notion.com/p/rachelwong/Preppers-3e3375d34b348008ac5dc6f1bc3dc7c0) — ideas, features, scope.
+2. `docs/plan/` — build plan (mirrors the Claude doc "Preppers — Staged Build Plan").
 3. `docs/adr/` — decisions. `docs/data-model/entities/` — tables. `docs/features/` — per-stage instructions.
 
 If code and docs disagree, raise it; don't silently pick one.
@@ -61,7 +61,7 @@ Report findings as a numbered list: file, line, problem, why it matters, suggest
 
 ## Stack (see docs/plan/03-architecture.md)
 
-- Two self-contained apps, each with its own `package.json`, lockfile and dependencies: `web` (React, Vite, TanStack) and `api` (Fastify BFF). No shared package. The repo root holds docs only.
+- Two self-contained apps, each with its own `package.json`, lockfile and dependencies: `web` (React, Vite, TanStack, Tailwind CSS with shadcn/ui) and `api` (Fastify BFF). No shared package. The repo root holds docs only.
 - The API's OpenAPI spec is the contract between them. The web app generates its API types from it.
 - `e2e` holds the Playwright critical-path tests, also self-contained.
 - Supabase Postgres via Drizzle; Supabase Auth, Storage, `pg_cron`; PostGIS.
@@ -72,7 +72,7 @@ Report findings as a numbered list: file, line, problem, why it matters, suggest
 
 Filled in during stage 0.1. Run each inside its own app folder. Expected:
 
-- `api`: `pnpm install`, `pnpm dev`, `pnpm test`, `pnpm db:reset`, `pnpm db:generate`, `pnpm db:migrate`, `pnpm openapi` (writes `openapi.json`)
+- `api`: `pnpm install`, `pnpm dev`, `pnpm test`, `pnpm db:reset`, `pnpm db:generate`, `pnpm db:migrate`, `pnpm db:seed-admin` (makes the first admin from `SEED_ADMIN_EMAIL`), `pnpm openapi` (writes `openapi.json`)
 - `web`: `pnpm install`, `pnpm dev`, `pnpm test`, `pnpm gen:api` (types from the API's `openapi.json`)
 - `e2e`: `pnpm install`, `pnpm test` (needs web and api running)
 

@@ -15,6 +15,7 @@
 | imageUrl    | text          |                                             | optional                          |
 | status      | ProductStatus |                                             | active, hidden, flagged, archived |
 | flagReason  | text          |                                             | set by admin                      |
+| featuredAt  | timestamptz   |                                             | set by admin; empty = not featured |
 | createdAt   | timestamptz   |                                             |                                   |
 | updatedAt   | timestamptz   |                                             |                                   |
 
@@ -30,5 +31,5 @@ flowchart LR
 
 - **Does:** shows in browse and on the Prepper page; goes into carts and orders.
 - **Checks:** only the owner edits; only admins flag or unflag; archived products are never shown or sold; never hard-deleted.
-- **Built in:** 2.4–2.8, 7.4
+- **Built in:** 2.4–2.8, 3.6, 7.4
 - [Back to data model](../../plan/06-data-model.md)

@@ -7,10 +7,11 @@ The server enforces every rule below. Numbers in brackets are the stages that bu
 - One account per email address. There are two account types: `buyer` and `admin`. (0.3)
 - Anyone with a buyer account can buy. Selling needs a Prepper profile. (2.1)
 - Admin is its own type, not a buyer or a Prepper. An admin has no cart, orders, reviews, favourites or Prepper profile, and only uses the admin area. (1.4, 7.2)
-- An admin can't suspend or deactivate themselves. The last active admin can't be suspended. (7.2)
-- Suspended accounts can't sign in. A deactivated account keeps its details and orders; signing in again reactivates it. Unused accounts are left alone. (1.2, 7.2)
+- Only an admin can deactivate a buyer or Prepper account, with a reason. Owners can't deactivate their own account. (7.2)
+- A deactivated account can't sign in and keeps its details and orders. Only an admin can reactivate it. Unused accounts are left alone. (1.2, 7.2)
+- Admin accounts can't be deactivated, by themselves or by other admins, and can't be removed. (7.2)
 - Nothing is ever deleted. Accounts are deactivated; products are hidden or archived. (2.5, 7.2)
-- How the first admin is made, and how admins are added and removed: [Admin set-up](13-admin-setup.md).
+- How the first admin is made, and how admins are added: [Admin set-up](13-admin-setup.md).
 
 **Preppers**
 
@@ -25,6 +26,7 @@ The server enforces every rule below. Numbers in brackets are the stages that bu
 - Prices are whole cents in AUD, more than 0. (2.4)
 - A Prepper can show, hide or archive their own products. (2.5)
 - Only admins can flag or unflag a product. Flagging takes it off browse, needs a reason and emails the Prepper. While it is flagged, the Prepper can't show or archive it. Unflagging makes it `active` again. (7.4)
+- Only admins feature meals. Home shows the 4 most recently featured active meals. (3.6, 7.4)
 - Products are never deleted. A product that has been ordered still shows on old receipts, whatever its status. (2.5)
 - Photos are jpeg, png or webp, up to 2 MB. (2.7)
 
@@ -43,7 +45,7 @@ The server enforces every rule below. Numbers in brackets are the stages that bu
 - Names and prices are frozen on each order line at checkout. (5.1)
 - Only Stripe's webhook can mark an order paid. (5.5)
 - Editing the cart cancels a pending order. Unpaid orders are cancelled after 24 hours. (5.1, 8.1)
-- Each Prepper is paid their invoice total after payment; failed payouts are retried. (5.5, 8.1)
+- Each Prepper is paid their invoice subtotal after payment, whatever discount was used; failed payouts are retried. (5.5, 8.1)
 - No refunds in the first version.
 
 **Promo codes**
@@ -53,7 +55,8 @@ The server enforces every rule below. Numbers in brackets are the stages that bu
 - Our own count of uses must be under the code's limit. Stripe doesn't count uses for our payments. (5.8, 5.9)
 - The discount never goes above the subtotal. (5.8)
 - The discount is split across invoices by their share of the subtotal; the shares add up exactly. (5.9)
-- Who pays for the discount is still open (see the [decision log](11-decision-log.md)).
+- The platform pays for the discount. The buyer pays the lower order total, and each Prepper is still paid their full invoice subtotal. (5.9)
+- A code that fails any check is refused with a reason code, and the web app shows the message under the field. Nothing is applied. (5.8)
 
 **Handing over meals**
 

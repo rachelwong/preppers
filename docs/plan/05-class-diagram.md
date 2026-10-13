@@ -10,9 +10,8 @@ classDiagram
     +AccountStatus status
     +DietaryTag[] dietaryTags
     +editProfile(details)
-    +suspendAccount(reason)
-    +reinstateAccount()
-    +deactivateAccount()
+    +deactivateAccount(reason)
+    +reactivateAccount()
     +inviteAdmin(email, name)
   }
   class PrepperProfile {
@@ -36,6 +35,7 @@ classDiagram
     +DietaryTag[] dietaryTags
     +int priceCents
     +ProductStatus status
+    +timestamp featuredAt
     +addProduct(details)
     +editProduct(details)
     +hideFromShop()
@@ -43,6 +43,8 @@ classDiagram
     +archiveProduct()
     +flagProduct(reason)
     +unflagProduct()
+    +featureProduct()
+    +unfeatureProduct()
   }
   class Review {
     +uuid id
@@ -145,9 +147,8 @@ classDiagram
 | Class           | Action                                      | Who does it                                 | What happens                                                                                                              |
 | --------------- | ------------------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | Account         | `editProfile`                               | the person                                  | Changes their name, suburb or dietary needs.                                                                              |
-| Account         | `suspendAccount`                            | admin                                       | Blocks sign-in. Their meals leave browse. This is also how an admin is removed. Not allowed on yourself or the last active admin. |
-| Account         | `reinstateAccount`                          | admin                                       | Lifts a suspension.                                                                                                       |
-| Account         | `deactivateAccount`                         | the person                                  | Takes the account out of use and their meals off browse. Details and orders are kept. Signing in again reactivates it. |
+| Account         | `deactivateAccount`                         | admin                                       | Blocks sign-in and takes their meals off browse, with a reason. Buyer and Prepper accounts only, never an admin account. |
+| Account         | `reactivateAccount`                         | admin                                       | Lifts the deactivation.                                                                                                   |
 | Account         | `inviteAdmin`                               | admin                                       | Creates an admin account for an email that has no account yet. They then sign in with the email code. |
 | PrepperProfile | `submitForApproval`                         | Prepper                                     | Sends their food safety details and licence for an admin to check.                                                        |
 | PrepperProfile | `approveApplication`                           | admin                                       | The Prepper can now sell, and appears in browse.                                                                         |
@@ -157,6 +158,7 @@ classDiagram
 | Product         | `hideFromShop` / `showInShop`               | Prepper                                     | Takes a meal off browse for a while, or puts it back.                                                                     |
 | Product         | `archiveProduct`                            | Prepper                                     | Retires a meal for good. Old receipts still show it.                                                                      |
 | Product         | `flagProduct` / `unflagProduct`             | admin                                       | Pulls a meal from browse with a reason, or clears the flag.                                                               |
+| Product         | `featureProduct` / `unfeatureProduct`       | admin                                       | Puts an active meal on the home page (sets `featuredAt`), or takes it off.                                                |
 | Review          | `leaveReview`                               | buyer                                       | Rates a meal from an order line whose invoice is `paid` or `handed_over`. One review per order line.                                                                                         |
 | Cart            | `addItem` / `changeQuantity` / `removeItem` | buyer or guest                              | Edits what's in the cart.                                                                                                 |
 | Cart            | `enterPromoCode`                            | buyer                                       | Checks the code with Stripe and shows the discount. See below.                                                            |
@@ -193,7 +195,7 @@ sequenceDiagram
 ```
 
 1. An admin creates a **coupon** (the discount: percent off or amount off) and a **promotion code** (the word buyers type) in the Stripe Dashboard.
-2. The buyer types the code. The API looks it up in Stripe: it must be active, not expired, in AUD, and over any minimum amount.
+2. The buyer types the code. The API looks it up in Stripe: it must be active, not expired, in AUD, and over any minimum amount. If a check fails, the API sends back a reason code and nothing is applied.
 3. Stripe only applies and counts codes itself in Stripe Checkout, not with our own PaymentIntents. So the API works out the discount and charges the lower amount.
 4. For the same reason, Stripe doesn't count our uses. The API counts `PromoRedemption` rows against the code's use limit.
 5. The cart keeps the code and its Stripe ID. The webhook writes one `PromoRedemption` when payment succeeds.
@@ -207,13 +209,11 @@ Values are stored in the database as written.
 | AccountType                    | `buyer`                   | Can buy. Can also sell once they have a Prepper profile. |
 |                                | `admin`                   | Runs the site. Can't buy, sell or review.             |
 | AccountStatus                  | `active`                  | Can sign in and use the site.                         |
-|                                | `suspended`               | Blocked by an admin. Can be reinstated.               |
-|                                | `deactivated`             | Taken out of use. Details kept; sign in to reactivate.|
+|                                | `deactivated`             | Blocked by an admin. Only an admin can reactivate it.|
 | FoodSafetyStatus               | `draft`                   | Prepper is still filling in their details.           |
 |                                | `pending_review`          | Sent for approval; waiting on an admin.               |
 |                                | `verified`                | Approved. Can sell.                                   |
 |                                | `rejected`                | Sent back with a reason. Can resubmit.                |
-|                                | `suspended`               | Selling paused by an admin.                           |
 |                                | `expired`                 | Their licence date has passed. Must resubmit.         |
 | ProductStatus                  | `active`                  | Shows in browse and can be bought.                    |
 |                                | `hidden`                  | Taken off browse by the Prepper.                     |

@@ -56,7 +56,7 @@ flowchart TB
 Defined in the API's zod schemas and passed to the web app through the OpenAPI contract.
 
 - `DietaryTag` — vegetarian, vegan, gluten_free, dairy_free, nut_free, halal, kosher, low_carb
-- `CuisineType` — fixed list, e.g. australian, chinese, indian, italian, japanese, korean, mexican, middle_eastern, thai, vietnamese, other
+- `CuisineType` — lives in the `api` zod schemas (`web` gets it through the generated OpenAPI types); fixed list, e.g. australian, chinese, indian, italian, japanese, korean, mexican, middle_eastern, thai, vietnamese, other
 - `AustralianState` — QLD, NSW, VIC, TAS, SA, WA, NT, ACT
 - Status enums — see [Status changes](07-status-changes.md)
 

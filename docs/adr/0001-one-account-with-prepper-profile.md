@@ -21,6 +21,6 @@ Option 3. Every signed-in person has an `Account`. Its `accountType` is `buyer` 
 
 - A buyer can become a Prepper without a new account.
 - Guards check the account type and capabilities (`accountType`, has a verified profile).
-- An admin can't suspend or deactivate themselves, and the last active admin can't be suspended, so at least one admin always remains.
+- Admin accounts can't be deactivated or removed, so admins always remain. Only admins deactivate buyer and Prepper accounts; owners can't deactivate their own.
 - The first admin is made with a seed script. See [Admin set-up](../plan/13-admin-setup.md).
 - Stages: 0.3, 1.4, 2.1, 7.2.

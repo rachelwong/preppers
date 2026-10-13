@@ -47,7 +47,7 @@ flowchart LR
 | Errors and logs | Sentry and pino                                                                                                                |
 | Tests           | Vitest, Testing Library, MSW, Fastify `inject`; Playwright + playwright-bdd with video in `e2e` (see [Testing](12-testing.md)) |
 | Hosting         | Vercel — two projects from this repo (`web`, `api`); Supabase cloud                                                            |
-| Wireframes      | Claude design or Miro, just before each screen stage                                                                           |
+| Wireframes      | Start from [Screens](14-screens.md); refine in Claude design or Miro just before each screen stage                              |
 
 ## Repo layout
 

@@ -26,5 +26,6 @@ Stripe only applies and counts codes itself in Stripe Checkout. We use our own P
 - No `promo_codes` table. Carts store the typed code and Stripe's ID for it.
 - Stripe's "times redeemed" number stays at 0 for our codes. Stage 7.6 shows our own count instead.
 - Tests mock Stripe's promotion code replies.
-- Who pays for the discount is still open (5.9).
+- The platform pays for the discount. The buyer is charged the lower total; each Prepper is transferred their full invoice subtotal (5.9).
+- A code that fails a check returns 422 with a reason code (`promo_not_found`, `promo_expired`, `promo_already_used`, `promo_minimum_not_met`, `promo_wrong_currency`) (5.8).
 - Stages: 5.8, 5.9, 7.6. Guide: https://docs.stripe.com/payments/advanced/discounts

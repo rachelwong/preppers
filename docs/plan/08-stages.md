@@ -49,13 +49,13 @@ Each stage lists what to **build**, how you know it's **done**, what Claude will
   - Check: tokens never sent to the browser; account created only once; an existing account with the same email is used, not duplicated.
   - Docs: [Email OTP sign-in](https://supabase.com/docs/guides/auth/auth-email-passwordless)
 - [ ] **Sessions** (1.2)
-  - Build: `/me`, logout, cookie check with token refresh, origin check, block suspended accounts; a deactivated account becomes active again when its owner signs in.
-  - Done: tests for valid, refreshed, revoked, missing and suspended sessions.
+  - Build: `/me`, logout, cookie check with token refresh, origin check, block deactivated accounts.
+  - Done: tests for valid, refreshed, revoked, missing and deactivated sessions.
   - Check: correct use of 401 vs 403.
   - Docs: [Server-side auth](https://supabase.com/docs/guides/auth/server-side)
 - [ ] **Sign-in screens** (1.3)
-  - Build: email step, code step, protected pages, sign-out.
-  - Done: both steps and the redirect tested.
+  - Build: email step, code step, About you step on first sign-in (name and optional dietary needs; Google fills the name), protected pages, sign-out. See wireframe W6 in [Screens](14-screens.md).
+  - Done: all three steps and the redirect tested; About you shows only once.
   - Check: sign-in state only lives in TanStack Query.
 - [ ] **Permission checks** (1.4)
   - Build: admin, buyer, Prepper and verified-Prepper guards; `pnpm db:seed-admin` script that makes the first admin from `SEED_ADMIN_EMAIL` (see [Admin set-up](13-admin-setup.md)).
@@ -152,6 +152,14 @@ Each stage lists what to **build**, how you know it's **done**, what Claude will
   - Done: unknown or unverified Prepper return 404.
   - Check: exact address never shown.
   - Docs: [Maps JavaScript API](https://developers.google.com/maps/documentation/javascript), [API key security](https://developers.google.com/maps/api-security-best-practices)
+- [ ] **Meals list API** (3.5)
+  - Build: `GET /products` with search, dietary, cuisine, max price, distance from a postcode, "delivers to me", featured, sort (newest, price, distance) and paging of 12. Only active meals from verified Preppers with payouts on. Reuses the 3.3 distance query.
+  - Done: each filter, sort and page edge tested; hidden, flagged and archived meals never returned.
+  - Check: database indexes; Prepper coordinates never sent to the browser.
+- [ ] **Home and Meals pages** (3.6)
+  - Build: Home (W1) with postcode search, featured meals (4 most recently featured) and newest meals (4); Meals page (W2) with filters, sort and pages, all kept in the URL. See [Screens](14-screens.md).
+  - Done: postcode search lands on Meals with the location set; empty results show Clear filters.
+  - Check: filters survive refresh and the back button; the featured row hides when nothing is featured.
 
 ## Phase 4 — Cart
 
@@ -210,13 +218,14 @@ Each stage lists what to **build**, how you know it's **done**, what Claude will
   - Critical path: add `@critical` scenario C4 (Prepper hands over, order completed).
 - [ ] **Check a promo code** (5.8)
   - Build: `promo_redemptions` table; `promoCode` and `stripePromotionCodeId` on carts; enter and remove a code on the cart. The API looks the code up in Stripe (active, not expired, AUD, minimum amount), counts our own uses against its limit, and works out the discount.
-  - Done: each rule tested with mocked Stripe replies; one code per cart; discount never above the subtotal.
+  - Done: each rule tested with mocked Stripe replies; one code per cart; discount never above the subtotal; each failed check returns 422 with its reason code.
+  - Reason codes: `promo_not_found` (no active code in Stripe), `promo_expired`, `promo_already_used` (our use count has reached the code's limit), `promo_minimum_not_met`, `promo_wrong_currency`. Stripe's lookup doesn't return an error code for these, so the API maps what Stripe sends back to these codes.
   - Check: discount maths in cents, in one function; Stripe secret key used only on the server.
   - Docs: [Add discounts](https://docs.stripe.com/payments/advanced/discounts), [Promotion codes API](https://docs.stripe.com/api/promotion_codes)
 - [ ] **Use a promo code** (5.9)
   - Build: show the discount in the cart; recheck the code with Stripe at checkout and charge the lower amount; split the discount across invoices; write the `PromoRedemption` when payment succeeds.
   - Done: shares add up exactly; the use limit holds when two people check out at once.
-  - Check: where the leftover cent goes; Prepper pay matches the funding decision.
+  - Check: where the leftover cent goes; each Prepper is paid their full invoice subtotal; the platform's Stripe balance covers the discount gap.
   - Critical path: add release scenario R7 (promo code).
 
 ## Phase 6 — Buyer extras
@@ -238,26 +247,26 @@ Each stage lists what to **build**, how you know it's **done**, what Claude will
 ## Phase 7 — Admin
 
 - [ ] **Accounts list** (7.1)
-  - Build: accounts table with sorting, filters and paging done on the server.
+  - Build: Preppers and Buyers tables (a buyer has no Prepper profile) with search, status (including deactivated), created date, sorting and paging, all done on the server. See W14 in [Screens](14-screens.md).
   - Done: admin only; bad parameters rejected.
   - Check: only allowed sort columns.
 - [ ] **Manage accounts** (7.2)
-  - Build: invite an admin (name and email), edit, suspend and reinstate (this is how an admin is removed); log every admin action. Deactivating is the owner's own action.
+  - Build: invite an admin (name and email), edit, deactivate and reactivate buyer and Prepper accounts; log every admin action.
   - Done: each action tested and logged.
-  - Check: an admin can't suspend themselves or the last active admin; inviting an email that already has an account fails with 409; nothing is deleted.
-  - Critical path: add release scenario R10 (suspended account can't sign in).
+  - Check: admin accounts can't be deactivated; owners can't deactivate their own account; inviting an email that already has an account fails with 409; nothing is deleted.
+  - Critical path: add release scenario R10 (deactivated account can't sign in).
 - [ ] **Purchases list** (7.3)
   - Build: orders filtered by date, status and Prepper.
   - Done: each filter tested.
   - Check: stored in UTC, shown in Brisbane time.
 - [ ] **Flag products** (7.4)
-  - Build: flag with a reason, unflag, email the Prepper.
+  - Build: meals table with search, status, featured and created filters; flag with a reason, unflag, email the Prepper; feature and unfeature (sets `featuredAt`).
   - Done: flagged products disappear from browse; email queued.
   - Check: email sent only after the save succeeds.
   - Docs: [Resend with Node.js](https://resend.com/docs/send-with-nodejs)
   - Critical path: add release scenario R9 (flagged meal leaves browse).
 - [ ] **Prepper checks queue** (7.5)
-  - Build: list of `pending_review` Preppers; view licence file; approve or reject with reason; suspend or reinstate; email the result.
+  - Build: list of `pending_review` Preppers; view licence file; approve or reject with reason; email the result.
   - Done: approve makes the Prepper public; reject needs a reason.
   - Check: file links expire quickly.
   - Docs: [Resend with Node.js](https://resend.com/docs/send-with-nodejs)
@@ -266,6 +275,10 @@ Each stage lists what to **build**, how you know it's **done**, what Claude will
   - Build: table of each code's uses and total discount, from `promo_redemptions`; link to the code in the Stripe Dashboard.
   - Done: admin only; counts match the redemption rows.
   - Check: dates shown in Brisbane time. Codes are created and turned off in Stripe, not here.
+- [ ] **Detail views** (7.7)
+  - Build: meal, buyer and Prepper detail pages, opened by clicking a row in the lists (W13, W15 in [Screens](14-screens.md)). Meals: flag, unflag, feature. Buyers and Preppers: deactivate with a reason, reactivate. Pending Preppers: licence file, approve, reject with a reason.
+  - Done: each page and action tested; admin accounts never show deactivate.
+  - Check: admin only; every action logged; emails sent only after the save.
 
 ## Phase 8 — Hardening
 

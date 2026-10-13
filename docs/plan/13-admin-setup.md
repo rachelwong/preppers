@@ -32,16 +32,6 @@ Rules:
 - The email must not already have an account. If it does, the API answers 409.
 - A person with a buyer account who should become an admin needs a different email.
 
-## Remove an admin
+## Removing an admin
 
-Done in the app (stage 7.2).
-
-1. Open Accounts, find the admin and choose Suspend, with a reason.
-2. They can no longer sign in. The change is written to `StatusEvent`.
-3. To bring them back later, choose Reinstate.
-
-Rules:
-
-- You can't suspend yourself.
-- The last active admin can't be suspended, so there is always at least one.
-- Nothing is deleted. A suspended admin account stays on record.
+Admins can't be removed. Admin accounts can't be deactivated, by themselves or by other admins. Deactivate and reactivate only apply to buyer and Prepper accounts.

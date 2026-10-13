@@ -26,7 +26,7 @@ flowchart LR
   I -->|"contains 1 or more"| OL[OrderLine]
 ```
 
-- **Does:** one Prepper's share of an order, and their payout.
+- **Does:** one Prepper's share of an order, and their payout. The payout is always the subtotal; the discount share is kept for reports only.
 - **Checks:** one per Prepper per order; discount shares add up exactly to the order discount; only the owning Prepper can mark it `handed_over`, and only once `paid`.
 - **Built in:** 5.1, 5.5, 5.7, 8.1
 - [Back to data model](../../plan/06-data-model.md)
