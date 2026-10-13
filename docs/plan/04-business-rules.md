@@ -45,18 +45,8 @@ The server enforces every rule below. Numbers in brackets are the stages that bu
 - Names and prices are frozen on each order line at checkout. (5.1)
 - Only Stripe's webhook can mark an order paid. (5.5)
 - Editing the cart cancels a pending order. Unpaid orders are cancelled after 24 hours. (5.1, 8.1)
-- Each Prepper is paid their invoice subtotal after payment, whatever discount was used; failed payouts are retried. (5.5, 8.1)
+- Each Prepper is paid their invoice subtotal after payment; failed payouts are retried. (5.5, 8.1)
 - No refunds in the first version.
-
-**Promo codes**
-
-- Codes are created and turned off by an admin in the Stripe Dashboard. The app doesn't store codes. (5.8)
-- One code per order. Stripe must say it's active, not expired, in AUD and over any minimum amount. (5.8)
-- Our own count of uses must be under the code's limit. Stripe doesn't count uses for our payments. (5.8, 5.9)
-- The discount never goes above the subtotal. (5.8)
-- The discount is split across invoices by their share of the subtotal; the shares add up exactly. (5.9)
-- The platform pays for the discount. The buyer pays the lower order total, and each Prepper is still paid their full invoice subtotal. (5.9)
-- A code that fails any check is refused with a reason code, and the web app shows the message under the field. Nothing is applied. (5.8)
 
 **Handing over meals**
 

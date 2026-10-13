@@ -106,9 +106,8 @@ One page to review and pay, then a paid or failed screen (Phase 5).
 ![W7 Checkout · review, pay, result](screens/w07-checkout.png)
 
 1. **Your order**, split into one box per prepper. Each box becomes that prepper's invoice. Prices come from the server, not the cart in the browser.
-2. **Promo code**: one per order. Apply checks it with Stripe; a bad code shows why under the field. The discount never goes above the subtotal.
-3. **Stripe Payment Element** holds the card fields. Pay starts the Stripe payment; the button shows a spinner and can't be pressed twice.
-4. **Edit cart** goes back to the cart drawer and cancels this pending order, so the cart unlocks.
+2. **Stripe Payment Element** holds the card fields. Pay starts the Stripe payment; the button shows a spinner and can't be pressed twice.
+3. **Edit cart** goes back to the cart drawer and cancels this pending order, so the cart unlocks.
 
 After Pay:
 
@@ -135,7 +134,7 @@ One order, shown the way it was paid: one block per prepper (stages 5.6 and 6.2)
 1. **One block per prepper invoice**, with each line's name and price as they were at checkout. Archived meals still show.
 2. **Status per invoice**: Paid, then Handed over once the prepper confirms.
 3. **Write review** opens this dialog: 1 to 5 stars and an optional comment. One review per line. Only shown when the invoice is paid or handed over; after posting, the button becomes "Reviewed".
-4. **Totals** show the promo code used and what was paid.
+4. **Totals** show what was paid.
 
 ## W10 Prepper sign-up
 
@@ -230,7 +229,7 @@ Clicking a prepper in W14 opens this page. For a pending prepper it shows the li
 
 ## Plan changes for these screens
 
-All nine are decided and now in the plan: stages 1.3, 3.5, 3.6, 7.1, 7.4 and 7.7, the Product entity, the class diagram and the business rules.
+All nine are decided and now in the plan: stages 1.3, 3.5, 3.6, 7.1, 7.4 and 7.6, the Product entity, the class diagram and the business rules.
 
 - [x] **1. Featured meals.** Add `featuredAt` to Product (empty = not featured). Admins set it with Feature / Unfeature in the Meals tab (stage 7.4). Home shows the 4 most recently featured. Until Phase 7, seed a few.
 - [x] **2. Meals list API.** A new Phase 3 stage beside the prepper list (3.1): `GET /products` with search, dietary, cuisine, max price, distance, "delivers to me", sort and paging. Only active meals from verified preppers with payouts on.

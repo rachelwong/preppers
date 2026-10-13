@@ -20,7 +20,6 @@ flowchart TB
     O -->|splits into 1+| I[PrepperInvoice]
     I -->|contains 1+| OL[OrderLine]
     PP -->|receives many| I
-    O -->|used 0 or 1 code| PR[PromoRedemption]
   end
   subgraph Payments
     O -->|paid by many| PM[Payment]
@@ -77,7 +76,6 @@ Each name opens its entity doc: fields, types, keys, links and checks.
   - [Order](../data-model/entities/order.md) — the buyer's receipt
   - [PrepperInvoice](../data-model/entities/prepper-invoice.md) — one Prepper's share of an order
   - [OrderLine](../data-model/entities/order-line.md) — name and price frozen at purchase
-  - [PromoRedemption](../data-model/entities/promo-redemption.md) — one use of a Stripe promo code
 - **Payments and logs**
   - [Payment](../data-model/entities/payment.md) — the Stripe payment for an order
   - [StripeEvent](../data-model/entities/stripe-event.md) — webhooks already handled

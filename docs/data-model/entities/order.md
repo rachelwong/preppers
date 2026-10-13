@@ -9,8 +9,7 @@
 | cartId        | uuid        | FK → [Cart](cart.md), UK   | one order per cart                          |
 | status        | OrderStatus |                            | pending_payment, paid, completed, cancelled |
 | subtotalCents | int         |                            |                                             |
-| discountCents | int         |                            |                                             |
-| totalCents    | int         |                            | subtotal minus discount                     |
+| totalCents    | int         |                            | same as subtotal                            |
 | paidAt        | timestamptz |                            | set by the webhook                          |
 | createdAt     | timestamptz |                            |                                             |
 | updatedAt     | timestamptz |                            |                                             |
@@ -23,7 +22,6 @@ flowchart LR
   O -->|"made from 1"| C[Cart]
   O -->|"splits into 1 or more"| I[PrepperInvoice]
   O -->|"paid by many"| PM[Payment]
-  O -->|"uses 0 or 1"| PR[PromoRedemption]
 ```
 
 - **Does:** the buyer's receipt for one checkout.

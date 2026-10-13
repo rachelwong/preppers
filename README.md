@@ -30,7 +30,7 @@ Preppers is a marketplace for home cooks ("Preppers") to sell meal prep to busy 
 **For admins**
 
 - Manage accounts, review Preppers licences and flag products. Admins are a separate account type: they can't buy or sell.
-- See all purchases and how often each promo code is used. Promo codes themselves are set up in Stripe.
+- See all purchases.
 
 ## How it's built
 

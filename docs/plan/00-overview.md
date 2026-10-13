@@ -15,9 +15,9 @@
 | 2   | Prepper      | profile, sign-up form, geocoding, products, images, food safety step                       |
 | 3   | Browsing     | Preppers list, filters, distance search, Prepper page with map, meals list, Home and Meals pages |
 | 4   | Cart         | guest cart, cart UI, merge on sign-in                                                      |
-| 5   | Checkout     | orders, Stripe payments and payouts, webhook, receipts, invoices, promo codes              |
+| 5   | Checkout     | orders, Stripe payments and payouts, webhook, receipts, invoices                           |
 | 6   | Buyer extras | profile, reviews, favourites                                                               |
-| 7   | Admin        | buyers and Preppers lists, purchases, meals and flagging, verification queue, promo code report, detail views |
+| 7   | Admin        | buyers and Preppers lists, purchases, meals and flagging, verification queue, detail views |
 | 8   | Hardening    | scheduled jobs, nightly release suite, rate limits and alerts                              |
 
 Scope for every stage is in [Stages](08-stages.md). The full instructions for a stage are written when you reach it, in [`../features/`](../features/).

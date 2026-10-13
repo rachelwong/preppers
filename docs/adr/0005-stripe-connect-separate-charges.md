@@ -21,5 +21,4 @@ Option 3, in test mode, with Stripe-hosted onboarding for Preppers. Start from S
 
 - The platform charges the buyer once; the webhook queues one transfer per invoice.
 - The platform balance must cover transfers; failed transfers are retried (8.1).
-- Promo discount funding is still open and changes transfer amounts (5.9).
-- Stages: 5.2–5.5, 5.9. Guide: https://docs.stripe.com/connect/separate-charges-and-transfers
+- Stages: 5.2–5.5. Guide: https://docs.stripe.com/connect/separate-charges-and-transfers

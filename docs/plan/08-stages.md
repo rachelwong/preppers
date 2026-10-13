@@ -216,17 +216,6 @@ Each stage lists what to **build**, how you know it's **done**, what Claude will
   - Done: only own invoices; bad moves return 409.
   - Check: both updates in one transaction.
   - Critical path: add `@critical` scenario C4 (Prepper hands over, order completed).
-- [ ] **Check a promo code** (5.8)
-  - Build: `promo_redemptions` table; `promoCode` and `stripePromotionCodeId` on carts; enter and remove a code on the cart. The API looks the code up in Stripe (active, not expired, AUD, minimum amount), counts our own uses against its limit, and works out the discount.
-  - Done: each rule tested with mocked Stripe replies; one code per cart; discount never above the subtotal; each failed check returns 422 with its reason code.
-  - Reason codes: `promo_not_found` (no active code in Stripe), `promo_expired`, `promo_already_used` (our use count has reached the code's limit), `promo_minimum_not_met`, `promo_wrong_currency`. Stripe's lookup doesn't return an error code for these, so the API maps what Stripe sends back to these codes.
-  - Check: discount maths in cents, in one function; Stripe secret key used only on the server.
-  - Docs: [Add discounts](https://docs.stripe.com/payments/advanced/discounts), [Promotion codes API](https://docs.stripe.com/api/promotion_codes)
-- [ ] **Use a promo code** (5.9)
-  - Build: show the discount in the cart; recheck the code with Stripe at checkout and charge the lower amount; split the discount across invoices; write the `PromoRedemption` when payment succeeds.
-  - Done: shares add up exactly; the use limit holds when two people check out at once.
-  - Check: where the leftover cent goes; each Prepper is paid their full invoice subtotal; the platform's Stripe balance covers the discount gap.
-  - Critical path: add release scenario R7 (promo code).
 
 ## Phase 6 — Buyer extras
 
@@ -238,7 +227,7 @@ Each stage lists what to **build**, how you know it's **done**, what Claude will
   - Build: review a product you've paid for, once; show averages.
   - Done: non-buyers and repeat reviews rejected.
   - Check: eligibility checked through the order line.
-  - Critical path: add release scenario R8 (reviews).
+  - Critical path: add release scenario R7 (reviews).
 - [ ] **Favourites** (6.3)
   - Build: favourite Preppers and products; favourites page.
   - Done: toggling twice is safe; only own favourites shown.
@@ -254,7 +243,7 @@ Each stage lists what to **build**, how you know it's **done**, what Claude will
   - Build: invite an admin (name and email), edit, deactivate and reactivate buyer and Prepper accounts; log every admin action.
   - Done: each action tested and logged.
   - Check: admin accounts can't be deactivated; owners can't deactivate their own account; inviting an email that already has an account fails with 409; nothing is deleted.
-  - Critical path: add release scenario R10 (deactivated account can't sign in).
+  - Critical path: add release scenario R9 (deactivated account can't sign in).
 - [ ] **Purchases list** (7.3)
   - Build: orders filtered by date, status and Prepper.
   - Done: each filter tested.
@@ -264,18 +253,14 @@ Each stage lists what to **build**, how you know it's **done**, what Claude will
   - Done: flagged products disappear from browse; email queued.
   - Check: email sent only after the save succeeds.
   - Docs: [Resend with Node.js](https://resend.com/docs/send-with-nodejs)
-  - Critical path: add release scenario R9 (flagged meal leaves browse).
+  - Critical path: add release scenario R8 (flagged meal leaves browse).
 - [ ] **Prepper checks queue** (7.5)
   - Build: list of `pending_review` Preppers; view licence file; approve or reject with reason; email the result.
   - Done: approve makes the Prepper public; reject needs a reason.
   - Check: file links expire quickly.
   - Docs: [Resend with Node.js](https://resend.com/docs/send-with-nodejs)
   - Critical path: add `@critical` scenario C5 (Prepper approved, appears in browse).
-- [ ] **Promo code report** (7.6)
-  - Build: table of each code's uses and total discount, from `promo_redemptions`; link to the code in the Stripe Dashboard.
-  - Done: admin only; counts match the redemption rows.
-  - Check: dates shown in Brisbane time. Codes are created and turned off in Stripe, not here.
-- [ ] **Detail views** (7.7)
+- [ ] **Detail views** (7.6)
   - Build: meal, buyer and Prepper detail pages, opened by clicking a row in the lists (W13, W15 in [Screens](14-screens.md)). Meals: flag, unflag, feature. Buyers and Preppers: deactivate with a reason, reactivate. Pending Preppers: licence file, approve, reject with a reason.
   - Done: each page and action tested; admin accounts never show deactivate.
   - Check: admin only; every action logged; emails sent only after the save.

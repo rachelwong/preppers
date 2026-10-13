@@ -76,10 +76,9 @@ Feature: Check out a cart from two Preppers
 | R4  | Checkout with a 3DS test card                                              | 5.4            |
 | R5  | Declined card, then a retry that succeeds                                  | 5.5            |
 | R6  | Editing the cart mid-checkout cancels the pending order                    | 5.5            |
-| R7  | Stripe promo code applied; totals and receipt correct                      | 5.9            |
-| R8  | Buyer reviews a meal they bought; can't review one they didn't             | 6.2            |
-| R9  | Admin flags a meal; it disappears from browse                              | 7.4            |
-| R10 | Admin deactivates an account; that person can't sign in                    | 7.2            |
+| R7  | Buyer reviews a meal they bought; can't review one they didn't             | 6.2            |
+| R8  | Admin flags a meal; it disappears from browse                              | 7.4            |
+| R9  | Admin deactivates an account; that person can't sign in                    | 7.2            |
 
 Prepper payout onboarding (5.2) happens on Stripe's own hosted pages, which change often. It's tested at the API level, plus one recorded manual run per release.
 

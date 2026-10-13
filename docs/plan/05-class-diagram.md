@@ -60,13 +60,9 @@ classDiagram
     +uuid accountId
     +string guestTokenHash
     +CartStatus status
-    +string promoCode
-    +string stripePromotionCodeId
     +addItem(productId, quantity)
     +changeQuantity(productId, quantity)
     +removeItem(productId)
-    +enterPromoCode(code)
-    +removePromoCode()
     +startCheckout()
     +addGuestCartItems(guestCart)
   }
@@ -80,17 +76,10 @@ classDiagram
     +uuid buyerId
     +OrderStatus status
     +int subtotalCents
-    +int discountCents
     +int totalCents
     +markAsPaid()
     +cancelOrder(reason)
     +markAsCompleted()
-  }
-  class PromoRedemption {
-    +uuid orderId
-    +string stripePromotionCodeId
-    +string code
-    +int discountCents
   }
   class PrepperInvoice {
     +uuid id
@@ -127,7 +116,6 @@ classDiagram
   CartItem "*" --> "1" Product : refers to
   Cart "1" --> "0..1" Order : becomes
   Account "1" --> "*" Order : places
-  Order "1" --> "0..1" PromoRedemption : used a code
   Order "1" *-- "1..*" PrepperInvoice : split into
   PrepperInvoice "1" *-- "1..*" OrderLine : contains
   PrepperProfile "1" --> "*" PrepperInvoice : receives
@@ -161,8 +149,6 @@ classDiagram
 | Product         | `featureProduct` / `unfeatureProduct`       | admin                                       | Puts an active meal on the home page (sets `featuredAt`), or takes it off.                                                |
 | Review          | `leaveReview`                               | buyer                                       | Rates a meal from an order line whose invoice is `paid` or `handed_over`. One review per order line.                                                                                         |
 | Cart            | `addItem` / `changeQuantity` / `removeItem` | buyer or guest                              | Edits what's in the cart.                                                                                                 |
-| Cart            | `enterPromoCode`                            | buyer                                       | Checks the code with Stripe and shows the discount. See below.                                                            |
-| Cart            | `removePromoCode`                           | buyer                                       | Takes the code off.                                                                                                       |
 | Cart            | `startCheckout`                             | buyer                                       | Locks the cart, creates the order and its invoices, then calls `startPayment`.                                            |
 | Cart            | `addGuestCartItems`                         | the server, on sign-in                      | Moves items from the guest cart into the account's cart (same meal → quantities add up). The guest cart becomes `merged`. |
 | Order           | `markAsPaid`                                | the server, when Stripe confirms            | The order and its invoices become `paid`.                                                                                 |
@@ -172,33 +158,6 @@ classDiagram
 | PrepperInvoice | `payPrepper`                               | the server                                  | Sends the Prepper's share from our Stripe balance to their Stripe account (a Stripe "transfer"). Retried if it fails.    |
 | Payment         | `startPayment`                              | the server, from `startCheckout` or a retry | Creates the Stripe PaymentIntent and gives the browser its client secret, so the Payment Element can take the card.       |
 | Payment         | `updateFromStripe`                          | the webhook                                 | Stripe tells us the result (succeeded, declined, needs 3DS). We copy the status and, on success, call `markAsPaid`.       |
-
-## Promo codes live in Stripe
-
-There's no promo code table. Codes are made and turned off in the Stripe Dashboard.
-
-```mermaid
-sequenceDiagram
-  actor Admin
-  actor Buyer
-  participant Web
-  participant API
-  participant Stripe
-  Admin->>Stripe: Create coupon (e.g. 10% off) and promotion code SPRING10
-  Buyer->>Web: Types SPRING10
-  Web->>API: enterPromoCode("SPRING10")
-  API->>Stripe: Look up active promotion code SPRING10
-  Stripe-->>API: Coupon, expiry, minimum amount, use limit
-  API->>API: Check our own use count, work out discount in cents
-  API-->>Web: Discount preview
-  Note over API,Stripe: On payment success, the webhook writes a PromoRedemption
-```
-
-1. An admin creates a **coupon** (the discount: percent off or amount off) and a **promotion code** (the word buyers type) in the Stripe Dashboard.
-2. The buyer types the code. The API looks it up in Stripe: it must be active, not expired, in AUD, and over any minimum amount. If a check fails, the API sends back a reason code and nothing is applied.
-3. Stripe only applies and counts codes itself in Stripe Checkout, not with our own PaymentIntents. So the API works out the discount and charges the lower amount.
-4. For the same reason, Stripe doesn't count our uses. The API counts `PromoRedemption` rows against the code's use limit.
-5. The cart keeps the code and its Stripe ID. The webhook writes one `PromoRedemption` when payment succeeds.
 
 ## Status enums
 
@@ -240,15 +199,8 @@ Values are stored in the database as written.
 |                                | `processing`              | Stripe is working on it.                              |
 |                                | `succeeded`               | Money taken.                                          |
 |                                | `canceled`                | Payment stopped. Stripe spells it with one "l".       |
-| DiscountType                   | `percent_off`             | e.g. 10% off the subtotal.                            |
-| (read from Stripe, not stored) | `amount_off`              | e.g. $5.00 off the subtotal.                          |
 | ActorType                      | `account`                 | A person made the change.                             |
 |                                | `system`                  | A scheduled job made the change.                      |
 |                                | `stripe`                  | A Stripe webhook made the change.                     |
 
 Status moves are drawn in [Status changes](07-status-changes.md).
-
-## Docs
-
-- [Stripe: add discounts (PaymentIntents work out the amount on your server)](https://docs.stripe.com/payments/advanced/discounts)
-- [Stripe API: promotion codes](https://docs.stripe.com/api/promotion_codes)

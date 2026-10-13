@@ -60,7 +60,7 @@ api/src/
 ├── routes/        route files grouped by feature
 ├── db/            Drizzle schema, migrations, seed
 ├── schemas/       zod schemas for every route (source of openapi.json)
-├── services/      business logic: checkout, status.ts (transition()), promo discount maths
+├── services/      business logic: checkout, status.ts (transition())
 ├── integrations/  Stripe, Supabase, Google, Resend clients
 └── plugins/       session, errors, request ID, rate limits
 ```
