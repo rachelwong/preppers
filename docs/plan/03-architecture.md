@@ -11,12 +11,12 @@ flowchart LR
     API[Fastify BFF<br/>api as a Vercel Function<br/>session cookie → tokens<br/>Drizzle → Postgres<br/>Stripe webhook]
   end
   WEB -->|"/api/* + cookie"| API
-  API --> AUTH[Supabase Auth<br/>email OTP + Google]
+  API --> AUTH[Supabase Auth<br/>email OTP only]
   API --> DB[(Supabase Postgres<br/>+ PostGIS, pg_cron)]
   API --> ST[Supabase Storage<br/>photos, licences]
-  API --> STRIPE[Stripe test mode<br/>Connect, webhooks]
+  API --> STRIPE[Stripe test mode<br/>payments, webhooks]
   API --> GEO[Google Geocoding]
-  API --> MAIL[Resend]
+  API --> MAIL[Email over SMTP]
   WEB -.-> SENTRY[Sentry]
   API -.-> SENTRY
   DB -->|pg_cron calls /api/jobs| API
@@ -26,7 +26,7 @@ flowchart LR
 
 1. The browser sends a request to `/api/...` with only a session cookie.
 2. The web project on Vercel forwards `/api/*` to the api project, so the browser sees one site.
-3. The BFF checks the cookie and looks up the account.
+3. The BFF checks the cookie (a local token check, no call to Supabase) and looks up the account. Route guards then allow or refuse by role. See [Authentication](15-authentication.md).
 4. The BFF calls the database or an outside service with its own secret keys.
 5. The BFF returns plain JSON.
 6. Errors on either side go to Sentry with the same request ID.
@@ -39,10 +39,10 @@ flowchart LR
 | Web             | React, Vite, TypeScript, TanStack Router, Query and Table, React Hook Form + zod, Tailwind CSS + shadcn/ui                                             |
 | Server          | Node, Fastify, TypeScript                                                                                                      |
 | Database        | Supabase Postgres with Drizzle (migrations in git), PostGIS for distance                                                       |
-| Sign-in         | Supabase Auth — email code and Google, called only by the server                                                               |
-| Files           | Supabase Storage — public bucket for product photos, private bucket for licences                                               |
-| Payments        | Stripe test mode — Payment Element, Connect with Stripe-hosted onboarding                                                      |
-| Email           | Resend, sent from an outbox table                                                                                              |
+| Sign-in         | Supabase Auth — email code (OTP) only, called only by the server. No Google or other single sign-on                          |
+| Files           | Supabase Storage — public bucket for meal photos, private bucket for licences                                               |
+| Payments        | Stripe test mode — Payment Element, one platform account; Preppers are paid outside the app                                   |
+| Email           | Sent from an outbox table over SMTP, using a dedicated Gmail account (Resend once you own a domain). Sign-in codes go through the same account via Supabase's SMTP settings |
 | Maps            | Google Maps JavaScript API (browser), Geocoding (server)                                                                       |
 | Errors and logs | Sentry and pino                                                                                                                |
 | Tests           | Vitest, Testing Library, MSW, Fastify `inject`; Playwright + playwright-bdd with video in `e2e` (see [Testing](12-testing.md)) |
@@ -100,13 +100,13 @@ Every tool has a free tier that fits a hobby project. Google Maps is the only on
 - **Fastify on Vercel** — Vercel detects Fastify and runs the whole app as one function. ([Vercel](https://vercel.com/docs/frameworks/backend/fastify))
 - **Supabase free** — 2 projects, 500 MB database, 1 GB files. Pauses after 7 days of no activity; can be restored for 90 days. ([Supabase](https://supabase.com/docs/guides/platform/free-project-pausing))
 - **Stripe** — test mode is free.
-- **Resend free** — 3,000 emails a month, up to 100 a day, 1 domain. ([Resend](https://resend.com/pricing))
+- **Gmail SMTP** — free with a dedicated Gmail account and an app password. Daily send cap applies (check Google's current limit). **Resend free** is the upgrade: 3,000 emails a month, up to 100 a day, needs a domain you own. ([Resend](https://resend.com/pricing))
 - **Sentry Developer** — free for 1 user, 5,000 errors a month.
 - **Google Maps** — 10,000 free calls a month for each Essentials product, such as Geocoding. ([Google](https://developers.google.com/maps/billing-and-pricing/pricing-categories))
 - **GitHub Actions** — free CI minutes are plenty for one developer.
 - **Backup host:** Google Cloud Run — always free up to 2 million requests a month; needs a card.
 - **Not used:** Render (sleeps after 15 minutes idle), Fly.io (no free tier for new accounts), Railway ($1 of credit a month after trial).
-- **Only likely cost:** a domain name, so Resend can email people other than you.
+- **Only likely cost:** none for now. A domain name is only needed to move email from Gmail to Resend.
 
 ## What running as a function means
 
@@ -118,7 +118,7 @@ Every tool has a free tier that fits a hobby project. Google Maps is the only on
 
 ## Staying secure on free tiers
 
-- Turn on two-factor sign-in for GitHub, Vercel, Supabase, Stripe, Google Cloud, Resend and Sentry.
+- Turn on two-factor sign-in for GitHub, Vercel, Supabase, Stripe, Google Cloud, the dedicated Gmail account and Sentry.
 - Keep secrets in each host's settings, never in the repo or the browser.
 - Turn on row-level security for every table, with no policies; the service key lives only on the server.
 - Turn off the Supabase Data API, since every query goes through Drizzle on the server.
@@ -126,5 +126,5 @@ Every tool has a free tier that fits a hobby project. Google Maps is the only on
 - Set a Google daily quota and budget alert, so a leaked key can't run up a bill.
 - Use Stripe test keys only, and check the signature on every webhook.
 - Protect `/api/jobs/*` with a secret that only `pg_cron` knows.
-- Rate limits and security headers (stage 8.3) matter more here, because there's no paid firewall in front.
+- Sign-in limits (stage 1.2), and checkout limits and security headers (stage 8.3), matter more here, because there's no paid firewall in front.
 - Vercel's Hobby terms let it use deployed content for AI training. Keep secrets in environment settings and never put user data in the code.

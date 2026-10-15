@@ -6,7 +6,7 @@ Every order splits into one invoice per Prepper.
 flowchart TB
   subgraph Catalogue
     A[Account] -->|can have 1| PP[PrepperProfile]
-    PP -->|lists many| P[Product]
+    PP -->|lists many| P[Meal]
     P -->|has many| R[Review]
     A -->|saves many| F[Favourites]
   end
@@ -35,8 +35,8 @@ flowchart TB
 
 ## Reading it, top to bottom
 
-1. An account may have one Prepper profile. A Prepper has many products, and products have reviews.
-2. An account has carts, and a cart holds items. Favourites link accounts to Preppers and products.
+1. An account may have one Prepper profile. A Prepper has many meals, and meals have reviews.
+2. An account has carts, and a cart holds items. Favourites link accounts to Preppers and meals.
 3. Checking out a cart creates one order. The order splits into one invoice per Prepper, each with its own lines.
 4. An order has one or more payment attempts.
 5. The log tables at the bottom are shared by every flow.
@@ -48,7 +48,7 @@ flowchart TB
 - Date only (e.g. `licenceExpiry`): Postgres `date`, sent as `YYYY-MM-DD`.
 - Every table has `id` (uuid), `createdAt` and `updatedAt` unless noted.
 - Table names in Postgres are `snake_case` plurals (`prepper_profiles`); columns are `snake_case`; Drizzle maps them to `camelCase`.
-- Order lines copy the product name and price at purchase, so receipts never change.
+- Order lines copy the meal name and price at purchase, so receipts never change.
 
 ## Common types
 
@@ -65,13 +65,13 @@ Each name opens its entity doc: fields, types, keys, links and checks.
 
 - **Catalogue**
   - [Account](../data-model/entities/account.md) — one per person; admin flag, status, dietary needs
-  - [PrepperProfile](../data-model/entities/prepper-profile.md) — selling details, location, food safety, Stripe account
-  - [Product](../data-model/entities/product.md) — a meal for sale
-  - [Review](../data-model/entities/review.md) — a buyer's rating of a product they paid for
-  - [Favourites](../data-model/entities/favourites.md) — saved Preppers and products
+  - [PrepperProfile](../data-model/entities/prepper-profile.md) — selling details, location, food safety
+  - [Meal](../data-model/entities/meal.md) — a meal for sale
+  - [Review](../data-model/entities/review.md) — a buyer's rating of a meal they paid for
+  - [Favourites](../data-model/entities/favourites.md) — saved Preppers and meals
 - **Shopping**
   - [Cart](../data-model/entities/cart.md) — for an account or a guest
-  - [CartItem](../data-model/entities/cart-item.md) — a product and quantity in a cart
+  - [CartItem](../data-model/entities/cart-item.md) — a meal and quantity in a cart
 - **Orders**
   - [Order](../data-model/entities/order.md) — the buyer's receipt
   - [PrepperInvoice](../data-model/entities/prepper-invoice.md) — one Prepper's share of an order

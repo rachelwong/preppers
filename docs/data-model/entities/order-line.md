@@ -6,7 +6,7 @@
 | ---------------------- | ---- | ------------------------------------------- | --------------------- |
 | id                     | uuid | PK                                          |                       |
 | invoiceId              | uuid | FK → [PrepperInvoice](prepper-invoice.md) |                       |
-| productId              | uuid | FK → [Product](product.md)                  |                       |
+| mealId              | uuid | FK → [Meal](meal.md)                  |                       |
 | nameSnapshot           | text |                                             | copied at checkout    |
 | unitPriceCentsSnapshot | int  |                                             | copied at checkout    |
 | quantity               | int  |                                             | 1–20                  |
@@ -17,7 +17,7 @@
 ```mermaid
 flowchart LR
   OL[OrderLine] -->|"part of 1"| I[PrepperInvoice]
-  OL -->|"copies 1"| P[Product]
+  OL -->|"copies 1"| P[Meal]
   OL -->|"reviewed by 0 or 1"| R[Review]
 ```
 

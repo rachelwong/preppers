@@ -22,4 +22,4 @@ Option 2. `web` is a Vite React SPA. `api` is a Fastify server that owns session
 - The browser only holds an httpOnly session cookie.
 - The API's OpenAPI spec keeps both sides in step (see ADR 0009).
 - Two deploy targets to manage (see ADR 0004).
-- Stages: 0.2, 0.4, 1.1–1.6.
+- Stages: 0.2, 0.4, 1.1–1.5.

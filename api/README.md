@@ -10,7 +10,7 @@ The server behind the web app. It handles sign-in, applies the business rules, a
 - Session cookies: the browser never sees Supabase tokens.
 - Every database query, through Drizzle.
 - Stripe payments, payouts and the webhook.
-- Google Geocoding, Resend email, Supabase Storage upload links (photos and licence files).
+- Google Geocoding, email over SMTP, Supabase Storage upload links (photos and licence files).
 - `/api/jobs/*` routes that Supabase `pg_cron` calls on a schedule.
 
 ## Tools
@@ -18,7 +18,7 @@ The server behind the web app. It handles sign-in, applies the business rules, a
 - Node, Fastify, TypeScript
 - Drizzle with Supabase Postgres (PostGIS for distance search)
 - Supabase Auth and Storage
-- Stripe, Resend, Google Geocoding
+- Stripe, Nodemailer (SMTP), Google Geocoding
 - pino for logs, Sentry for errors
 - Vitest with Fastify `inject` for tests
 - zod route schemas → OpenAPI spec (`openapi.json`)
@@ -45,7 +45,9 @@ This app has its own dependencies. Run everything from `api`.
 | `STRIPE_SECRET_KEY`         | Stripe test secret key                      |
 | `STRIPE_WEBHOOK_SECRET`     | Checks webhook signatures                   |
 | `GOOGLE_GEOCODING_KEY`      | Maps key locked to Geocoding                |
-| `RESEND_API_KEY`            | Email sending                               |
+| `SMTP_HOST`                 | Mail server for app emails (smtp.gmail.com) |
+| `SMTP_USER`                 | The dedicated Gmail address                 |
+| `SMTP_PASS`                 | Its app password                            |
 | `SENTRY_DSN`                | Sentry project for the API                  |
 | `JOBS_SECRET`               | Shared with `pg_cron` to call `/api/jobs/*` |
 | `SEED_ADMIN_EMAIL`          | Email that `pnpm db:seed-admin` makes admin (local use only) |
@@ -61,7 +63,7 @@ api/src/
 ├── db/            Drizzle schema, migrations, seed
 ├── schemas/       zod schemas for every route (source of openapi.json)
 ├── services/      business logic: checkout, status.ts (transition())
-├── integrations/  Stripe, Supabase, Google, Resend clients
+├── integrations/  Stripe, Supabase, Google, email clients
 └── plugins/       session, errors, request ID, rate limits
 ```
 

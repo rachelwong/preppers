@@ -10,8 +10,8 @@
 | status             | InvoiceStatus     |                                             | pending_payment, paid, handed_over, cancelled |
 | subtotalCents      | int               |                                             |                                               |
 | totalCents         | int               |                                             |                                               |
-| PrepperPayStatus  | PrepperPayStatus |                                             | pending, sent, failed                         |
-| stripeTransferId   | text              |                                             | optional                                      |
+| PrepperPayStatus  | PrepperPayStatus |                                             | pending, paid_out; set by an admin            |
+| paidOutAt          | timestamptz       |                                             | optional                                      |
 | handedOverAt       | timestamptz       |                                             | optional                                      |
 | createdAt          | timestamptz       |                                             |                                               |
 | updatedAt          | timestamptz       |                                             |                                               |
@@ -25,7 +25,7 @@ flowchart LR
   I -->|"contains 1 or more"| OL[OrderLine]
 ```
 
-- **Does:** one Prepper's share of an order, and their payout. The payout is the subtotal.
+- **Does:** one Prepper's share of an order, with its meals, and whether they've been paid. The payout is the subtotal, paid outside the app.
 - **Checks:** one per Prepper per order; only the owning Prepper can mark it `handed_over`, and only once `paid`.
-- **Built in:** 5.1, 5.5, 5.7, 8.1
+- **Built in:** 5.1, 5.2, 5.5, 5.7, 7.3
 - [Back to data model](../../plan/06-data-model.md)

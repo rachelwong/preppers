@@ -18,6 +18,8 @@ For staging and production:
 1. Point `DATABASE_URL` at that database for one run and use the same script. Don't commit the value.
 2. Or, in the Supabase SQL editor, insert the account row with `account_type = 'admin'` and `status = 'active'`.
 
+Don't change a person's email in the Supabase dashboard. Accounts are matched by email, so they would appear as a new buyer.
+
 ## Add another admin
 
 Done in the app (stage 7.2).

@@ -8,12 +8,12 @@
 | prepperId | uuid        | PK, FK → [PrepperProfile](prepper-profile.md) |       |
 | createdAt  | timestamptz |                                                 |       |
 
-## Fields — FavouriteProduct
+## Fields — FavouriteMeal
 
 | Field     | Type        | Key                            | Rules |
 | --------- | ----------- | ------------------------------ | ----- |
 | accountId | uuid        | PK, FK → [Account](account.md) |       |
-| productId | uuid        | PK, FK → [Product](product.md) |       |
+| mealId | uuid        | PK, FK → [Meal](meal.md) |       |
 | createdAt | timestamptz |                                |       |
 
 ## Links
@@ -22,11 +22,11 @@
 flowchart LR
   FP[FavouritePrepper] -->|"saved by 1"| A[Account]
   FP -->|"points to 1"| PP[PrepperProfile]
-  FR[FavouriteProduct] -->|"saved by 1"| A
-  FR -->|"points to 1"| P[Product]
+  FR[FavouriteMeal] -->|"saved by 1"| A
+  FR -->|"points to 1"| P[Meal]
 ```
 
-- **Does:** saves Preppers and products for later.
+- **Does:** saves Preppers and meals for later.
 - **Checks:** adding twice does nothing; only the owner sees their list.
 - **Built in:** 6.3
 - [Back to data model](../../plan/06-data-model.md)

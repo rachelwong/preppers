@@ -65,7 +65,7 @@ Report findings as a numbered list: file, line, problem, why it matters, suggest
 - The API's OpenAPI spec is the contract between them. The web app generates its API types from it.
 - `e2e` holds the Playwright critical-path tests, also self-contained.
 - Supabase Postgres via Drizzle; Supabase Auth, Storage, `pg_cron`; PostGIS.
-- Stripe test mode with Connect. Resend email. Google Maps and Geocoding. Sentry and pino.
+- Stripe test mode, one platform account (no Connect). Email over SMTP (dedicated Gmail account). Google Maps and Geocoding. Sentry and pino.
 - Vercel: two projects from this repo; web forwards `/api/*` to api.
 
 ## Commands

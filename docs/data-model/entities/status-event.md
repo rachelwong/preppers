@@ -5,7 +5,7 @@
 | Field      | Type        | Key | Rules                                                            |
 | ---------- | ----------- | --- | ---------------------------------------------------------------- |
 | id         | uuid        | PK  |                                                                  |
-| entityType | text        |     | account, PrepperProfile, product, cart, order, invoice, payment |
+| entityType | text        |     | account, PrepperProfile, meal, cart, order, invoice, payment |
 | entityId   | uuid        |     | id in that table                                                 |
 | fromStatus | text        |     | empty when created                                               |
 | toStatus   | text        |     |                                                                  |

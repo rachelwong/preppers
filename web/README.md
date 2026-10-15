@@ -79,7 +79,7 @@ This app has its own dependencies. Run everything from `web`.
 ```text
 web/src/
 ├── routes/        one file per page (TanStack Router)
-├── features/      UI grouped by feature: cart, products, checkout…
+├── features/      UI grouped by feature: cart, meals, checkout…
 ├── components/    shared UI pieces
 │   └── ui/        shadcn/ui components (copied in by the shadcn CLI)
 ├── api/           the API client, query keys, generated schema types

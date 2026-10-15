@@ -29,7 +29,7 @@ Preppers is a marketplace for home cooks ("Preppers") to sell meal prep to busy 
 
 **For admins**
 
-- Manage accounts, review Preppers licences and flag products. Admins are a separate account type: they can't buy or sell.
+- Manage accounts, review Preppers licences and flag meals. Admins are a separate account type: they can't buy or sell.
 - See all purchases.
 
 ## How it's built
@@ -40,7 +40,7 @@ flowchart LR
   A --> D[(Supabase<br/>Postgres, Auth, Storage)]
   A --> S[Stripe]
   A --> G[Google Maps]
-  A --> R[Resend email]
+  A --> R[Email over SMTP]
 ```
 
 1. The React app in the browser only talks to our own API.
@@ -53,9 +53,9 @@ flowchart LR
 | API (`api`)              | Node, Fastify, TypeScript, Drizzle                        |
 | End-to-end tests (`e2e`) | Playwright with plain-English scenarios and video         |
 | Database and sign-in     | Supabase (Postgres, Auth, Storage)                        |
-| Payments                 | Stripe (test mode) with Connect payouts                   |
+| Payments                 | Stripe (test mode), one platform account                |
 | Maps                     | Google Maps and Geocoding                                 |
-| Email                    | Resend                                                    |
+| Email                    | SMTP through a dedicated Gmail account (Resend later)     |
 | Errors                   | Sentry                                                    |
 | Hosting                  | Vercel                                                    |
 

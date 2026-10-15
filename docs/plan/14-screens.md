@@ -2,9 +2,9 @@
 
 Wireframes for every screen. The drawings are kept in the [build plan doc](https://claude.ai/code/artifact/7e4142cf-4e8b-4b3a-ad72-112b782662c1), where you can comment on them; the images here are copies.
 
-Fifteen wireframes cover every screen in the build, grouped by who uses them.
+Seventeen wireframes cover every screen in the build, grouped by who uses them.
 
-![Screen map · 15 wireframes by role](screens/00-screen-map.png)
+![Screen map · 17 wireframes by role](screens/00-screen-map.png)
 
 **How to read the wireframes**
 
@@ -15,18 +15,33 @@ Fifteen wireframes cover every screen in the build, grouped by who uses them.
 - A prepper is a buyer with a prepper profile, so preppers see the buyer screens too.
 - Some screens need small plan changes. They are listed at the end of this section for your OK.
 
+**Who can open each screen**
+
+Full route list and guards: [Authentication](15-authentication.md).
+
+| Access            | Screens                                                                  |
+| ----------------- | ------------------------------------------------------------------------ |
+| Public            | W1 Home, W2 Meals, W3 Meal detail, W4 Prepper page, W5 Cart drawer, W17 Preppers |
+| Guest only        | W6 Sign in (steps 1 and 2)                                               |
+| Signed in         | W6 About you (step 3)                                                    |
+| Buyer             | W7 Checkout, W8 Buyer profile, W9 Receipt detail, W10 Prepper sign-up    |
+| Prepper           | W11 Prepper profile, W12 Prepper meals                                   |
+| Admin             | W13 Admin details, W14 Admin lists, W15 Prepper detail, W16 Purchases    |
+
+- Save (favourite) on W2, W3 and W4 and Check out on W5 are actions that need sign-in. The page itself stays public.
+
 ## W1 Home
 
 The home page gets buyers to meals near them in one step.
 
 ![W1 Home · search, featured, newest](screens/w01-home.png)
 
-1. **Header** (on every page): Meals, Preppers, cart count, Sign in. The cart opens the cart drawer (W5). Once signed in, Sign in becomes the account menu.
+1. **Header** (on every page): Meals, Preppers, cart count, Sign in. The cart opens the cart drawer (W5). Once signed in, Sign in becomes the account menu. For an admin the cart is hidden, an Admin link opens the Meals list (W14), and the menu holds their name, Invite admin and Sign out.
 2. **Postcode search** opens Meals (W2) with the location filter set and kept in the URL.
 3. **Featured meals**: up to 4 meals an admin has picked (plan change 1). See all opens Meals filtered to featured.
 4. **Newest meals**: the 4 most recently added meals. See all opens Meals sorted by newest.
 
-Both rows only show active meals from verified preppers with payouts on.
+Both rows only show active meals from verified preppers.
 
 ## W2 Meals
 
@@ -54,7 +69,7 @@ One meal, with everything a buyer needs before tapping Add to cart.
 4. **Save** adds a favourite. Guests are sent to Sign in (W6) first, then back here.
 5. **Reviews**, newest first, from buyers who bought this meal.
 
-When the meal can't be bought (hidden, flagged, archived, or the prepper isn't verified with payouts on), the page shows "Not available right now" instead of the buttons. An old receipt link still opens it.
+When the meal can't be bought (hidden, flagged, archived, or the prepper isn't verified), the page shows "Not available right now" instead of the buttons. An old receipt link still opens it.
 
 ## W4 Prepper page
 
@@ -82,17 +97,20 @@ The drawer slides in from the right on any page. Only the bottom button changes 
 
 - The cart lives on the server; the browser only holds a cookie.
 - A guest cart left alone for 1 hour is abandoned. Any change restarts the hour.
+- Admins never see the cart drawer, the add buttons or the heart on meals and preppers.
 - Empty cart shows "Your cart is empty" and a link to Meals.
+- A meal that is no longer available (hidden, flagged, archived or its prepper deactivated) stays in the cart, greyed out with "No longer available". Its quantity can't be changed, it can be removed, and the total leaves it out. Check out removes those lines from the cart, tells the buyer which meals were removed, and carries on with the rest. Going back to the cart doesn't bring them back. With no available meals, Check out is turned off.
+- A Prepper can't add their own meals. The server refuses with `own_meal` and the drawer shows "You can't buy your own meals." If a guest cart is merged after sign-in and holds their own meals, those lines are dropped and the drawer says so.
 
 ## W6 Sign in and buyer sign-up
 
-There is no separate sign-up form: the first sign-in creates the buyer account (stages 1.1, 1.3, 1.5).
+There is no separate sign-up form: the first sign-in creates the buyer account (stages 1.1 and 1.3).
 
 ![W6 Sign in and buyer sign-up · 4 steps](screens/w06-sign-in.png)
 
-1. **Email or Google.** The same screen for buyers, preppers and admins.
+1. **Email.** The same screen for buyers, preppers and admins.
 2. **Code**: the code emailed by Supabase Auth. Resend and Use another email sit under the button.
-3. **About you** (first sign-in only): name, plus optional dietary needs. Google fills in the name (plan change 4).
+3. **About you** (first sign-in only): name, plus optional dietary needs.
 4. **Back where you were.** The guest cart is merged in. Coming from "Sign in to check out" lands on Checkout (W7).
 
 - A deactivated account sees "This account has been deactivated" after the code step.
@@ -148,7 +166,7 @@ A signed-in buyer becomes a prepper through the sign-up form from stage 2.2, wit
 4. **Cuisines and delivery**: at least one cuisine, and a delivery radius of 1 to 50 km if they deliver.
 5. **Food safety** (added in 2.9): state and council, licence number and expiry (in the future), supervisor name and certificate number, the licence file (PDF, JPEG or PNG, up to 5 MB), and the tick-box.
 6. **Review**: check every step, then submit. Submit moves them to pending review.
-7. **In review**: they can add meals (hidden for now) and set up Stripe payouts while they wait.
+7. **In review**: they can add meals (hidden for now) while they wait.
 
 **Status, step by step**
 
@@ -156,18 +174,18 @@ A signed-in buyer becomes a prepper through the sign-up form from stage 2.2, wit
 2. Submit moves it to pending review.
 3. An admin approves (verified) or rejects with a reason. Both send an email.
 4. A rejected prepper fixes the details and submits again.
-5. Verified with payouts on puts their meals in browse.
+5. Verified puts their meals in browse.
 
 ## W11 Prepper profile
 
-The prepper's home: what to hand over next and whether they've been paid (stages 5.2, 5.5, 5.7).
+The prepper's home: what to hand over next and whether they've been paid (stages 5.5, 5.7, 7.3).
 
 ![W11 Prepper profile · invoices and payouts](screens/w11-prepper-profile.png)
 
-1. **Status banner**: food safety, payouts and whether the shop is live. If anything blocks selling, the banner says what to fix and links to it.
+1. **Status banner**: food safety and whether the shop is live. If anything blocks selling, the banner says what to fix and links to it.
 2. **Filters**: All, To hand over (paid, not yet handed over), Handed over. Newest first.
 3. **Mark handed over** shows only on paid invoices, and asks to confirm. It completes the buyer's order once every prepper on it has handed over.
-4. **Payouts**: Stripe account state and a link to Stripe. Payout per invoice shows Pending, Sent or Failed (retried).
+4. **Meals and payout**: each invoice lists its meals with quantities and prices. Payout shows Pending or Paid out. Preppers are paid outside the app, and an admin marks it.
 
 Kitchen details and Food safety in the side menu reuse the W10 forms.
 
@@ -186,6 +204,7 @@ Preppers add and look after their meals here (stages 2.4 to 2.7).
 - Price is in whole cents, more than 0.
 - Archive meal asks to confirm. Archived meals are never deleted and still show on old receipts.
 - Until the prepper is verified, the grey note under the list explains why meals don't show in browse.
+- A rejected prepper sees the list read-only. Add meal and the editor are turned off, with a note to fix their details and resubmit.
 
 ## W13 Admin details
 
@@ -204,7 +223,7 @@ One tab each for meals, preppers and buyers, with the same pattern: filter at th
 
 ![W14 Admin lists · meals, preppers, buyers](screens/w14-admin-lists.png)
 
-1. **Prepper filters** (shown): search, food safety status (pending review, verified, rejected, expired), account status and created date. Filtering, sorting and paging happen on the server and stay in the URL.
+1. **Prepper filters** (shown): search, food safety status (pending review, verified, rejected), account status and created date. Filtering, sorting and paging happen on the server and stay in the URL.
 2. **Sort** by created date, newest first.
 3. **Row menu**: view details, deactivate (with a reason) or reactivate. Clicking the row opens Prepper detail (W15).
 4. **Flag** asks for a reason, hides the meal straight away and emails the prepper. Unflag makes it active again. Feature adds it to the home page (plan change 1).
@@ -221,18 +240,48 @@ Clicking a prepper in W14 opens this page. For a pending prepper it shows the li
 
 1. **Queue** (Waiting for review) lists pending preppers, oldest first, so you can work through them without going back to the list.
 2. **View licence file** opens the private file through a short-lived signed link.
-3. **Approve** makes the prepper verified. Their meals go live once payouts are on too.
+3. **Approve** makes the prepper verified. Their meals go live.
 4. **Reject** needs a reason. The prepper can fix the details and send it again.
 
 - Both decisions are saved first, then emailed, and recorded as status events.
 - A verified prepper shows Deactivate account and Reactivate in place of Approve and Reject.
 
+## W16 Purchases
+
+The Purchases tab lists every order, split into one invoice per prepper, so an admin can see what each prepper is owed and record payouts (stage 7.3).
+
+![W16 Purchases · orders, invoices and payouts](screens/w16-admin-purchases.png)
+
+1. **Filters**: date, order status, prepper and pay status (pending or paid out). Filtering, sorting and paging happen on the server and stay in the URL.
+2. **Owed strip**: the total owed to each prepper for the current filter, plus the overall total. It counts invoices that are paid or handed over and not yet paid out.
+3. **Order rows**, newest first. Expanding a row shows one invoice per prepper, each with that prepper's meals, quantities and prices.
+4. **Mark paid out** shows only on paid or handed over invoices that are still pending.
+5. **Confirm** before marking an invoice paid out. The admin pays the prepper outside the app first.
+
+- Marking paid out goes through `transition()` and is logged.
+- Dates are stored in UTC and shown in Brisbane time.
+- Meals always sit under their own prepper's invoice.
+
+## W17 Preppers
+
+Every verified prepper in one list, filtered and paged on the server. It is the Prepper version of Meals (W2) and is linked from the header (stages 3.1 to 3.3).
+
+![W17 Preppers · filters, sort, pages](screens/w17-preppers.png)
+
+1. **Filters**: search, cuisine, dietary tags, distance from a postcode, and "delivers to me". Every filter lives in the URL. They are the same filters and the same search box as W2.
+2. **Sort**: newest (default), or distance once a postcode is set.
+3. **Prepper card**: name, suburb, cuisines, dietary tags, distance rounded to the km, and a "Delivers" badge. Opens Prepper page (W4). The heart saves a favourite once signed in.
+4. **Pages** of 12. Changing a filter goes back to page 1.
+
+- No results shows "No preppers match" and a Clear filters button.
+- Only verified preppers with an active account show. Exact addresses and coordinates never show.
+
 ## Plan changes for these screens
 
-All nine are decided and now in the plan: stages 1.3, 3.5, 3.6, 7.1, 7.4 and 7.6, the Product entity, the class diagram and the business rules.
+All nine are decided and now in the plan: stages 1.3, 3.5, 3.6, 7.1, 7.4 and 7.6, the Meal entity, the class diagram and the business rules.
 
-- [x] **1. Featured meals.** Add `featuredAt` to Product (empty = not featured). Admins set it with Feature / Unfeature in the Meals tab (stage 7.4). Home shows the 4 most recently featured. Until Phase 7, seed a few.
-- [x] **2. Meals list API.** A new Phase 3 stage beside the prepper list (3.1): `GET /products` with search, dietary, cuisine, max price, distance, "delivers to me", sort and paging. Only active meals from verified preppers with payouts on.
+- [x] **1. Featured meals.** Add `featuredAt` to Meal (empty = not featured). Admins set it with Feature / Unfeature in the Meals tab (stage 7.4). Home shows the 4 most recently featured. Until Phase 7, seed a few.
+- [x] **2. Meals list API.** A new Phase 3 stage beside the prepper list (3.1): `GET /meals` with search, dietary, cuisine, max price, distance, "delivers to me", sort and paging. Only active meals from verified preppers.
 - [x] **3. Home and Meals pages.** A new Phase 3 stage for W1 and W2, using the API above.
 - [x] **4. About you step.** Add the first sign-in name and dietary step (W6 step 3) to stage 1.3.
 - [x] **5. Admin "deactivate".** Decided: deactivate replaces suspend. Only admins deactivate and reactivate buyer and prepper accounts. Owners can't deactivate their own account. Admin accounts can't be deactivated or removed. 

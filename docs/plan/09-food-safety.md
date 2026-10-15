@@ -18,7 +18,7 @@ Preppers add a food safety step at sign-up. An admin approves it before they app
 
 ## Where files are kept
 
-- Supabase Storage. Product photos go in a public bucket; licence files go in a private one.
+- Supabase Storage. Meal photos go in a public bucket; licence files go in a private one.
 - The browser uploads straight to Storage with a signed upload link from the API. It never sees the storage secret key.
 
 ## How it works, step by step
@@ -33,11 +33,11 @@ flowchart LR
 ```
 
 1. The Prepper fills in the step and moves to `pending_review` (stage 2.9).
-2. They can keep adding products while they wait.
+2. They can keep adding meals while they wait.
 3. An admin checks the licence file in the queue (stage 7.5). They open it through a short-lived signed link; the private bucket is never public. This is manual; there's no national licence lookup.
 4. The admin approves or rejects with a reason. The Prepper gets an email either way.
-5. Approved Preppers show in browse and can be bought from (once Stripe payouts are on too).
-6. Later: an automatic reminder before the licence runs out, and an `expired` status after it does.
+5. Approved Preppers show in browse and can be bought from.
+6. Licence expiry isn't tracked in the first version. If a licence lapses, an admin deactivates the Prepper.
 
 ## For development
 

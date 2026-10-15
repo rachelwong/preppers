@@ -11,7 +11,7 @@ Read the root `CLAUDE.md` first. This file adds rules for the web app only.
 1. All server calls go through the one API client in `src/api/`. No `fetch` elsewhere.
 2. TanStack Query keys come from `src/api/queryKeys.ts`. No inline key arrays.
 3. Server data lives in TanStack Query only. No copying it into component state or a global store.
-4. Signed-in state comes from the `useMe()` query. Never read or store auth tokens.
+4. Signed-in state comes from the `useMe()` query (`GET /api/me`) only. Route guards are TanStack Router layout routes whose `beforeLoad` reads it with `ensureQueryData`. No auth context, store or `localStorage`. Never read or store auth tokens. See `docs/plan/15-authentication.md`.
 5. API request and response types come from `src/api/schema.d.ts`, generated from the API's `openapi.json` with `pnpm gen:api`. Never hand-write them. Forms use React Hook Form with zod schemas in `src/schemas/` that match those types.
 6. Filters and search terms live in the URL (TanStack Router search params) so refresh and back work.
 7. Money: show with the one formatter in `src/lib/money.ts`; never do maths on prices in the browser for anything that gets sent to the server.

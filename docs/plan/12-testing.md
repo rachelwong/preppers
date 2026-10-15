@@ -60,11 +60,11 @@ Feature: Check out a cart from two Preppers
 
 | #   | Path                                                                                            | Scenario file                   | Added in stage |
 | --- | ----------------------------------------------------------------------------------------------- | ------------------------------- | -------------- |
-| C1  | Sign in with an email code, see your name, sign out, can't reach account pages                  | `sign-in-out.feature`           | 1.7            |
+| C1  | Sign in with an email code, see your name, sign out, can't reach account pages                  | `sign-in-out.feature`           | 1.6            |
 | C2  | Guest adds meals, signs in, cart is still there                                                 | `guest-cart-merge.feature`      | 4.3            |
 | C3  | Buyer checks out meals from two Preppers with a test card, sees one receipt grouped by Prepper | `checkout-two-preppers.feature` | 5.6            |
 | C4  | Prepper marks their invoice handed over; the buyer's order shows completed                     | `hand-over-order.feature`       | 5.7            |
-| C5  | New Prepper signs up with the food safety step; admin approves; Prepper appears in browse     | `prepper-approved.feature`     | 7.5            |
+| C5  | New Prepper signs up with the food safety step; admin approves; Prepper appears in browse     | `prepper-approved.feature`     | 7.6            |
 
 ## Release paths (nightly, video on failure)
 
@@ -77,17 +77,14 @@ Feature: Check out a cart from two Preppers
 | R5  | Declined card, then a retry that succeeds                                  | 5.5            |
 | R6  | Editing the cart mid-checkout cancels the pending order                    | 5.5            |
 | R7  | Buyer reviews a meal they bought; can't review one they didn't             | 6.2            |
-| R8  | Admin flags a meal; it disappears from browse                              | 7.4            |
-| R9  | Admin deactivates an account; that person can't sign in                    | 7.2            |
-
-Prepper payout onboarding (5.2) happens on Stripe's own hosted pages, which change often. It's tested at the API level, plus one recorded manual run per release.
+| R8  | Admin flags a meal; it disappears from browse                              | 7.6            |
+| R9  | Admin deactivates an account; that person can't sign in                    | 7.6            |
 
 ## Handling the tricky parts
 
 - **Email code sign-in:** steps read the code from local Supabase's test inbox through its API. No real email.
-- **Google sign-in:** not automated end to end. The API tests cover our callback with a stubbed response.
 - **Stripe:** use test cards in the Payment Element (it's in an iframe; use Playwright's frame locator). Forward webhooks with the Stripe CLI. Wait for the order to show `paid` before checking the receipt.
-- **Test data:** each scenario creates its own accounts and products through seed helpers, so scenarios can run in any order.
+- **Test data:** each scenario creates its own accounts and meals through seed helpers, so scenarios can run in any order.
 - **Finding elements:** by role and label first (`getByRole`, `getByLabel`). `data-testid` only when nothing else works.
 - **Fixed time:** set the browser clock for scenarios that depend on time.
 

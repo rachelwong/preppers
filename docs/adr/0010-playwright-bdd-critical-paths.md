@@ -23,4 +23,4 @@ Option 1, in its own self-contained `e2e`. `@critical` scenarios run on every PR
 - Each stage that completes a critical path adds its scenario.
 - CI needs local Supabase, both apps and the Stripe CLI running.
 - Checkly can be added later to watch the live site.
-- Stages: 1.7, then 2.8, 3.2, 3.3, 4.3, 5.4–5.7, 6.2, 7.2, 7.4, 7.5, 8.2.
+- Stages: 1.6, then 2.8, 3.2, 3.3, 4.3, 5.4–5.7, 6.2, 7.2, 7.4, 7.5, 8.2.

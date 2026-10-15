@@ -23,8 +23,6 @@
 | supervisorName   | text                   |                                |                                              |
 | supervisorCertNumber | text |                            | typed in; not uploaded                       |
 | licenceFilePath  | text                   |                                | private bucket                               |
-| stripeAccountId  | text                   | UK                             | optional                                     |
-| payoutsEnabled   | boolean                |                                | read from Stripe                             |
 | createdAt        | timestamptz            |                                |                                              |
 | updatedAt        | timestamptz            |                                |                                              |
 
@@ -33,13 +31,13 @@
 ```mermaid
 flowchart LR
   PP[PrepperProfile] -->|"belongs to 1"| A[Account]
-  PP -->|"lists many"| P[Product]
+  PP -->|"lists many"| P[Meal]
   PP -->|"receives many"| I[PrepperInvoice]
   PP -->|"saved in many"| F[Favourites]
 ```
 
-- **Does:** lists products, receives invoices, gets paid out.
-- **Checks:** one per account; address must geocode; licence expiry in the future; only `verified` Preppers with payouts on can be bought from.
+- **Does:** lists meals, receives invoices, is paid outside the app.
+- **Checks:** one per account; address must geocode; licence expiry in the future; only `verified` Preppers can be bought from.
 - **Never sent to the browser:** street, postcode, lat, lng, location, licence fields.
-- **Built in:** 2.1, 2.2, 2.3, 2.9, 5.2, 7.5
+- **Built in:** 2.1, 2.2, 2.3, 2.9, 7.5
 - [Back to data model](../../plan/06-data-model.md)

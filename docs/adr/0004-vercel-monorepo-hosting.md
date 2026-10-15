@@ -24,4 +24,4 @@ Option 3. Two Vercel projects (`web`, `api`) from one repo. Each app has its own
 - The API runs as a function: no in-memory state, no background workers. Scheduled jobs use Supabase `pg_cron` calling `/api/jobs/*`.
 - Vercel Hobby is personal, non-commercial use only. Move to Pro before taking real money.
 - Supabase free pauses after 7 days idle; a weekly GitHub Actions ping prevents it.
-- Stages: 1.6, 8.1, 8.3. Guide: https://vercel.com/docs/monorepos
+- Stages: 1.5, 8.1, 8.3. Guide: https://vercel.com/docs/monorepos

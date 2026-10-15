@@ -2,7 +2,7 @@
 
 Tests that click through the real app in a browser, written as plain-English scenarios and recorded as video.
 
-> Set up in stage 1.7.
+> Set up in stage 1.6.
 
 ## What's in here
 
