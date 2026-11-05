@@ -94,6 +94,17 @@ preppers/
 
 Each app is self-contained: its own dependencies, tests and deploy. The root holds the docs that span the whole product.
 
+## Email account
+
+Sign-in codes and other app emails are sent from one Gmail account made just for this project: **preppers.au@gmail.com**.
+
+- It sends mail only. Nobody needs to read or reply to it, but check it now and then for warnings from Google.
+- Set it up at stage 1.5: turn on 2-Step Verification, then create an app password. See [stage 1.5](docs/plan/08-stages.md) for the Supabase settings.
+- The app password is a secret. It lives only in Supabase's SMTP settings and in the API's `SMTP_PASS` setting on Vercel. It is never written in the repo.
+- Changing this Gmail account's password cancels its app passwords. Make a new one and update both places.
+- Gmail has a daily sending limit and codes can land in spam, so tell testers to check there.
+- If the project ever needs a custom domain, switch to Resend. No app code changes.
+
 ## Project status
 
 Planning is done. Building starts at stage 0.1. Progress is tracked in the [stages checklist](docs/plan/08-stages.md).
