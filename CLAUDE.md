@@ -4,10 +4,11 @@ Read this first in every session on this repo.
 
 ## Roles
 
-- Rachel writes all the code. She is learning backend and SQL; explain backend choices in plain terms.
-- Claude plans, writes each stage's feature doc, reviews code, and keeps docs in sync.
-- Do not write application code into the repo unless Rachel asks for a specific snippet.
-- Docs are for Rachel to code from: plain steps, file names, routes, tables, rules, official links. Short shapes only (a route, a type, a SQL clause), no full implementations.
+- **Claude Code builds Preppers.** It writes the app code, tests and `e2e` scenarios from the approved feature doc, one small step at a time.
+- **Rachel decides and reviews.** She sets the scope, approves each feature doc and test list, reviews every PR, approves doc changes, and merges.
+- The goal is test-driven, reliable, focused, high-quality code and docs from Claude Code. When a way of working isn't giving that, say so and suggest a better one.
+- Rachel is learning backend and SQL. In PR summaries, explain backend choices in plain terms, and show the SQL a Drizzle query produces when it helps.
+- Docs are for Rachel to review and for Claude to build from: plain steps, file names, routes, tables, rules, official links. Short shapes only (a route, a type, a SQL clause), no full implementations.
 
 ## Files for Claude vs people
 
@@ -22,16 +23,80 @@ Read this first in every session on this repo.
 
 If code and docs disagree, raise it; don't silently pick one.
 
+## How every change is built
+
+Use this for **every** request that changes code: starting a stage or step, building a feature, making an adjustment, or fixing a bug. Only skip it for changes with no code, such as docs only, and say so when skipping.
+
+```mermaid
+flowchart LR
+  A[Request] --> B[Feature doc<br/>Rachel approves]
+  B --> C[test-writer NEW<br/>failing tests]
+  C --> D[Rachel OKs<br/>the test list]
+  D --> E[Claude builds<br/>until tests pass]
+  E --> F[test-writer<br/>MAINTAIN]
+  F --> G[code-reviewer]
+  F --> H[docs-checker]
+  G --> I[Claude fixes<br/>reruns checks]
+  H --> I
+  I --> J[PR: Rachel<br/>reviews, merges]
+```
+
+1. **Doc first.** Write or update the feature doc. A bug fix or adjustment updates the doc of the stage it belongs to. Rachel approves it.
+2. **Tests first.** Run `test-writer` in NEW mode. For a bug fix, it writes a failing test that reproduces the bug. Commit the tests on their own (`test: ...`), then show Rachel the list of behaviours they cover and wait for her OK.
+3. **Plan the step.** List the files to change. Keep each PR to one concern and under ~300 lines. If it won't fit, split it and tell Rachel.
+4. **Build until the tests pass.** Don't change the tests committed in step 2 while building. If a test looks wrong, stop and ask.
+5. **Run every check** in each app touched: tests, lint and type-check. If a route changed, regenerate `openapi.json` and run `pnpm gen:api` in `web`. If the stage completes a critical path, run its `e2e` scenario.
+6. **Check the tests.** Run `test-writer` in MAINTAIN mode.
+7. **Review.** Run `code-reviewer` and `docs-checker` in parallel. Always pass the feature doc's path, because subagents can't see the chat.
+8. **Fix** every "Must fix" finding, then rerun step 5. List any "Should fix" items you left, and why.
+9. **Open the PR** with a short summary:
+   - what changed and why
+   - how it was tested
+   - breaking changes and deploy steps (from the feature doc)
+   - backend and SQL notes in plain terms
+   - proposed doc changes (old text, new text, evidence)
+10. **Rachel reviews and merges.** Never push to `main` or merge yourself.
+
+### Code quality
+
+- Build only what the feature doc asks for.
+- Keep code flat: early returns, no more than two levels of nesting.
+- No single-use helpers, constants or types that add no clarity. No wrappers that only pass values through.
+- Follow the rules in the folder's `CLAUDE.md` while building, not just in review.
+
+### Breaking changes
+
+- Every feature doc lists its API, database and env var changes, and says whether each one breaks anything.
+- Add the new thing first, and remove the old thing in a later stage, so the live web app and API always understand each other.
+- Database migrations only move forward and must work with both the old and the new API code.
+- Deploy order: when adding something, database, then API, then web. When removing something, the reverse.
+
+### Sessions
+
+- One stage per session. Start the next stage in a fresh session.
+- If a session gets long, write a short handoff note (done, open decisions, next step, files), then start a fresh session from it.
+- Small commits on the stage branch with `feat:`, `fix:`, `test:`, `docs:` or `chore:`.
+
+### Subagents
+
+They live in `.claude/agents/`:
+
+- `test-writer` writes tests from the feature doc, without reading the code, so the tests check the doc and not the code.
+- `code-reviewer` reviews the code with fresh eyes. It never edits.
+- `docs-checker` checks the docs read clearly and match the code. It never edits.
+
+If a subagent finds a likely bug, fix the code. Never change a test to hide it.
+
 ## Starting a stage ("start X.Y")
 
 1. Read the current code and the scope of every later stage in `docs/plan/08-stages.md`.
 2. List anything that would block or force rework later. Rachel decides.
-3. Write `docs/features/X.Y-<name>.md` from `docs/features/_template.md`.
-4. Wait for Rachel to review the doc before she codes.
+3. Write `docs/features/X.Y-<name>.md` from `docs/features/_template.md`, and wait for Rachel to approve it.
+4. Then follow "How every change is built" from step 2.
 
 ## Reviewing a stage
 
-Check, in order:
+Reviews run through the subagents (see "How every change is built"). `code-reviewer` checks, in order:
 
 1. The feature doc's Done and Check lines.
 2. `docs/plan/04-business-rules.md` rules the stage touches.

@@ -4,8 +4,9 @@ Read the root `CLAUDE.md` first. This file adds rules for the API only.
 
 ## Role reminder
 
-- Rachel writes the code and is learning backend and SQL. Explain backend reasons in plain terms, and point to the SQL a Drizzle query produces when it helps.
-- Don't write app code unless asked for a snippet.
+- Claude builds the API from the approved feature doc. Rachel reviews.
+- Rachel is learning backend and SQL. In PR summaries, explain backend reasons in plain terms, and show the SQL a Drizzle query produces when it helps.
+- Follow these rules while building, and check them in review.
 
 ## Rules to check in review
 

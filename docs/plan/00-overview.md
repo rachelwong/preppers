@@ -1,8 +1,9 @@
 # Preppers — build plan overview
 
 - **What:** a marketplace where home cooks (Preppers) sell meal-prep to buyers.
-- **Who builds:** Rachel writes the code. Claude plans, writes each stage's feature doc, reviews, and keeps the docs up to date.
-- **Who the docs are for:** Rachel, to write code from. They are instructions for a person, not prompts for Claude to generate code.
+- **Who builds:** Claude Code writes the code, tests and docs, one small reviewed step at a time. Rachel sets the scope, approves each plan and test list, reviews every pull request, and merges.
+- **Who the docs are for:** Rachel to review, and Claude to build from. They stay plain and readable: steps, names and rules, not code.
+- **The aim:** find better ways to get test-driven, reliable, focused, high-quality code and docs from Claude Code.
 - **Source of truth:** the [Notion Preppers page](https://app.notion.com/p/rachelwong/Preppers-3e3375d34b348008ac5dc6f1bc3dc7c0).
 - **Size:** 9 phases, 53 small stages, one pull request each.
 

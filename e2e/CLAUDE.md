@@ -4,7 +4,8 @@ Read the root `CLAUDE.md` first. This file adds rules for the end-to-end tests.
 
 ## Role reminder
 
-- Rachel writes the scenarios and steps. Review them; don't write them unless asked for a snippet.
+- The `test-writer` subagent writes the scenarios and steps from the feature doc and `docs/plan/12-testing.md`. Rachel reviews that each scenario reads as plain English.
+- Follow these rules while writing, and check them in review.
 
 ## Rules to check in review
 

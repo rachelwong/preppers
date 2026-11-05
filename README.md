@@ -2,7 +2,7 @@
 
 Home-cooked meal prep, made by people near you.
 
-Preppers is a marketplace for home cooks ("Preppers") to sell meal prep to busy people nearby. Think Airtasker, but just for meal prep. It's a hobby project, built in small stages to learn full-stack development.
+Preppers is a marketplace for home cooks ("Preppers") to sell meal prep to busy people nearby. Think Airtasker, but just for meal prep. It's a hobby project, built in small stages with Claude Code, to learn full-stack development and how to get test-driven, reliable, high-quality work out of an AI coding agent.
 
 > "Prepping in Australia is distinctive: less about guns and militias, more about food, water and community. This difference matters, because the threats most Australians imagine are not urban shootouts or civil war. Increasingly, they imagine frequent floods, bushfires, heatwaves and supply-chain breakdowns."
 
@@ -119,4 +119,31 @@ Planning is done. Building starts at stage 0.1. Progress is tracked in the [stag
 
 ## A note on AI
 
-This project is built by a person, with Claude helping to plan, review code and keep docs up to date. Files named `CLAUDE.md` are instructions for Claude, not for people.
+Claude Code writes the code, tests and docs for this project, one small step at a time. Rachel sets the scope, approves each plan and test list, reviews every pull request and merges. Files named `CLAUDE.md` are instructions for Claude, not for people.
+
+### Claude helpers (subagents)
+
+Three Claude Code helpers live in `.claude/agents/`. Each one starts fresh, without the planning chat, so it checks the work with fresh eyes. Run `/agents` in Claude Code to see them.
+
+| Helper | What it does | Changes files? |
+| --- | --- | --- |
+| `test-writer` | Writes failing tests and `e2e` scenarios from a feature doc, then keeps the tests healthy after each change | Test files only |
+| `code-reviewer` | Reviews a stage against its feature doc and the review rules | No |
+| `docs-checker` | Checks the docs are easy to read and still match the code | No |
+
+Claude runs them on its own for every stage, feature, adjustment and bug fix (see [How we work](docs/plan/01-how-we-work.md)):
+
+1. **Before building:** `test-writer` writes failing tests from the feature doc. You OK the list of behaviours.
+2. **Claude builds** until the tests pass.
+3. **After the change:** `test-writer` reruns all tests, updates only the ones the feature doc says should change, fixes flaky ones, reports likely bugs, and suggests up to 3 new edge cases.
+4. **Review:** `code-reviewer` and `docs-checker` run in parallel, and Claude fixes what they find.
+5. **Finish:** you review the PR, approve the doc changes and merge. The next stage starts in a fresh session.
+
+You can also call one by name, e.g. "Run the docs-checker on stage 2.3".
+
+Tips:
+
+- The helpers can't see the chat, so Claude always passes them the feature doc.
+- Tests are committed before the code, so any change to them shows in the diff.
+- The test-writer never loosens a test to make it pass. Likely bugs and new edge cases come back to you to decide.
+- Skip the helpers for tiny changes. Just run the tests.

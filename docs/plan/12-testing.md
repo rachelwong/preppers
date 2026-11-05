@@ -2,6 +2,18 @@
 
 Every critical path is written as a plain-English scenario, run in a real browser, and recorded as a video. The scenarios are the documentation.
 
+## Tests come first
+
+Every change starts with failing tests, written from the feature doc before any code.
+
+1. Claude's `test-writer` writes the tests from the feature doc only, without reading the code.
+2. You OK the list of behaviours they cover. The tests are committed on their own.
+3. Claude builds until they pass, without changing them.
+4. After every change, `test-writer` reruns all tests. It updates a test only when the feature doc says the behaviour changed, fixes flaky tests, and reports likely bugs instead of hiding them.
+5. It suggests up to 3 new edge cases that matter to buyers, Preppers, admins or the business. You choose which to add.
+
+See "How every change is built" in the root `CLAUDE.md`.
+
 ## Test layers
 
 | Layer          | Where | Tools                                                    | Runs                         |
@@ -27,7 +39,7 @@ flowchart LR
   R --> A[GitHub Actions<br/>artifact, 30 days]
 ```
 
-1. You write the scenario in a `.feature` file: Given / When / Then, in plain English.
+1. Claude's `test-writer` writes the scenario in a `.feature` file (Given / When / Then, in plain English), and you check it reads clearly.
 2. playwright-bdd turns each scenario into a Playwright test, using step code in `e2e/steps/`.
 3. Playwright runs it in Chromium against the web app and API.
 4. Each critical-path run records a video. Each click and typed value is labelled on screen, with the scenario name in the corner.

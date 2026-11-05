@@ -4,7 +4,8 @@ Read the root `CLAUDE.md` first. This file adds rules for the web app only.
 
 ## Role reminder
 
-- Rachel writes the code. Review and explain; don't write app code unless asked for a snippet.
+- Claude builds the web app from the approved feature doc. Rachel reviews.
+- Follow these rules while building, and check them in review.
 
 ## Rules to check in review
 
