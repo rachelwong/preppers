@@ -14,11 +14,11 @@ for app in api web; do
   [ -n "$(git -C "$root" status --porcelain -- "$app")" ] || continue
 
   for script in test lint typecheck; do
-    output=$(cd "$root/$app" && pnpm run --if-present "$script" 2>&1)
+    output=$(cd "$root/$app" && npm run --if-present "$script" 2>&1)
     [ $? -eq 0 ] && continue
 
     failed+="
-== $app: pnpm $script failed ==
+== $app: npm $script failed ==
 $(tail -n 40 <<<"$output")
 "
   done

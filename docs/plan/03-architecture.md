@@ -85,8 +85,8 @@ flowchart LR
 ```
 
 1. The API declares a zod schema for every route's params, body and response.
-2. `pnpm openapi` in `api` writes `openapi.json` from those schemas. It's committed.
-3. `pnpm gen:api` in `web` reads that file and writes `src/api/schema.d.ts`.
+2. `npm run openapi` in `api` writes `openapi.json` from those schemas. It's committed.
+3. `npm run gen:api` in `web` reads that file and writes `src/api/schema.d.ts`.
 4. CI regenerates both and fails if either is out of date, so a route change can't silently break the web app.
 5. Enums the web app shows (dietary tags, statuses) come through the generated types. Display labels live in the web app.
 

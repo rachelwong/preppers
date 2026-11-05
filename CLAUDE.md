@@ -15,11 +15,11 @@ Hobby app, few users. Build only for realistic edge cases.
 
 1. Non-trivial change: short plan first. Payments, auth, migrations: feature doc in `docs/features/`, Rachel approves.
 2. Feature or bug fix: invoke `mattpocock-skills:tdd` skill. Failing test first, then build until it passes. Never weaken a test to make it pass.
-3. Route changed: `pnpm openapi` (api), `pnpm gen:api` (web). A Stop hook runs test, lint and type-check in changed apps.
+3. Route changed: `npm run openapi` (api), `npm run gen:api` (web). A Stop hook runs test, lint and type-check in changed apps.
 4. Feature done: run `code-reviewer`, fix its "Must fix" items. Stage done: run `docs-checker`, propose its doc changes.
 5. Never commit, push or branch. Present the diff and a suggested commit message (`feat:`, `fix:`, `test:`, `docs:`, `chore:`).
 
 ## Commands
 
-- api: `pnpm dev`, `pnpm test`, `pnpm db:migrate`, `pnpm openapi`
-- web: `pnpm dev`, `pnpm test`, `pnpm gen:api`
+- api: `npm run dev`, `npm test`, `npm run db:migrate`, `npm run openapi`
+- web: `npm run dev`, `npm test`, `npm run gen:api`

@@ -7,7 +7,7 @@ Admin is its own account type. An admin runs the site and can't buy, sell or rev
 There are no admin screens until an admin exists, so the first one is made from the command line (script built in stage 1.4).
 
 1. In `api/.env`, set `SEED_ADMIN_EMAIL` to your own email address.
-2. Inside `api`, run `pnpm db:seed-admin`.
+2. Inside `api`, run `npm run db:seed-admin`.
    - No account with that email: it creates an `admin` account.
    - A buyer account exists but has no orders, cart items or Prepper profile: it changes it to `admin`.
    - Anything else: it stops and says why. Nothing is changed.

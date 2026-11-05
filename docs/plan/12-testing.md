@@ -44,7 +44,7 @@ flowchart LR
 3. Playwright runs it in Chromium against the web app and API.
 4. Each critical-path run records a video. Each click and typed value is labelled on screen, with the scenario name in the corner.
 5. Playwright also saves a trace, which you can step through action by action with the network calls and console at that moment.
-6. The HTML report holds the videos and traces. GitHub Actions keeps it as a download for 30 days. Open it with `pnpm exec playwright show-report <folder>`.
+6. The HTML report holds the videos and traces. GitHub Actions keeps it as a download for 30 days. Open it with `npx playwright show-report <folder>`.
 
 ## Video settings
 

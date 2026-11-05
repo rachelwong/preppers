@@ -25,11 +25,11 @@ The React app that buyers, Preppers and admins use in the browser.
 
 This app has its own dependencies. Run everything from `web`.
 
-1. `pnpm install`
+1. `npm install`
 2. Copy `.env.example` to `.env` and fill in the values.
 3. Start the API in another terminal (see `api/README.md`).
-4. `pnpm dev`
-5. After an API change, run `pnpm gen:api` to refresh the API types.
+4. `npm run dev`
+5. After an API change, run `npm run gen:api` to refresh the API types.
 
 ## Environment variables
 
@@ -46,16 +46,16 @@ This app has its own dependencies. Run everything from `web`.
 - shadcn/ui is the base design system, with Tailwind CSS.
 - Its components are copied into `src/components/ui/`, so they are our code and we can change them.
 - They are built on Radix, which handles keyboard use and screen readers.
-- Add one with the CLI, for example `pnpm dlx shadcn@latest add button`. Set-up steps: [shadcn/ui with Vite](https://ui.shadcn.com/docs/installation/vite).
+- Add one with the CLI, for example `npx shadcn@latest add button`. Set-up steps: [shadcn/ui with Vite](https://ui.shadcn.com/docs/installation/vite).
 - Colours, spacing and corner radius are CSS variables in one place. Change them there, not component by component.
 - Forms use React Hook Form; lists use TanStack Table.
 
 ## How the app talks to the API
 
 - Every call to the server is a function in `src/api/`. Components never write `fetch` themselves.
-- Which endpoints exist is decided by the API, not by this folder. The API lists them in `openapi.json`, and `pnpm gen:api` turns that list into types in `src/api/schema.d.ts`.
+- Which endpoints exist is decided by the API, not by this folder. The API lists them in `openapi.json`, and `npm run gen:api` turns that list into types in `src/api/schema.d.ts`.
 - The one client handles the `/api` path, the session cookie, the `{ code, message, details }` error shape and 401 responses, so none of that is repeated.
-- To use a new endpoint: the API adds it, run `pnpm openapi` there and `pnpm gen:api` here, then add a function for it in `src/api/`.
+- To use a new endpoint: the API adds it, run `npm run openapi` there and `npm run gen:api` here, then add a function for it in `src/api/`.
 
 ## Server data and TanStack Query
 

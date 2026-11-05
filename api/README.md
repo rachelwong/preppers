@@ -27,12 +27,12 @@ The server behind the web app. It handles sign-in, applies the business rules, a
 
 This app has its own dependencies. Run everything from `api`.
 
-1. `pnpm install`
+1. `npm install`
 2. Copy `.env.example` to `.env` and fill in the values.
-3. `pnpm db:reset` to start local Supabase and seed it.
-4. `pnpm db:seed-admin` to make your own email an admin (see [Admin set-up](../docs/plan/13-admin-setup.md)).
-5. `pnpm dev`
-6. After changing a route, run `pnpm openapi` and commit `openapi.json`. The web app builds its types from it.
+3. `npm run db:reset` to start local Supabase and seed it.
+4. `npm run db:seed-admin` to make your own email an admin (see [Admin set-up](../docs/plan/13-admin-setup.md)).
+5. `npm run dev`
+6. After changing a route, run `npm run openapi` and commit `openapi.json`. The web app builds its types from it.
 
 ## Environment variables
 
@@ -50,7 +50,7 @@ This app has its own dependencies. Run everything from `api`.
 | `SMTP_PASS`                 | Its app password                            |
 | `SENTRY_DSN`                | Sentry project for the API                  |
 | `JOBS_SECRET`               | Shared with `pg_cron` to call `/api/jobs/*` |
-| `SEED_ADMIN_EMAIL`          | Email that `pnpm db:seed-admin` makes admin (local use only) |
+| `SEED_ADMIN_EMAIL`          | Email that `npm run db:seed-admin` makes admin (local use only) |
 
 All of these are secrets. They live in `.env` locally and in Vercel settings when deployed. Never commit them.
 

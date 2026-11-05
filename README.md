@@ -66,14 +66,14 @@ flowchart LR
 You'll need:
 
 - Node.js (version set in each app's `.nvmrc`)
-- pnpm
+- npm
 - Docker (for local Supabase)
 - The Supabase CLI
 
 The web app and API are separate projects with their own dependencies. Set up each one:
 
-1. **API:** in `api`, run `pnpm install`, copy `.env.example` to `.env`, run `pnpm db:reset`, then `pnpm dev`.
-2. **Web app:** in a second terminal, in `web`, run `pnpm install`, copy `.env.example` to `.env`, then `pnpm dev`.
+1. **API:** in `api`, run `npm install`, copy `.env.example` to `.env`, run `npm run db:reset`, then `npm run dev`.
+2. **Web app:** in a second terminal, in `web`, run `npm install`, copy `.env.example` to `.env`, then `npm run dev`.
 3. Open the web app's local address. Its `/api` calls are forwarded to the API.
 
 Each app's own README has the details.

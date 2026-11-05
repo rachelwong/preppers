@@ -22,7 +22,7 @@ Each stage lists what to **build**, how you know it's **done**, what Claude will
   - Docs: [Fastify testing](https://fastify.dev/docs/latest/Guides/Testing/)
 - [ ] **Database setup** (0.3)
   - Build: local Supabase, Drizzle, `accounts` table with status, seed and reset scripts.
-  - Done: `pnpm db:reset` rebuilds the database; one test hits it.
+  - Done: `npm run db:reset` rebuilds the database; one test hits it.
   - Check: migrations committed; no secret keys in the web app.
   - Docs: [Supabase local development](https://supabase.com/docs/guides/local-development), [Drizzle on Supabase](https://supabase.com/docs/guides/database/drizzle), [Drizzle get started](https://orm.drizzle.team/docs/get-started/supabase-new), [Drizzle migrations](https://orm.drizzle.team/docs/kit-overview), [Row level security](https://supabase.com/docs/guides/database/postgres/row-level-security)
 - [ ] **Web shell** (0.4)
@@ -60,7 +60,7 @@ Each stage lists what to **build**, how you know it's **done**, what Claude will
   - Done: all three steps and the redirect tested; About you shows only once.
   - Check: sign-in state only lives in TanStack Query (`/me`), read by the router's `beforeLoad` in layout routes (`_guest`, `_auth`, `_buyer`, `_admin`; `_prepper` is added in stage 2.1); `redirect` only accepts same-site paths, and for an admin only public pages or `/admin/*`.
 - [ ] **Permission checks** (1.4)
-  - Build: admin and buyer guards (the Prepper guards come with the profile table in 2.1); `pnpm db:seed-admin` script that makes the first admin from `SEED_ADMIN_EMAIL` (see [Admin set-up](13-admin-setup.md)).
+  - Build: admin and buyer guards (the Prepper guards come with the profile table in 2.1); `npm run db:seed-admin` script that makes the first admin from `SEED_ADMIN_EMAIL` (see [Admin set-up](13-admin-setup.md)).
   - Done: each guard tested for no session (401), wrong role (403), deactivated (403) and allowed.
   - Check: checks happen on the server, not just in the UI; admins are refused on cart, checkout and Prepper profile routes; all admin routes sit under `/api/admin` with one `requireAdmin`; guards match the table in [Authentication](15-authentication.md).
 - [ ] **Staging site** (1.5)

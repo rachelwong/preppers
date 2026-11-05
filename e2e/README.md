@@ -23,9 +23,9 @@ This folder has its own dependencies.
 
 1. Start the API and the web app (see their READMEs).
 2. Start the Stripe webhook forwarder: `stripe listen --forward-to localhost:<api port>/api/stripe/webhook`.
-3. In `e2e`: `pnpm install`, then `pnpm exec playwright install chromium`.
-4. `pnpm test:critical` for the critical paths, or `pnpm test` for everything.
-5. `pnpm exec playwright show-report` to watch the videos and step through traces.
+3. In `e2e`: `npm install`, then `npx playwright install chromium`.
+4. `npm run test:critical` for the critical paths, or `npm test` for everything.
+5. `npx playwright show-report` to watch the videos and step through traces.
 
 ## Tags
 
