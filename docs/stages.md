@@ -21,6 +21,10 @@ Each stage lists what to **build**, how you know it's **done**, what review **ch
   - Check: no stack traces leak; testable without a server; runs locally and as a Vercel Function.
   - Docs: [Fastify testing](https://fastify.dev/docs/latest/Guides/Testing/)
 - [ ] **Database setup** (0.3)
+  - Before: Claude prompts Rachel to install, then checks `docker info` and `supabase --version`.
+    1. `brew install --cask docker-desktop`; open once, accept licence and helper.
+    2. Settings → Resources: memory 4–6 GB, 4 CPUs. General: start at login off.
+    3. `brew install supabase/tap/supabase`.
   - Build: local Supabase, Drizzle, `accounts` table, seed and reset scripts.
   - Done: `npm run db:reset` rebuilds the database; one test hits it.
   - Check: migrations committed; no secret keys in web.

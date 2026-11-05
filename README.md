@@ -47,7 +47,7 @@ The browser only talks to our API. The API checks who you are, applies the busin
 
 ## Getting started
 
-You'll need Node (version in each app's `.nvmrc`), npm, Docker (runs local Supabase) and the Supabase CLI.
+You'll need Node (version in each app's `.nvmrc`), npm, Docker Desktop (runs local Supabase) and the Supabase CLI.
 
 1. **API:** in `api`, run `npm install`, copy `.env.example` to `.env`, run `npm run db:reset`, then `npm run dev`.
 2. **Web:** in `web`, run `npm install`, copy `.env.example` to `.env`, then `npm run dev`.
