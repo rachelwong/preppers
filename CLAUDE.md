@@ -14,7 +14,7 @@ Hobby app, few users. Build only for realistic edge cases.
 ## Workflow
 
 1. Non-trivial change: short plan first. Payments, auth, migrations: feature doc in `docs/features/`, Rachel approves.
-2. Failing test first, then build until it passes. Never weaken a test to make it pass.
+2. Feature or bug fix: invoke `mattpocock-skills:tdd` skill. Failing test first, then build until it passes. Never weaken a test to make it pass.
 3. Route changed: `pnpm openapi` (api), `pnpm gen:api` (web). A Stop hook runs test, lint and type-check in changed apps.
 4. Feature done: run `code-reviewer`, fix its "Must fix" items. Stage done: run `docs-checker`, propose its doc changes.
 5. Never commit, push or branch. Present the diff and a suggested commit message (`feat:`, `fix:`, `test:`, `docs:`, `chore:`).

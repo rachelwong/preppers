@@ -10,6 +10,9 @@
       "Bash(git switch --create:*)"
     ]
   },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": false
+  },
   "hooks": {
     "PostToolUse": [
       {
