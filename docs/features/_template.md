@@ -35,6 +35,15 @@ Numbered steps in the order to build them. Each step names the file, route, tabl
 ## Edge cases
 
 - <case> → <expected behaviour>
+- Not covering: <case> → <why it isn't worth it for this app>
+
+## Breaking changes and deploy
+
+- **API:** <routes or fields added, changed or removed> → <safe or breaking>
+- **Database:** <migrations> → <works with the old and new API code?>
+- **Env vars:** <new or changed, and where: web, api, Supabase>
+- **Deploy order:** <e.g. migration, then API, then web>
+- **Roll back:** <how to undo if it breaks>
 
 ## Done when
 
