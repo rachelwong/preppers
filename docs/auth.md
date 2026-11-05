@@ -142,7 +142,7 @@ sequenceDiagram
   B->>A: POST /api/auth/verify {email, code}
   A->>S: verify code
   S-->>A: tokens
-  A->>D: find or create account; merge guest cart (4.3)
+  A->>D: find or create account, merge guest cart (4.3)
   A-->>B: Set-Cookie + account
 ```
 
