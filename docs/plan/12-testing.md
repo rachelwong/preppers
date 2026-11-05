@@ -7,7 +7,7 @@ Every critical path is written as a plain-English scenario, run in a real browse
 Every change starts with failing tests, written from the feature doc before any code.
 
 1. Claude's `test-writer` writes the tests from the feature doc only, without reading the code.
-2. You OK the list of behaviours they cover. The tests are committed on their own.
+2. You OK the list of behaviours they cover and commit the tests on their own.
 3. Claude builds until they pass, without changing them.
 4. After every change, `test-writer` reruns all tests. It updates a test only when the feature doc says the behaviour changed, fixes flaky tests, and reports likely bugs instead of hiding them.
 5. It suggests up to 3 new edge cases that matter to buyers, Preppers, admins or the business. You choose which to add.

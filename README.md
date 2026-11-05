@@ -119,7 +119,7 @@ Planning is done. Building starts at stage 0.1. Progress is tracked in the [stag
 
 ## A note on AI
 
-Claude Code writes the code, tests and docs for this project, one small step at a time. Rachel sets the scope, approves each plan and test list, reviews every pull request and merges. Files named `CLAUDE.md` are instructions for Claude, not for people.
+Claude Code writes the code, tests and docs for this project, one small step at a time. Rachel sets the scope, approves each plan and test list, reviews every diff, and commits and pushes. Claude never commits. Files named `CLAUDE.md` are instructions for Claude, not for people.
 
 ### Claude helpers (subagents)
 
@@ -133,17 +133,17 @@ Three Claude Code helpers live in `.claude/agents/`. Each one starts fresh, with
 
 Claude runs them on its own for every stage, feature, adjustment and bug fix (see [How we work](docs/plan/01-how-we-work.md)):
 
-1. **Before building:** `test-writer` writes failing tests from the feature doc. You OK the list of behaviours.
+1. **Before building:** `test-writer` writes failing tests from the feature doc. You OK the list of behaviours and commit the tests.
 2. **Claude builds** until the tests pass.
 3. **After the change:** `test-writer` reruns all tests, updates only the ones the feature doc says should change, fixes flaky ones, reports likely bugs, and suggests up to 3 new edge cases.
 4. **Review:** `code-reviewer` and `docs-checker` run in parallel, and Claude fixes what they find.
-5. **Finish:** you review the PR, approve the doc changes and merge. The next stage starts in a fresh session.
+5. **Finish:** Claude presents the uncommitted diff. You review it, ask Claude anything, approve the doc changes, then commit and push. The next stage starts in a fresh session.
 
 You can also call one by name, e.g. "Run the docs-checker on stage 2.3".
 
 Tips:
 
 - The helpers can't see the chat, so Claude always passes them the feature doc.
-- Tests are committed before the code, so any change to them shows in the diff.
+- You commit the tests before the code is built, so any later change to them shows in the diff.
 - The test-writer never loosens a test to make it pass. Likely bugs and new edge cases come back to you to decide.
 - Skip the helpers for tiny changes. Just run the tests.

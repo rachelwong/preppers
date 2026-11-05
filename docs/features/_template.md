@@ -1,7 +1,6 @@
 # <phase>.<n> — <stage name>
 
-- **Branch:** `stage/<phase>.<n>-<name>`
-- **Depends on:** <stages that must be merged first>
+- **Depends on:** <stages that must be committed first>
 - **Business rules:** <links to the rules in ../plan/04-business-rules.md this stage enforces>
 - **Entities:** <links to ../data-model/entities/*.md this stage touches>
 

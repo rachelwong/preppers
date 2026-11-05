@@ -20,7 +20,7 @@ Drizzle, connected through the Supabase pooler with `prepare: false`. Turn off t
 
 ## Consequences
 
-- SQL is learned along the way; migrations are readable in each PR.
+- SQL is learned along the way; migrations are readable in each diff.
 - Steeper first week than Prisma.
 - Row-level security is on with no policies, as a backstop.
 - Stages: 0.3 onward. Guide: https://supabase.com/docs/guides/database/drizzle

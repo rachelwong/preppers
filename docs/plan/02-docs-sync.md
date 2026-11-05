@@ -4,7 +4,7 @@ Modelled on [Amendary](https://amendary.com/): every doc change comes with proof
 
 ```mermaid
 flowchart LR
-  CH[Code change<br/>stage PR or decision] --> CL[Claude checks<br/>every doc in the list]
+  CH[Code change<br/>stage or decision] --> CL[Claude checks<br/>every doc in the list]
   CL --> PR[Proposals<br/>old, new, evidence]
   PR --> RV[You review<br/>one at a time]
   RV -->|you edit it| PR
@@ -15,11 +15,11 @@ flowchart LR
 
 ## Step by step
 
-1. A stage PR or a decision changes something.
+1. A stage or a decision changes something.
 2. Claude checks every doc in the list below.
-3. For each thing now wrong or missing, Claude writes a proposal: which doc, the old text, the new text, and the proof (PR, commit or decision).
+3. For each thing now wrong or missing, Claude writes a proposal: which doc, the old text, the new text, and the proof (file, commit or decision).
 4. You approve, edit or reject each proposal.
-5. Claude applies only the approved ones: repo docs go in the same PR; Notion and the Claude build plan are updated through the connectors.
+5. Claude applies only the approved ones: repo docs go in the same uncommitted diff for you to commit; Notion and the Claude build plan are updated through the connectors.
 6. At the end of each phase, Claude rereads all docs against `main` and sends any fixes the same way.
 
 ## Hard rules

@@ -3,13 +3,15 @@
 Each stage lists what to **build**, how you know it's **done**, what Claude will **check** in review, and the official **docs** to read first.
 
 - These lines are the scope, not the full instructions. When you reach a stage, Claude writes its feature doc in `docs/features/` (see [How we work](01-how-we-work.md)).
-- Tick a stage when its PR is merged and its doc updates are approved.
+- Tick a stage when you've committed it and approved its doc updates.
 - Stage 3.3 already has a worked "How" list as an example of the detail a feature doc gives.
 
 ## Phase 0 — Foundations
 
 - [ ] **Repo setup** (0.1)
   - Build: `web` and `api` as separate projects, each with its own `package.json`, lockfile, strict TypeScript, ESLint, Prettier and Vitest. One GitHub Actions workflow per app, triggered by changes in its folder.
+  - Build: ESLint rules that enforce `AGENTS.md`: `curly: all`, `no-magic-numbers` (allow -1, 0, 1), `id-length` (max 30), `padding-line-between-statements` (blank line around blocks), and `eslint-plugin-boundaries` for the layers (`api`: routes → services → db; `web`: routes/components → hooks → `src/api`).
+  - Build: install ESLint in each app so the lint hook in `.claude/settings.json` (already in the repo) lints each file Claude edits.
   - Done: a sample test passes in CI for each app.
   - Check: no root `package.json`; no imports across app folders; no app code yet.
   - Docs: [Build and test Node.js](https://docs.github.com/en/actions/tutorials/build-and-test-code/nodejs), [Workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax), [Use secrets](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets)
@@ -37,7 +39,7 @@ Each stage lists what to **build**, how you know it's **done**, what Claude will
   - Done: allowed move saves status and event together; bad move returns 409 and saves nothing.
   - Check: nothing else writes a status directly.
 - [ ] **Docs setup** (0.7)
-  - Build: `CLAUDE.md`, ADRs, plan and templates are already drafted in this folder; review them and commit. Add a `doc-sync` skill for Claude Code.
+  - Build: `CLAUDE.md`, ADRs, plan and templates are already drafted in this folder; Rachel reviews and commits them. Add a `doc-sync` skill for Claude Code.
   - Done: the skill turns a sample diff into proposals with old text, new text and proof.
   - Check: the skill never writes without approval.
 
