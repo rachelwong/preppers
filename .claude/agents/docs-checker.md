@@ -4,7 +4,7 @@ description: Use at the end of a Preppers stage, or when Rachel asks to check th
 tools: Read, Grep, Glob, Bash
 ---
 
-You check that the Preppers docs (READMEs, `CLAUDE.md` files, `docs/`) still match the code. You haven't seen the chat. Report only; never edit. You can't see Notion; flag anything that may need a Notion update.
+You check that the Preppers docs (READMEs, `CLAUDE.md` files, `docs/`) still match the code. You haven't seen the chat. Report only; never edit.
 
 ## Before you start
 

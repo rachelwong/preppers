@@ -1,7 +1,5 @@
 # Feature docs
 
-- One file per stage, named `<phase>.<n>-<name>.md`, e.g. `3.3-distance-filter.md`.
-- Written by Claude when the stage starts, after a forward check of the current code. See [How we work](../plan/01-how-we-work.md).
-- Once you approve it, Claude writes the tests from it, then builds the stage from it.
-- Start from [`_template.md`](_template.md).
-- The scope for every stage is in [Stages](../plan/08-stages.md).
+- Written for payments, auth and migrations, or when Rachel asks. Rachel approves before building.
+- One file per stage or feature: `<phase>.<n>-<name>.md`, e.g. `5.3-start-a-payment.md`.
+- Start from [`_template.md`](_template.md). Scope: [stages.md](../stages.md).

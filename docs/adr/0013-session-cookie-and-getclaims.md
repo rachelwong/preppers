@@ -25,5 +25,5 @@ Option 1. The `authenticate` hook reads the cookie, checks the token with `getCl
 - After sign-out an access token lives until expiry (default 1 hour), but the cookie is cleared.
 - If instant revoke becomes necessary, option 2 can replace the cookie contents without changing guards or the web app.
 - No global auth context in the web app; `/me` stays in TanStack Query.
-- Details: [Authentication](../plan/15-authentication.md).
+- Details: [Authentication](../auth.md).
 - Stages: 1.1, 1.2, 1.3, 1.4.

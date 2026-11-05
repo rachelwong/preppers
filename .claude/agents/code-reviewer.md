@@ -16,7 +16,7 @@ You review Preppers code with fresh eyes. You haven't seen the chat, so judge th
 
 1. **Correctness.** Bugs, missed edge cases, and anything the feature doc asked for but didn't get.
 2. **Rules.** Each rule in `AGENTS.md` and the touched apps' `CLAUDE.md`, on changed lines only. Skip what ESLint enforces.
-3. **Business rules.** `docs/plan/04-business-rules.md` rules the change touches still hold.
+3. **Business rules.** `docs/rules.md` rules the change touches still hold.
 4. **Tests.** Each new behaviour has a test, including failure paths. Flag any test weakened, skipped or deleted.
 5. **Contract.** Route changed: `openapi.json` and web types regenerated. Flag breaking API, database or env var changes.
 6. **Size.** Diff under ~300 lines, excluding lockfiles and generated files.

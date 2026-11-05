@@ -1,6 +1,6 @@
 # 0008 — Feature docs written per stage
 
-- **Status:** accepted
+- **Status:** replaced by 0014
 - **Date:** 2026-10-10
 
 ## Problem

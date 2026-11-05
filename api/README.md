@@ -1,72 +1,73 @@
 # Preppers API
 
-The server behind the web app. It handles sign-in, applies the business rules, and talks to the database and outside services.
-
-> Commands and setup are filled in at stage 0.2.
-
-## What's in here
-
-- All routes under `/api`.
-- Session cookies: the browser never sees Supabase tokens.
-- Every database query, through Drizzle.
-- Stripe payments, payouts and the webhook.
-- Google Geocoding, email over SMTP, Supabase Storage upload links (photos and licence files).
-- `/api/jobs/*` routes that Supabase `pg_cron` calls on a schedule.
-
-## Tools
-
-- Node, Fastify, TypeScript
-- Drizzle with Supabase Postgres (PostGIS for distance search)
-- Supabase Auth and Storage
-- Stripe, Nodemailer (SMTP), Google Geocoding
-- pino for logs, Sentry for errors
-- Vitest with Fastify `inject` for tests
-- zod route schemas → OpenAPI spec (`openapi.json`)
+The server behind the web app: sign-in, business rules, database and outside services. Commands are filled in at stage 0.2.
 
 ## Running it
 
-This app has its own dependencies. Run everything from `api`.
+From `api`:
 
 1. `npm install`
-2. Copy `.env.example` to `.env` and fill in the values.
-3. `npm run db:reset` to start local Supabase and seed it.
-4. `npm run db:seed-admin` to make your own email an admin (see [Admin set-up](../docs/plan/13-admin-setup.md)).
+2. Copy `.env.example` to `.env` and fill it in.
+3. `npm run db:reset` starts local Supabase and seeds it.
+4. `npm run db:seed-admin` makes your email an admin (below).
 5. `npm run dev`
-6. After changing a route, run `npm run openapi` and commit `openapi.json`. The web app builds its types from it.
+6. After a route change, `npm run openapi`. Commit `openapi.json` with the change.
 
 ## Environment variables
 
-| Name                        | What it is                                  |
-| --------------------------- | ------------------------------------------- |
-| `DATABASE_URL`              | Supabase Postgres connection (pooler)       |
-| `SUPABASE_URL`              | Supabase project URL                        |
-| `SUPABASE_SERVICE_ROLE_KEY` | Server-only key                             |
-| `SESSION_SECRET`            | Signs the session cookie                    |
-| `STRIPE_SECRET_KEY`         | Stripe test secret key                      |
-| `STRIPE_WEBHOOK_SECRET`     | Checks webhook signatures                   |
-| `GOOGLE_GEOCODING_KEY`      | Maps key locked to Geocoding                |
-| `SMTP_HOST`                 | Mail server for app emails (smtp.gmail.com) |
-| `SMTP_USER`                 | The dedicated Gmail address                 |
-| `SMTP_PASS`                 | Its app password                            |
-| `SENTRY_DSN`                | Sentry project for the API                  |
-| `JOBS_SECRET`               | Shared with `pg_cron` to call `/api/jobs/*` |
-| `SEED_ADMIN_EMAIL`          | Email that `npm run db:seed-admin` makes admin (local use only) |
+All are secrets: in `.env` locally, in Vercel settings when deployed. Never committed.
 
-All of these are secrets. They live in `.env` locally and in Vercel settings when deployed. Never commit them.
+| Name | What it is |
+| --- | --- |
+| `DATABASE_URL` | Supabase Postgres (pooler) |
+| `SUPABASE_URL` | Supabase project URL |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-only key |
+| `SESSION_SECRET` | Signs the session cookie |
+| `STRIPE_SECRET_KEY` | Stripe test secret key |
+| `STRIPE_WEBHOOK_SECRET` | Checks webhook signatures |
+| `LOCATIONIQ_KEY` | Address and place lookups |
+| `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS` | smtp.gmail.com, preppers.au@gmail.com, its app password |
+| `SENTRY_DSN` | Sentry project for the API |
+| `JOBS_SECRET` | Shared with `pg_cron` to call `/api/jobs/*` |
+| `SEED_ADMIN_EMAIL` | Email `db:seed-admin` makes admin (local only) |
 
 ## Folder layout (planned)
 
 ```text
 api/src/
-├── app.ts         builds the Fastify app (used by tests and Vercel)
-├── routes/        route files grouped by feature
+├── app.ts         builds the Fastify app (tests and Vercel)
+├── routes/        route files by feature
+├── schemas/       zod schemas (source of openapi.json)
+├── services/      business logic, incl. status.ts (transition())
 ├── db/            Drizzle schema, migrations, seed
-├── schemas/       zod schemas for every route (source of openapi.json)
-├── services/      business logic: checkout, status.ts (transition())
-├── integrations/  Stripe, Supabase, Google, email clients
+├── integrations/  Stripe, Supabase, Photon, LocationIQ, email
 └── plugins/       session, errors, request ID, rate limits
 ```
 
+## Admin set-up
+
+**First admin** (stage 1.4): set `SEED_ADMIN_EMAIL` and run `npm run db:seed-admin`.
+
+- No account with that email: creates an `admin`.
+- A buyer with no orders, cart items or Prepper profile: changes it to `admin`.
+- Anything else: stops and says why.
+
+Then sign in with the email code. For staging, point `DATABASE_URL` at that database for one run (never commit it), or insert the row in the Supabase SQL editor.
+
+**More admins** (stage 7.2): an admin uses Invite admin. The email must not already have an account. Admins can't be removed or deactivated.
+
+Don't change an email in the Supabase dashboard: accounts are matched by email, so it would become a new buyer.
+
+## Email account
+
+App emails and sign-in codes come from **preppers.au@gmail.com**, a Gmail account made for this project.
+
+- Set up at stage 1.5: 2-Step Verification on, then an app password.
+- The app password lives only in Supabase's SMTP settings and `SMTP_PASS` on Vercel. Changing the Gmail password cancels it: make a new one and update both.
+- Gmail has a daily send cap and codes can land in spam; tell testers.
+- Check the inbox now and then for warnings from Google.
+- With a custom domain, switch to Resend. No app code changes.
+
 ## Deploying
 
-Vercel project `preppers-api`, Root Directory `api`. Vercel runs the Fastify app as one function.
+Vercel project `preppers-api`, Root Directory `api`. Fastify runs as one function.

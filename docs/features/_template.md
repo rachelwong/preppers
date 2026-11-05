@@ -1,8 +1,8 @@
 # <phase>.<n> — <stage name>
 
 - **Depends on:** <stages that must be committed first>
-- **Business rules:** <links to the rules in ../plan/04-business-rules.md this stage enforces>
-- **Entities:** <links to ../data-model/entities/*.md this stage touches>
+- **Business rules:** <links to ../rules.md sections this stage enforces>
+- **Entities:** <links to ../data-model.md tables this stage touches>
 
 ## Goal
 

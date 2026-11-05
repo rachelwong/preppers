@@ -9,4 +9,4 @@
 7. No secrets or personal data in code, logs or responses.
 8. Migrations: Drizzle-generated, forward only. Postgres `snake_case`, TS `camelCase`.
 
-Tests: `app.inject()` per route; mock Stripe, Google, email.
+Tests: `app.inject()` per route; mock Stripe, Photon, LocationIQ, email.

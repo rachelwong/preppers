@@ -11,7 +11,7 @@ Steps:
 2. Run `git status` and `git log --oneline -10` on the current branch, so the note matches what Rachel has committed and what is still uncommitted.
 3. Write the note with these sections, in short bullets.
    - **Goal**: the stage and step (e.g. `2.1 — step 3`), and the feature doc path in `docs/features/`.
-   - **Where we are in the build flow**: which step of "How every change is built" in `CLAUDE.md` we're on (doc approved? Rachel OK'd and committed the tests? reviews run? diff presented?).
+   - **Where we are in the build flow**: which step of the Workflow in `CLAUDE.md` we're on (plan or feature doc approved? tests written? reviews run? diff presented?).
    - **Done**: what's finished, with commit hashes where useful.
    - **What worked**: approaches that succeeded.
    - **What didn't work**: approaches that failed, and why, so they aren't repeated.

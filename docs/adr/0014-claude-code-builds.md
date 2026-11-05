@@ -5,22 +5,21 @@
 
 ## Problem
 
-The plan had Rachel writing all the code, with Claude planning and reviewing. The project's aim has changed: to find better ways of getting test-driven, reliable, focused, high-quality code and docs out of Claude Code.
+The plan had Rachel writing the code, with Claude planning and reviewing. The project's aim has changed: to find better ways of getting test-driven, reliable, high-quality code and docs out of Claude Code.
 
 ## Options
 
-1. Rachel keeps writing the code; Claude plans, writes tests and reviews.
-2. Claude Code writes the code, tests and docs; Rachel approves plans and reviews every PR.
+1. Rachel keeps writing the code; Claude plans, tests and reviews.
+2. Claude Code writes the code, tests and docs; Rachel approves plans and reviews every diff.
 3. Choose who builds for each step.
 
 ## Decision
 
-Option 2. Claude Code builds each stage from the approved feature doc, tests first, and checks its own work with the `test-writer`, `code-reviewer` and `docs-checker` subagents. Rachel approves each feature doc and test list, reviews every diff, and commits and pushes.
+Option 2. Claude builds test-first and checks its own work with the `code-reviewer` and `docs-checker` subagents. Rachel approves plans, reviews every diff, and commits and pushes. Feature docs are written for payments, auth and migrations, or when Rachel asks; other changes get a short plan in chat. This replaces [0008](0008-just-in-time-feature-docs.md).
 
 ## Consequences
 
-- Stages move faster, and quality rests on tests written first and on independent subagent reviews.
-- Feature docs are still written for a person, so Rachel can review them. [0008](0008-just-in-time-feature-docs.md) still applies.
-- Rachel learns backend and SQL by reviewing the diffs and questioning Claude about them.
-- Claude never commits, pushes, merges or creates branches. It leaves every change uncommitted for Rachel.
-- Every stage follows "How every change is built" in the root `CLAUDE.md`.
+- Quality rests on test-driven work, independent subagent reviews and Rachel's diff review.
+- Rachel learns backend and SQL by reviewing diffs and questioning Claude.
+- Claude never commits, pushes, merges or branches.
+- The workflow lives only in the root `CLAUDE.md`.
