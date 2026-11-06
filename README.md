@@ -73,6 +73,8 @@ Each app's README has the details.
 
 Claude Code writes the code, tests and docs, test first. Rachel sets the scope, approves plans, reviews every diff, and commits and pushes. Claude never commits. The workflow is in [CLAUDE.md](CLAUDE.md); `CLAUDE.md` and `AGENTS.md` files are instructions for Claude.
 
+**GitHub MCP:** set in `~/.claude.json` for this project only (local scope). Header `X-MCP-Toolsets: default,actions` adds Actions tools. The token needs Actions: Read.
+
 ## Status
 
 Building. Progress: [stages](docs/stages.md).
