@@ -4,7 +4,7 @@
 
 - When generating plans, use succinct mechanical list of steps. Do not describe code. Provide code snippet when asked or if appropriate.
 
-- Keep function names short. Less than 30 characters.
+- Keep function names short. 30 characters or fewer. No single-letter names.
 
 - Don't make functions too small or shallow that do very little work. No single-use helpers, constants or types that add no clarity. No wrappers that only pass values through.
 
@@ -23,5 +23,5 @@
 - Always use {}, even on a one-line "if" statement.
 
 - Strictly adhere to the layered boundary hierarchy: each layer may only communicate with its immediate neighbor directly below it. Never "punch holes" through layers (e.g., controllers or UI components must never directly call database queries, raw hardware drivers, or low-level network clients; always route through the intermediate service/abstraction layer). Layers, top to bottom:
-  - `api`: routes → services → db (Drizzle).
-  - `web`: routes/components → hooks → `src/api` client.
+  - `api`: routes → services → db (Drizzle) and integrations (Stripe, Supabase, Photon, LocationIQ, email).
+  - `web`: routes, features, components → hooks → `src/api` client.
