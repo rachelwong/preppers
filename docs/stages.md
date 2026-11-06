@@ -11,13 +11,13 @@ Each stage lists what to **build**, how you know it's **done**, what review **ch
 
 - [ ] **Repo setup** (0.1)
   - Build: `web` and `api` as separate npm projects, each with its own `package.json`, lockfile, strict TypeScript, ESLint, Prettier and Vitest. One GitHub Actions workflow per app, triggered by changes in its folder.
-  - Build: ESLint rules for [AGENTS.md](../AGENTS.md): `curly: all`, `no-magic-numbers` (allow -1, 0, 1), `id-length` (max 30), `padding-line-between-statements`, and `eslint-plugin-boundaries` for the layers.
+  - Build: ESLint rules for [AGENTS.md](../AGENTS.md): `curly: all`, `no-magic-numbers` (allow -1, 0, 1; ignore array indexes and default values; off in tests), `no-nested-ternary`, `id-length` (max 30), `padding-line-between-statements`, and `eslint-plugin-boundaries` for the layers. HTTP statuses from `http-status-codes` in both apps.
   - Done: a sample test passes in CI for each app; the lint hook lints each file Claude edits.
   - Check: no root `package.json`; no imports across apps.
   - Docs: [Build and test Node.js](https://docs.github.com/en/actions/tutorials/build-and-test-code/nodejs), [Workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)
 - [ ] **API basics** (0.2)
   - Build: Fastify app, `/health`, zod validation, one error format, logging with request IDs.
-  - Done: tests for 200, 400, 404, 409 and 500.
+  - Done: tests for 200, 400, 404, 409 and 500; one test drives the app the Vercel Function exports.
   - Check: no stack traces leak; testable without a server; runs locally and as a Vercel Function.
   - Docs: [Fastify testing](https://fastify.dev/docs/latest/Guides/Testing/)
 - [ ] **Database setup** (0.3)
@@ -30,7 +30,7 @@ Each stage lists what to **build**, how you know it's **done**, what review **ch
   - Check: migrations committed; no secret keys in web.
   - Docs: [Supabase local development](https://supabase.com/docs/guides/local-development), [Drizzle on Supabase](https://supabase.com/docs/guides/database/drizzle), [Drizzle migrations](https://orm.drizzle.team/docs/kit-overview), [Row level security](https://supabase.com/docs/guides/database/postgres/row-level-security)
 - [ ] **Web shell** (0.4)
-  - Build: Vite + React, TanStack Router and Query, Tailwind and shadcn/ui, layout, one typed API client.
+  - Build: Vite + React, TanStack Router and Query, Tailwind and shadcn/ui, layout, one typed API client (`openapi-fetch` on the generated schema).
   - Done: home page shows `/health`; error state tested.
   - Check: one fetch wrapper; query keys in one place.
 - [ ] **Error tracking** (0.5)
@@ -65,7 +65,7 @@ Each stage lists what to **build**, how you know it's **done**, what review **ch
   - Done: each guard tested for 401, wrong role 403, deactivated 403, allowed.
   - Check: admins refused on cart, checkout and Prepper routes; one `requireAdmin` on `/api/admin`.
 - [ ] **Staging site** (1.5)
-  - Build: two Vercel projects, `/api` forwarded from web to api, Supabase cloud. Sign-in emails through preppers.au@gmail.com ([api/README.md](../api/README.md#email-account)): Supabase SMTP settings, Magic Link template showing `{{ .Token }}`, code expiry about 10 minutes. Weekly GitHub Actions ping so Supabase doesn't pause.
+  - Build: two Vercel projects, `/api` forwarded from web to api, Supabase cloud. Sign-in emails through preppers.au@gmail.com ([api/README.md](../api/README.md#email-account)): Supabase SMTP settings, Magic Link template showing `{{ .Token }}`, code expiry about 10 minutes. Weekly GitHub Actions ping so Supabase doesn't pause. Scope the Supabase MCP in `.mcp.json` to the new project (`project_ref`).
   - Done: sign-in works on staging with a code sent to an address outside the Supabase team.
   - Check: cookie and CORS settings; secrets only in hosting settings; the email shows a 6-digit code, not a link.
   - Docs: [Fastify on Vercel](https://vercel.com/docs/frameworks/backend/fastify), [Supabase custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp), [Google app passwords](https://support.google.com/accounts/answer/185833)

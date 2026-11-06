@@ -18,6 +18,7 @@ Hobby app, few users. Build only for realistic edge cases.
 3. Route changed: `npm run openapi` (api), `npm run gen:api` (web). A Stop hook runs test, lint and type-check in changed apps.
 4. Stage or bug fix done: run `code-reviewer` and `docs-checker` once, in parallel. Fix "Must fix" items; propose doc changes for Rachel to approve. Ad hoc work: Rachel runs `/check-code` and `/check-docs`.
 5. Never commit, push or branch. Present the diff and a suggested commit message (`feat:`, `fix:`, `test:`, `docs:`, `chore:`).
+6. Rachel corrects code quality: record the rule in `AGENTS.md`, an app `CLAUDE.md` or a `.claude/skills/` skill, then say where.
 
 ## Commands
 
