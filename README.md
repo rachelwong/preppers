@@ -56,24 +56,22 @@ Each app's README has the details.
 
 ## Docs
 
-| Doc | Holds |
-| --- | --- |
-| [CONTEXT.md](CONTEXT.md) | Glossary |
-| [Architecture](docs/architecture.md) | Services, contract, free tiers, security |
-| [Rules](docs/rules.md) | Business rules and what's not in v1 |
-| [Data model](docs/data-model.md) | Tables, enums, status moves |
-| [Stages](docs/stages.md) | Build scope and progress |
-| [Auth](docs/auth.md) | Sessions, guards, routes |
-| [Wireframes](https://claude.ai/artifact/8KZKfE2Ajo2BXPqRxwciT3#d43ae32e-e1a6) | All 17 screens. The only copy |
-| [Testing](docs/testing.md) | TDD, critical paths |
-| [ADRs](docs/adr/) | Decisions and why |
-| [Feature docs](docs/features/) | Detailed plans for payments, auth and migrations |
+| Doc                                                                           | Holds                                            |
+| ----------------------------------------------------------------------------- | ------------------------------------------------ |
+| [CONTEXT.md](CONTEXT.md)                                                      | Glossary                                         |
+| [Architecture](docs/architecture.md)                                          | Services, contract, free tiers, security         |
+| [Rules](docs/rules.md)                                                        | Business rules and what's not in v1              |
+| [Data model](docs/data-model.md)                                              | Tables, enums, status moves                      |
+| [Stages](docs/stages.md)                                                      | Build scope and progress                         |
+| [Auth](docs/auth.md)                                                          | Sessions, guards, routes                         |
+| [Wireframes](https://claude.ai/artifact/8KZKfE2Ajo2BXPqRxwciT3#d43ae32e-e1a6) | All 17 screens. The only copy                    |
+| [Testing](docs/testing.md)                                                    | TDD, critical paths                              |
+| [ADRs](docs/adr/)                                                             | Decisions and why                                |
+| [Feature docs](docs/features/)                                                | Detailed plans for payments, auth and migrations |
 
 ## How we work
 
 Claude Code writes the code, tests and docs, test first. Rachel sets the scope, approves plans, reviews every diff, and commits and pushes. Claude never commits. The workflow is in [CLAUDE.md](CLAUDE.md); `CLAUDE.md` and `AGENTS.md` files are instructions for Claude.
-
-**GitHub MCP:** set in `~/.claude.json` for this project only (local scope). Header `X-MCP-Toolsets: default,actions` adds Actions tools. The token needs Actions: Read.
 
 ## Status
 
