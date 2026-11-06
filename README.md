@@ -66,7 +66,6 @@ Each app's README has the details.
 | [Stages](docs/stages.md) | Build scope and progress |
 | [Auth](docs/auth.md) | Sessions, guards, routes |
 | [Wireframes](https://claude.ai/artifact/8KZKfE2Ajo2BXPqRxwciT3#d43ae32e-e1a6) | All 17 screens. The only copy |
-| [Screens](docs/screens.md) | Behaviour notes per screen |
 | [Testing](docs/testing.md) | TDD, critical paths |
 | [ADRs](docs/adr/) | Decisions and why |
 | [Feature docs](docs/features/) | Detailed plans for payments, auth and migrations |

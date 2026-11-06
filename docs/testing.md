@@ -15,8 +15,8 @@ Rachel reviews the tests in the final diff. Their names read as the list of beha
 
 | Layer | Where | Tools | Runs |
 | --- | --- | --- | --- |
-| API | `api` | Vitest + Fastify `inject`, local Supabase | PRs touching `api` |
-| Web | `web` | Vitest + Testing Library + MSW (loading, empty, error, success) | PRs touching `web` |
+| API | `api` | Vitest + Fastify `inject`, local Supabase | Pushes touching `api`: lint, type-check, test |
+| Web | `web` | Vitest + Testing Library + MSW (loading, empty, error, success) | Pushes touching `web`: lint, type-check, test |
 | Contract | both | regenerate `openapi.json` and web types; fail if changed | every PR |
 | Critical paths | `e2e` | Playwright + playwright-bdd, video on | every PR |
 | Release paths | `e2e` | same, tagged `@release`, video on failure | nightly |

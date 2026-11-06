@@ -56,7 +56,8 @@ preppers/
 ├── docs/                  product docs, ADRs, feature docs
 ├── api/                   Fastify BFF → Vercel project "preppers-api"
 ├── web/                   React SPA → Vercel project "preppers-web"
-└── e2e/                   Playwright critical paths
+├── e2e/                   Playwright critical paths
+└── .github/workflows/     CI per app (api.yml, web.yml)
 ```
 
 - Each app has its own `package.json`, lockfile, tooling and tests. No app imports another; no root `package.json`. See [ADR 0009](adr/0009-self-contained-apps.md).

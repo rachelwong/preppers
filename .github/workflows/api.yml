@@ -1,0 +1,24 @@
+name: api
+
+on:
+  push:
+    paths: ["api/**", ".github/workflows/api.yml"]
+
+defaults:
+  run:
+    working-directory: api
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: api/.nvmrc
+          cache: npm
+          cache-dependency-path: api/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test

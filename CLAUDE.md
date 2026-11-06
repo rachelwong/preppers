@@ -22,5 +22,4 @@ Hobby app, few users. Build only for realistic edge cases.
 
 ## Commands
 
-- api: `npm run dev`, `npm test`, `npm run db:migrate`, `npm run openapi`
-- web: `npm run dev`, `npm test`, `npm run gen:api`
+- api and web: `npm test`, `npm run lint` (ESLint and Prettier), `npm run typecheck`, `npm run format`

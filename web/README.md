@@ -1,6 +1,8 @@
 # Preppers web app
 
-The React app that buyers, Preppers and admins use. Commands are filled in at stage 0.4.
+The React app that buyers, Preppers and admins use.
+
+Checks: `npm test`, `npm run lint` (ESLint and Prettier), `npm run typecheck`. `npm run format` fixes formatting. CI runs all three on every push touching `web/`.
 
 ## Running it
 
@@ -38,6 +40,7 @@ web/src/
 ├── routes/        one file per page (TanStack Router)
 ├── features/      UI by feature: cart, meals, checkout…
 ├── components/ui/ shadcn/ui components
+├── hooks/         TanStack Query hooks; only callers of src/api
 ├── api/           API client, query keys, generated types
 ├── schemas/       zod form schemas
 └── lib/           money and date formatting

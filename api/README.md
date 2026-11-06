@@ -1,6 +1,8 @@
 # Preppers API
 
-The server behind the web app: sign-in, business rules, database and outside services. Commands are filled in at stage 0.2.
+The server behind the web app: sign-in, business rules, database and outside services.
+
+Checks: `npm test`, `npm run lint` (ESLint and Prettier), `npm run typecheck`. `npm run format` fixes formatting. CI runs all three on every push touching `api/`.
 
 ## Running it
 

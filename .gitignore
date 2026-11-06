@@ -1,2 +1,10 @@
 # Session handoff note written by the handoff skill
 HANDOFF.md
+
+node_modules/
+dist/
+coverage/
+.env
+.env.*
+!.env.example
+.DS_Store
