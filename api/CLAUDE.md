@@ -1,7 +1,7 @@
 # api rules
 
 1. Every route has zod schemas for params, body, response (they generate `openapi.json`).
-2. Errors: `{ code, message, details? }` with correct status. No stack traces.
+2. Errors: `{ code, message, details? }` with correct status, `code` in snake_case. Services throw `AppError` (`src/errors.ts`) for expected failures. No stack traces.
 3. Account and Prepper ID come from the session, never the request.
 4. Money is integer cents, totals worked out on the server from DB prices.
 5. Multi-table writes run in one transaction.

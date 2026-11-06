@@ -23,3 +23,4 @@ Hobby app, few users. Build only for realistic edge cases.
 ## Commands
 
 - api and web: `npm test`, `npm run lint` (ESLint and Prettier), `npm run typecheck`, `npm run format`
+- api: `npm run dev`, `npm run openapi`

@@ -6,13 +6,7 @@ Checks: `npm test`, `npm run lint` (ESLint and Prettier), `npm run typecheck`. `
 
 ## Running it
 
-From `web`:
-
-1. `npm install`
-2. Copy `.env.example` to `.env` and fill it in.
-3. Start the API in another terminal ([api/README.md](../api/README.md)).
-4. `npm run dev`
-5. After an API change, `npm run gen:api` refreshes the API types.
+From `web`: `npm install`.
 
 ## Environment variables
 

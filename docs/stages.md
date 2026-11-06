@@ -9,7 +9,7 @@ Each stage lists what to **build**, how you know it's **done**, what review **ch
 
 ## Phase 0 — Foundations
 
-- [ ] **Repo setup** (0.1)
+- [x] **Repo setup** (0.1)
   - Build: `web` and `api` as separate npm projects, each with its own `package.json`, lockfile, strict TypeScript, ESLint, Prettier and Vitest. One GitHub Actions workflow per app, triggered by changes in its folder.
   - Build: ESLint rules for [AGENTS.md](../AGENTS.md): `curly: all`, `no-magic-numbers` (allow -1, 0, 1; ignore array indexes and default values; off in tests), `no-nested-ternary`, `id-length` (max 30), `padding-line-between-statements`, and `eslint-plugin-boundaries` for the layers. HTTP statuses from `http-status-codes` in both apps.
   - Done: a sample test passes in CI for each app; the lint hook lints each file Claude edits.

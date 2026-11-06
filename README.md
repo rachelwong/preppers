@@ -47,11 +47,10 @@ The browser only talks to our API. The API checks who you are, applies the busin
 
 ## Getting started
 
-You'll need Node (version in each app's `.nvmrc`), npm, Docker Desktop (runs local Supabase) and the Supabase CLI.
+You'll need Node (version in each app's `.nvmrc`) and npm.
 
-1. **API:** in `api`, run `npm install`, copy `.env.example` to `.env`, run `npm run db:reset`, then `npm run dev`.
-2. **Web:** in `web`, run `npm install`, copy `.env.example` to `.env`, then `npm run dev`.
-3. Open the web app's local address. Its `/api` calls go to the API.
+1. **API:** in `api`, run `npm install`, then `npm run dev`.
+2. **Web:** in `web`, run `npm install`.
 
 Each app's README has the details.
 
@@ -76,4 +75,4 @@ Claude Code writes the code, tests and docs, test first. Rachel sets the scope, 
 
 ## Status
 
-Planning is done. Building starts at stage 0.1. Progress: [stages](docs/stages.md).
+Building. Progress: [stages](docs/stages.md).

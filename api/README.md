@@ -9,11 +9,8 @@ Checks: `npm test`, `npm run lint` (ESLint and Prettier), `npm run typecheck`. `
 From `api`:
 
 1. `npm install`
-2. Copy `.env.example` to `.env` and fill it in.
-3. `npm run db:reset` starts local Supabase and seeds it.
-4. `npm run db:seed-admin` makes your email an admin (below).
-5. `npm run dev`
-6. After a route change, `npm run openapi`. Commit `openapi.json` with the change.
+2. `npm run dev` serves `http://localhost:3000/api/health`.
+3. After a route change, `npm run openapi`. Commit `openapi.json` with the change.
 
 ## Environment variables
 
@@ -37,13 +34,16 @@ All are secrets: in `.env` locally, in Vercel settings when deployed. Never comm
 
 ```text
 api/src/
-├── app.ts         builds the Fastify app (tests and Vercel)
+├── build-app.ts   builds the Fastify app (tests, index, openapi)
+├── index.ts       Vercel Function entry; `npm run dev`
+├── openapi.ts     writes openapi.json
+├── errors.ts      ErrorCode, AppError, error handler
 ├── routes/        route files by feature
 ├── schemas/       zod schemas (source of openapi.json)
 ├── services/      business logic, incl. status.ts (transition())
 ├── db/            Drizzle schema, migrations, seed
 ├── integrations/  Stripe, Supabase, Photon, LocationIQ, email
-└── plugins/       session, errors, request ID, rate limits
+└── plugins/       session, rate limits
 ```
 
 ## Admin set-up
@@ -72,4 +72,4 @@ App emails and sign-in codes come from **preppers.au@gmail.com**, a Gmail accoun
 
 ## Deploying
 
-Vercel project `preppers-api`, Root Directory `api`. Fastify runs as one function.
+Vercel project `preppers-api`, Root Directory `api`. Fastify runs as one function; Vercel's zero-config entry is `src/index.ts`.
